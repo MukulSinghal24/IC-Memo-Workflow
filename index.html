@@ -856,107 +856,8 @@ CHECKPOINT 2: Brands profiled, facilities mapped, supply chain documented<br>
 </div></div>
 <div class="phase-card">
 <div class="phase-head">
-<div class="num" style="background:#1565C0">3</div>
-<h2>Step 3: Financial Foundation</h2>
-<span class="team-badge">Financial Analysis</span>
-<span class="timing">2-3 days</span>
-<span class="badge" style="background:#E3F2FD;color:#1565C0">8 TASKS &middot; 4G 4Y 0R</span>
-</div>
-<div class="phase-body">
-<div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  S3_1["3.1: Compile historical financials (3-5yr IS, BS, CF, LTM)"]
-  S3_2["3.2: Quality of Earnings analysis and EBITDA reconciliation"]
-  S3_1 --> S3_2
-  S3_3["3.3: Revenue bridge and concentration analysis"]
-  S3_2 --> S3_3
-  S3_4["3.4: Validate financial model and build EBITDA bridge"]
-  S3_3 --> S3_4
-  S3_5["3.5: Working capital analysis"]
-  S3_4 --> S3_5
-  S3_6["3.6: Debt and covenant analysis"]
-  S3_5 --> S3_6
-  S3_7["3.7: Capex split (maint vs growth) and accounting review"]
-  S3_6 --> S3_7
-  S3_8["3.8: Compile financial analysis package"]
-  S3_7 --> S3_8
-  CP3(["CHECKPOINT 3"])
-  S3_8 --> CP3
-  style S3_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S3_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S3_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S3_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S3_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S3_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S3_7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S3_8 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP3 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-</pre></div>
-
-<table class="step-table">
-<thead><tr>
-<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
-<tr>
-<td class="step-id">3.1</td>
-<td class="step-task">Compile historical financials (3-5yr IS, BS, CF, LTM)</td>
-<td class="step-src">#31 Audited, #32 Interim, #33 Monthly</td>
-<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
-<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-<tr>
-<td class="step-id">3.2</td>
-<td class="step-task">Quality of Earnings analysis & EBITDA reconciliation</td>
-<td class="step-src">#34 QoE Report, #31 Audited, #33 Monthly</td>
-<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
-<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-<tr>
-<td class="step-id">3.3</td>
-<td class="step-task">Revenue bridge & concentration analysis</td>
-<td class="step-src">#35 Revenue Disagg, #55 Customer Conc</td>
-<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
-<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-<tr>
-<td class="step-id">3.4</td>
-<td class="step-task">Validate financial model & build EBITDA bridge</td>
-<td class="step-src">#36 Model, #37 BvA, #38 EBITDA Bridge</td>
-<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
-<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-<tr>
-<td class="step-id">3.5</td>
-<td class="step-task">Working capital analysis</td>
-<td class="step-src">#39 WC, #40 AR, #41 AP, #42 Inventory</td>
-<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
-<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-<tr>
-<td class="step-id">3.6</td>
-<td class="step-task">Debt & covenant analysis</td>
-<td class="step-src">#43 Debt, #44 Covenant, #46 Maturity</td>
-<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
-<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-<tr>
-<td class="step-id">3.7</td>
-<td class="step-task">Capex split (maint vs growth) & accounting review</td>
-<td class="step-src">#45 Capex, #122 RevRec, #123 Impairment</td>
-<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
-<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-<tr>
-<td class="step-id">3.8</td>
-<td class="step-task">Compile financial analysis package</td>
-<td class="step-src">All Phase 3 sources</td>
-<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
-<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
-</tbody></table>
-<div class="checkpoint" style="background:#E3F2FD;border-color:#1565C0;color:#1565C0">
-CHECKPOINT 3: Historicals normalized, QoE reconciled, EBITDA bridge built, model audited<br>
-<span style="font-weight:400;font-size:11px">Key Outputs: EBITDA bridge, QoE reconciliation, model audit, WC, debt analysis</span>
-</div>
-</div></div>
-<div class="phase-card">
-<div class="phase-head">
-<div class="num" style="background:#2E7D32">4</div>
-<h2>Step 4: Industry & Market Context</h2>
+<div class="num" style="background:#2E7D32">3</div>
+<h2>Step 3: Industry & Market Overview</h2>
 <span class="team-badge">Business & Operations</span>
 <span class="timing">1 day</span>
 <span class="badge" style="background:#E8F5E9;color:#2E7D32">4 TASKS &middot; 1G 3Y 0R</span>
@@ -964,19 +865,19 @@ CHECKPOINT 3: Historicals normalized, QoE reconciled, EBITDA bridge built, model
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S4_1["4.1: Extract market data (TAM, growth, drivers)"]
-  S4_2["4.2: Analyze competitive landscape (3-5 competitors)"]
-  S4_1 --> S4_2
-  S4_3["4.3: Consumer insights and emerging threats"]
-  S4_2 --> S4_3
-  S4_4["4.4: Draft Industry and Market section (2-3 pages)"]
-  S4_3 --> S4_4
+  S3_1["3.1: Extract market data (TAM, growth, drivers)"]
+  S3_2["3.2: Analyze competitive landscape (3-5 competitors)"]
+  S3_1 --> S3_2
+  S3_3["3.3: Consumer insights and emerging threats"]
+  S3_2 --> S3_3
+  S3_4["3.4: Draft Industry and Market section (2-3 pages)"]
+  S3_3 --> S3_4
   CP4(["CHECKPOINT 4"])
-  S4_4 --> CP4
-  style S4_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S4_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S4_3 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S4_4 fill:#E65100,stroke:#FF9800,color:#FFF
+  S3_4 --> CP4
+  style S3_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S3_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S3_3 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S3_4 fill:#E65100,stroke:#FF9800,color:#FFF
   style CP4 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
@@ -987,33 +888,132 @@ flowchart TB
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
-<td class="step-id">4.1</td>
+<td class="step-id">3.1</td>
 <td class="step-task">Extract market data (TAM, growth, drivers)</td>
 <td class="step-src">#24 Industry, #25 Stats</td>
 <td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
 <td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
-<td class="step-id">4.2</td>
+<td class="step-id">3.2</td>
 <td class="step-task">Analyze competitive landscape (3-5 competitors)</td>
 <td class="step-src">#26 Competitors, #27 Share, #56 Bench</td>
 <td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
-<td class="step-id">4.3</td>
+<td class="step-id">3.3</td>
 <td class="step-task">Consumer insights & emerging threats</td>
 <td class="step-src">#28 Consumer, #29 Pipeline</td>
 <td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
-<td class="step-id">4.4</td>
+<td class="step-id">3.4</td>
 <td class="step-task">Draft Industry & Market section (2-3 pages)</td>
 <td class="step-src">All Phase 4 sources</td>
 <td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 </tbody></table>
 <div class="checkpoint" style="background:#E8F5E9;border-color:#2E7D32;color:#2E7D32">
-CHECKPOINT 4: Market sized, competitors profiled, threats identified<br>
+CHECKPOINT 3: Market sized, competitors profiled, threats identified<br>
 <span style="font-weight:400;font-size:11px">Key Outputs: Market overview, competitive matrix, Wall Street view</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#1565C0">4</div>
+<h2>Step 4: Financial Overview</h2>
+<span class="team-badge">Financial Analysis</span>
+<span class="timing">2-3 days</span>
+<span class="badge" style="background:#E3F2FD;color:#1565C0">8 TASKS &middot; 4G 4Y 0R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  S4_1["4.1: Compile historical financials (3-5yr IS, BS, CF, LTM)"]
+  S4_2["4.2: Quality of Earnings analysis and EBITDA reconciliation"]
+  S4_1 --> S4_2
+  S4_3["4.3: Revenue bridge and concentration analysis"]
+  S4_2 --> S4_3
+  S4_4["4.4: Validate financial model and build EBITDA bridge"]
+  S4_3 --> S4_4
+  S4_5["4.5: Working capital analysis"]
+  S4_4 --> S4_5
+  S4_6["4.6: Debt and covenant analysis"]
+  S4_5 --> S4_6
+  S4_7["4.7: Capex split (maint vs growth) and accounting review"]
+  S4_6 --> S4_7
+  S4_8["4.8: Compile financial analysis package"]
+  S4_7 --> S4_8
+  CP3(["CHECKPOINT 3"])
+  S4_8 --> CP3
+  style S4_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S4_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S4_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S4_4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S4_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S4_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S4_7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S4_8 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP3 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
+
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
+<tr>
+<td class="step-id">4.1</td>
+<td class="step-task">Compile historical financials (3-5yr IS, BS, CF, LTM)</td>
+<td class="step-src">#31 Audited, #32 Interim, #33 Monthly</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.2</td>
+<td class="step-task">Quality of Earnings analysis & EBITDA reconciliation</td>
+<td class="step-src">#34 QoE Report, #31 Audited, #33 Monthly</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.3</td>
+<td class="step-task">Revenue bridge & concentration analysis</td>
+<td class="step-src">#35 Revenue Disagg, #55 Customer Conc</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.4</td>
+<td class="step-task">Validate financial model & build EBITDA bridge</td>
+<td class="step-src">#36 Model, #37 BvA, #38 EBITDA Bridge</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.5</td>
+<td class="step-task">Working capital analysis</td>
+<td class="step-src">#39 WC, #40 AR, #41 AP, #42 Inventory</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.6</td>
+<td class="step-task">Debt & covenant analysis</td>
+<td class="step-src">#43 Debt, #44 Covenant, #46 Maturity</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.7</td>
+<td class="step-task">Capex split (maint vs growth) & accounting review</td>
+<td class="step-src">#45 Capex, #122 RevRec, #123 Impairment</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.8</td>
+<td class="step-task">Compile financial analysis package</td>
+<td class="step-src">All Phase 3 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#E3F2FD;border-color:#1565C0;color:#1565C0">
+CHECKPOINT 4: Historicals normalized, QoE reconciled, EBITDA bridge built, model audited<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: EBITDA bridge, QoE reconciliation, model audit, WC, debt analysis</span>
 </div>
 </div></div>
 <div class="phase-card">
@@ -1091,7 +1091,7 @@ CHECKPOINT 5: Thesis quantified, upside modeled, differentiation clear<br>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#E65100">6</div>
-<h2>Step 6: Key Risks</h2>
+<h2>Step 6: Due Diligence Summary and Key Risks</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">1 day</span>
 <span class="badge" style="background:#FFF3E0;color:#E65100">7 TASKS &middot; 2G 4Y 1R</span>
@@ -1505,7 +1505,7 @@ CHECKPOINT 9: Valuation triangulated, trading analyzed, returns modeled, S&U bal
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#E65100">10</div>
-<h2>Step 10: Recommendation & Final Assembly</h2>
+<h2>Step 10: Final Recommendation and Executive Summary</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">1 day</span>
 <span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS &middot; 1G 2Y 2R</span>
@@ -1604,23 +1604,23 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <td><span style="color:#B71C1C;font-weight:700">0</span></td>
 </tr>
 <tr>
-<td style="font-weight:700;color:#1565C0">3</td>
-<td style="font-weight:600">Financial Foundation</td>
-<td>2-3 days</td>
-<td style="font-weight:700">8</td>
-<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x8</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-i">I</span></td>
-<td><span style="color:#1B5E20;font-weight:700">4</span></td>
-<td><span style="color:#E65100;font-weight:700">4</span></td>
-<td><span style="color:#B71C1C;font-weight:700">0</span></td>
-</tr>
-<tr>
-<td style="font-weight:700;color:#2E7D32">4</td>
-<td style="font-weight:600">Industry & Market Context</td>
+<td style="font-weight:700;color:#2E7D32">3</td>
+<td style="font-weight:600">Industry &amp; Market Overview</td>
 <td>1 day</td>
 <td style="font-weight:700">4</td>
 <td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td>
 <td><span style="color:#1B5E20;font-weight:700">1</span></td>
 <td><span style="color:#E65100;font-weight:700">3</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#1565C0">4</td>
+<td style="font-weight:600">Financial Overview</td>
+<td>2-3 days</td>
+<td style="font-weight:700">8</td>
+<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x8</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-i">I</span></td>
+<td><span style="color:#1B5E20;font-weight:700">4</span></td>
+<td><span style="color:#E65100;font-weight:700">4</span></td>
 <td><span style="color:#B71C1C;font-weight:700">0</span></td>
 </tr>
 <tr>
@@ -1635,7 +1635,7 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 </tr>
 <tr>
 <td style="font-weight:700;color:#E65100">6</td>
-<td style="font-weight:600">Key Risks</td>
+<td style="font-weight:600">DD Summary &amp; Key Risks</td>
 <td>1 day</td>
 <td style="font-weight:700">7</td>
 <td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x7</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td>
@@ -1675,7 +1675,7 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 </tr>
 <tr>
 <td style="font-weight:700;color:#E65100">10</td>
-<td style="font-weight:600">Recommendation & Final Assembly</td>
+<td style="font-weight:600">Final Recommendation</td>
 <td>1 day</td>
 <td style="font-weight:700">5</td>
 <td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td>
