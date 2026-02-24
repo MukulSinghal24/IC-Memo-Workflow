@@ -104,7 +104,7 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 
 <div class="header">
 <h1>IC Memo Build Workflow</h1>
-<div class="sub">LLM Capability Classification & RACI Matrix</div>
+<div class="sub">Full Deal Lifecycle + IC Memo Build Guide — LLM Capability Classification & RACI Matrix</div>
 <div class="meta">Project Gate — Gate Doors & Equipment Industries, Inc. — $320M EV — 10 Phases, 69 Granular Steps</div>
 </div>
 <div class="stats-card">
@@ -142,10 +142,549 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 <div class="legend-item"><div class="legend-dot" style="background:#1565C0"></div>R = Responsible</div>
 <div class="legend-item"><div class="legend-dot" style="background:#E65100"></div>A = Accountable</div>
 <div class="legend-item"><div class="legend-dot" style="background:#7B1FA2"></div>C = Consulted</div>
-<div class="legend-item"><div class="legend-dot" style="background:#BDBDBD"></div>I = Informed</div>
+<div class="legend-item"><div class="legend-dot" style="backgrou
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- PART A: LBO DEAL PROCESS — 7 PHASES, ORIGINATION TO CLOSE       -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+
+<div class="section-title" style="margin-top:16px">PART A: LBO Deal Process — Origination to Close</div>
+<div class="section-sub">7-Phase Deal Lifecycle &middot; 66 Tasks &middot; 4-Color LLM Classification &middot; 3 IC Decision Gates</div>
+
+<!-- PART A: Master Overview -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#1A237E">M</div>
+<h2>Master Overview — Full 7-Phase Deal Lifecycle</h2>
+<div class="badge" style="background:#EDE7F6;color:#4527A0">7 PHASES &middot; 3 IC GATES</div>
 </div>
-<div class="section-title">IC Memo Build Process — 10 Phases, Step-by-Step</div>
-<div class="section-sub">Each step is scoped for individual LLM execution with defined inputs, outputs, and source documents</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart LR
+  P1["Phase 1: Origination"]
+  G0{"Screen Fit?"}
+  P2["Phase 2: CIM and IOI"]
+  G1{"IC Gate 1: Approve IOI?"}
+  P3["Phase 3: Mgmt and LOI"]
+  G2{"IC Gate 2: Approve LOI?"}
+  LOI(["LOI Signed"])
+  P4["Phase 4: Due Diligence"]
+  P5["Phase 5: Underwriting"]
+  P6["Phase 6: IC Memo"]
+  G3{"IC Gate 3: Authorize SPA?"}
+  P7["Phase 7: Close"]
+  DONE(["CLOSES Apr 15 2026"])
+  PASS1["Pass"] 
+  PASS2["Decline"]
+  PASS3["Withdraw"]
+  KILL["Kill"]
+  P1 --> G0
+  G0 -- No --> PASS1
+  G0 -- Yes --> P2
+  P2 --> G1
+  G1 -- No --> PASS2
+  G1 -- Yes --> P3
+  P3 --> G2
+  G2 -- No --> PASS3
+  G2 -- Yes --> LOI
+  LOI --> P4
+  LOI --> P5
+  P4 --> P6
+  P5 --> P6
+  P6 --> G3
+  G3 -- Revise --> P6
+  G3 -- Reject --> KILL
+  G3 -- Approved --> P7
+  P7 --> DONE
+  style P1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style P2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style P3 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style P4 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style P5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style P6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style P7 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G0 fill:#FFF,stroke:#C62828,color:#C62828
+  style G1 fill:#FFF,stroke:#C62828,color:#C62828
+  style G2 fill:#FFF,stroke:#C62828,color:#C62828
+  style G3 fill:#FFF,stroke:#C62828,color:#C62828
+  style LOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style DONE fill:#1A237E,stroke:#5C6BC0,color:#FFF
+  style PASS1 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style PASS2 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style PASS3 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+</pre></div></div></div>
+
+<!-- PART A Phase 1: Origination -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#E65100">1</div>
+<h2>Phase 1: Origination and Screening</h2>
+<span class="timing">1-2 Weeks</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS</span>
+</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  A1["Sell-Side: Distribute teaser to sponsor universe"]
+  A2["Deal Team: Evaluate teaser against fund mandate"]
+  A3{"Mandate Fit?"}
+  A4["Deal Team: Prepare and execute NDA"]
+  A5["Deal Team: Draft Initial Screening Memo"]
+  PASS["Pass on opportunity"]
+  NEXT(["To Phase 2"])
+  A1 --> A2 --> A3
+  A3 -- No --> PASS
+  A3 -- Yes --> A4 --> A5 --> NEXT
+  style A1 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style A2 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style A4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style A5 fill:#E65100,stroke:#FF9800,color:#FFF
+  style A3 fill:#FFF,stroke:#C62828,color:#C62828
+  style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style NEXT fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div></div></div>
+
+<!-- PART A Phase 2: CIM and IOI -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#E65100">2</div>
+<h2>Phase 2: CIM Review and First-Round Bid (IOI)</h2>
+<span class="timing">2-4 Weeks</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">7 TASKS</span>
+</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  B0(["Receive CIM and Process Letter"])
+  B1["Deal Team: Deep-dive CIM - business, financials, market, risks"]
+  B2["Deal Team: Build Mini LBO Model from CIM data"]
+  B3["Deal Team: Solicit indicative financing terms"]
+  B4["Deal Team: Draft Initial IC Memo (5-15 pages)"]
+  B5{"IC GATE 1: Approve IOI?"}
+  B6["Deal Team: Draft and submit IOI"]
+  IOI(["IOI SUBMITTED"])
+  PASS["Decline to bid"]
+  B0 --> B1
+  B1 --> B2
+  B1 --> B3
+  B2 --> B4
+  B3 --> B4
+  B4 --> B5
+  B5 -- No --> PASS
+  B5 -- Approved --> B6 --> IOI
+  style B0 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style B1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style B2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style B3 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style B4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style B6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style B5 fill:#FFF,stroke:#C62828,color:#C62828
+  style IOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+</pre></div></div></div>
+
+<div class="milestone green"><h4>IOI SUBMITTED — Invited to Second Round / Management Meetings</h4></div>
+
+<!-- PART A Phase 3: Management and LOI -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#B71C1C">3</div>
+<h2>Phase 3: Management Meetings and LOI</h2>
+<span class="timing">2-6 Weeks</span>
+<span class="badge" style="background:#FFEBEE;color:#B71C1C">10 TASKS</span>
+</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  C1["Deal Team: Attend management presentations"]
+  C2["Deal Team: Log Q and A, assess management"]
+  C3["Deal Team: Receive VDR access, initial review"]
+  C4["Deal Team: Prepare DDRL and diligence roadmap"]
+  C5["Deal Team: Retain advisors - QoE, Legal, Tax, Insurance, Env"]
+  C6["Deal Team: Evolve Mini Model into Preliminary UW Model"]
+  C7["Deal Team: Draft LOI - EV $320M, equity $119M"]
+  C8{"IC GATE 2: Approve LOI?"}
+  C9["Submit LOI to Meridian Capital"]
+  LOI(["LOI SIGNED - Exclusivity Oct 2025"])
+  PASS["Withdraw"]
+  C1 --> C2
+  C1 --> C3
+  C2 --> C4
+  C3 --> C4
+  C4 --> C5
+  C4 --> C6
+  C5 --> C7
+  C6 --> C7
+  C7 --> C8
+  C8 -- No --> PASS
+  C8 -- Approved --> C9 --> LOI
+  style C1 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style C2 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style C3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style C4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style C5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style C6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style C7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style C9 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style C8 fill:#FFF,stroke:#C62828,color:#C62828
+  style LOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+</pre></div></div></div>
+
+<div class="milestone green"><h4>LOI SIGNED — Exclusivity Granted — Confirmatory DD Commences October 2025</h4></div>
+
+<!-- PART A Phase 4: Due Diligence -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#0D47A1">4</div>
+<h2>Phase 4: Confirmatory Due Diligence</h2>
+<span class="timing">4-12 Weeks Post-LOI</span>
+<span class="badge" style="background:#E3F2FD;color:#0D47A1">18 TASKS &middot; 6 WORKSTREAMS</span>
+</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  START(["LOI Signed - Exclusivity Active"])
+  subgraph FIN["Financial and QoE -- Greenbrook Advisory"]
+    DF1["Analyze 3yr audited financials plus interim"]
+    DF2["Validate EBITDA $30.5M, rev recognition"]
+    DF3["Deliver QoE Report - Nov 2025"]
+  end
+  subgraph LEG["Legal -- Crawford Sterling LLP"]
+    DL1["Review material contracts, MSAs, CoC"]
+    DL2["Review litigation, regulatory, IP"]
+    DL3["Analyze consent requirements"]
+    DL4["Deliver Legal DD Memo - Dec 2025"]
+  end
+  subgraph TAX["Tax -- Whitmore and Partners"]
+    DT1["Analyze returns, provisions, structuring"]
+    DT2["Deliver Tax DD Report"]
+  end
+  subgraph INS["Insurance -- Lakewood Risk"]
+    DI1["Review policies, EMR 0.92, TRIR 2.8"]
+    DI2["Deliver Insurance Assessment"]
+  end
+  subgraph ENV["Env -- Clearwater"]
+    DE1["Phase I ESAs, permits, hazmat"]
+    DE2["Deliver Environmental Report"]
+  end
+  subgraph COM["Commercial -- Deal Team"]
+    DC1["Deep-dive VDR: 234 documents"]
+    DC2["Customer reference calls - Top 10"]
+    DC3["Site visits - Dallas HQ plus branches"]
+    DC4["Competitive analysis and market data"]
+  end
+  DD_DONE(["All DD Workstreams Complete"])
+  START --> DF1
+  START --> DL1
+  START --> DT1
+  START --> DI1
+  START --> DE1
+  START --> DC1
+  DF1 --> DF2 --> DF3
+  DL1 --> DL2 --> DL3 --> DL4
+  DT1 --> DT2
+  DI1 --> DI2
+  DE1 --> DE2
+  DC1 --> DC2
+  DC1 --> DC3
+  DC1 --> DC4
+  DF3 --> DD_DONE
+  DL4 --> DD_DONE
+  DT2 --> DD_DONE
+  DI2 --> DD_DONE
+  DE2 --> DD_DONE
+  DC4 --> DD_DONE
+  style DF1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DF2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DF3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DL1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DL2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DL3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DL4 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DT1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DT2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DI1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DI2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DE1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DE2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style DC1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style DC2 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style DC3 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style DC4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style START fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style DD_DONE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style FIN fill:none,stroke:#42A5F5,stroke-width:2
+  style LEG fill:none,stroke:#42A5F5,stroke-width:2
+  style TAX fill:none,stroke:#42A5F5,stroke-width:2
+  style INS fill:none,stroke:#42A5F5,stroke-width:2
+  style ENV fill:none,stroke:#42A5F5,stroke-width:2
+  style COM fill:none,stroke:#FF9800,stroke-width:2
+</pre></div></div></div>
+
+<!-- PART A Phase 5: Underwriting -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#1B5E20">5</div>
+<h2>Phase 5: Underwriting, Valuation and Financing</h2>
+<span class="timing">4-12 Weeks (parallel with Phase 4)</span>
+<span class="badge" style="background:#E8F5E9;color:#1B5E20">14 TASKS &middot; 3 WORKSTREAMS</span>
+</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  QOE(["QoE Report from Phase 4"])
+  DD_DATA(["Commercial DD Data"])
+  PRELIM(["Prelim UW Model from Phase 3"])
+  subgraph MODEL["LBO Model and Valuation"]
+    E1["Build Full UW LBO Model - 3-stmt, S and U, debt sched"]
+    E2["S and U: TLA $100M, TLB $50M, Mezz $30M, Eq $119M"]
+    E3["Debt Schedule: SOFR spreads, amort, leverage 5.9x to 1.9x"]
+    E4["Returns: Base 35.2% IRR 4.2x, Down 31.6%, Up 44.4%"]
+    E5["Sensitivity: 6x6 IRR and MOIC matrices"]
+    E6["EBITDA Bridge: LTM $30.5M to $92.4M"]
+    E7["Comps: 7 public companies, median 10.9x"]
+    E8["Precedent Transactions: PE deal multiples"]
+    E9["DCF Cross-Check: WACC, terminal value"]
+  end
+  subgraph DEBT["Financing"]
+    E10["Engage lender group: First National, Pacific Coast, Ridgeline"]
+    E11["Lender credit diligence and committee"]
+    E12["Commitment letters: TLA $100M, TLB $50M, Rev $30M, Mezz $30M"]
+  end
+  subgraph VCP["Value Creation"]
+    E13["VCP: Organic 6-8%, MA 8-12 tuck-ins, Margin +190-270bps"]
+    E14["Post-Close Cap Table: SRCP 65% Class A, Mgmt 17% Class B"]
+  end
+  READY(["Model Locked and Financing Committed"])
+  QOE --> E1
+  DD_DATA --> E1
+  PRELIM --> E1
+  E1 --> E2
+  E1 --> E3
+  E1 --> E4 --> E5
+  E1 --> E6
+  E1 --> E7
+  E1 --> E8
+  E1 --> E9
+  E1 --> E10 --> E11 --> E12
+  DD_DATA --> E13
+  E1 --> E13
+  E1 --> E14
+  E5 --> READY
+  E12 --> READY
+  E13 --> READY
+  style E1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style E2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E7 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E9 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style E10 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style E11 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style E12 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style E13 fill:#E65100,stroke:#FF9800,color:#FFF
+  style E14 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style QOE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style DD_DATA fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style PRELIM fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style READY fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style MODEL fill:none,stroke:#4CAF50,stroke-width:2
+  style DEBT fill:none,stroke:#EF5350,stroke-width:2
+  style VCP fill:none,stroke:#FF9800,stroke-width:2
+</pre></div></div></div>
+
+<div class="milestone green"><h4>FINANCING COMMITTED and MODEL LOCKED — Ready for Final IC Memo Jan 2026</h4></div>
+
+<!-- PART A Phase 6: IC Memo Construction -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#E65100">6</div>
+<h2>Phase 6: Final IC Memo Construction</h2>
+<span class="timing">2-4 Weeks</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">18 TASKS &middot; 12 SECTIONS</span>
+</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  DD_IN(["DD Reports from Phase 4"])
+  MODEL_IN(["LBO Model from Phase 5"])
+  subgraph DRAFT["IC Memo Sections"]
+    F1["Sec 1: Exec Summary - synthesizes all"]
+    F2["Sec 2: Company Overview"]
+    F3["Sec 3: Market Overview"]
+    F4["Sec 4: Financial Overview"]
+    F5["Sec 5: Investment Thesis"]
+    F6["Sec 6: Value Creation Plan"]
+    F7["Sec 7: DD Summary"]
+    F8["Sec 8: Transaction Structure"]
+    F9["Sec 9: Returns Analysis"]
+    F10["Sec 10: Risk Factors"]
+    F11["Sec 11: Governance"]
+    F12["Sec 12: IC Recommendation"]
+  end
+  subgraph SUPPORT["Supporting Exhibits"]
+    FS1["Risk Factor Matrix"]
+    FS2["Governance Framework"]
+    FS3["KPI Dashboard"]
+    FS4["Competitive Benchmarking"]
+    FS5["Third-Party Reports Summary"]
+    FS6["Appendices A through O"]
+  end
+  REVIEW["Senior Review: VP, Principal, Partner"]
+  IC{"IC GATE 3: Authorize SPA?"}
+  APPROVED(["IC APPROVED Feb 2026"])
+  REVISE["Revise"]
+  KILL["Kill Deal"]
+  DD_IN --> F7
+  DD_IN --> F10
+  MODEL_IN --> F4
+  MODEL_IN --> F8
+  MODEL_IN --> F9
+  F5 --> F1
+  F4 --> F1
+  F9 --> F1
+  FS1 --> F10
+  FS2 --> F11
+  FS3 --> F4
+  FS4 --> F3
+  FS5 --> F7
+  FS6 --> F12
+  F1 --> REVIEW
+  F2 --> REVIEW
+  F3 --> REVIEW
+  F5 --> REVIEW
+  F6 --> REVIEW
+  F7 --> REVIEW
+  F8 --> REVIEW
+  F9 --> REVIEW
+  F10 --> REVIEW
+  F11 --> REVIEW
+  F12 --> REVIEW
+  REVIEW --> IC
+  IC -- Conditional --> REVISE --> REVIEW
+  IC -- Reject --> KILL
+  IC -- APPROVED --> APPROVED
+  style F2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style F3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style F4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style F8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style F9 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style F1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style F5 fill:#E65100,stroke:#FF9800,color:#FFF
+  style F6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style F7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style F10 fill:#E65100,stroke:#FF9800,color:#FFF
+  style F11 fill:#E65100,stroke:#FF9800,color:#FFF
+  style F12 fill:#E65100,stroke:#FF9800,color:#FFF
+  style FS1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style FS2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style FS3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style FS4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style FS5 fill:#E65100,stroke:#FF9800,color:#FFF
+  style FS6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style REVIEW fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style IC fill:#FFF,stroke:#C62828,stroke-width:3,color:#C62828
+  style APPROVED fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style REVISE fill:#FFF3E0,stroke:#FF9800,color:#E65100
+  style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style DD_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style MODEL_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style DRAFT fill:none,stroke:#4CAF50,stroke-width:2
+  style SUPPORT fill:none,stroke:#9E9E9E,stroke-width:1
+</pre></div></div></div>
+
+<div class="milestone green"><h4>IC APPROVED — Authorized to Execute Definitive Documentation Feb 2026</h4></div>
+
+<!-- PART A Phase 7: Close -->
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#B71C1C">7</div>
+<h2>Phase 7: Definitive Documentation and Close</h2>
+<span class="timing">4-8 Weeks</span>
+<span class="badge" style="background:#FFEBEE;color:#B71C1C">11 TASKS</span>
+</div>
+<div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  IC_IN(["IC Approved"])
+  subgraph LEGAL["Legal"]
+    G1["Negotiate and execute SPA"]
+    G2["Finalize disclosure schedules"]
+    G3["Escrow agreement"]
+  end
+  subgraph FINANCE["Financing"]
+    G4["Senior Credit Agreement: $100M TLA plus $50M TLB"]
+    G5["Mezzanine Agreement: $30M, 12%/2%PIK"]
+    G6["Revolver $30M, pledge agreements"]
+  end
+  subgraph MGMT["Management"]
+    G7["Rollover agreements: $25M into Class B"]
+    G8["Employment agreements: CEO, CFO, COO, MIP"]
+  end
+  subgraph REG["Regulatory"]
+    G9["HSR antitrust filing"]
+    G10["Third-party consents: landlords, customers, OEMs"]
+  end
+  G11["Capital call memo to LPs: $119M"]
+  G12["Closing checklist and funds flow"]
+  CHECK{"All conditions satisfied?"}
+  RESOLVE["Resolve open items"]
+  CLOSE(["CLOSES April 15, 2026"])
+  IC_IN --> G1
+  IC_IN --> G4
+  IC_IN --> G7
+  IC_IN --> G9
+  IC_IN --> G11
+  G1 --> G2 --> G3
+  G4 --> G5 --> G6
+  G7 --> G8
+  G9 --> G10
+  G3 --> G12
+  G6 --> G12
+  G8 --> G12
+  G10 --> CHECK
+  G11 --> G12
+  G12 --> CHECK
+  CHECK -- No --> RESOLVE --> CHECK
+  CHECK -- Yes --> CLOSE
+  style G1 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G2 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G3 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G6 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G7 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G8 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G9 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G10 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style G11 fill:#E65100,stroke:#FF9800,color:#FFF
+  style G12 fill:#E65100,stroke:#FF9800,color:#FFF
+  style IC_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style CHECK fill:#FFF,stroke:#C62828,color:#C62828
+  style RESOLVE fill:#FFF3E0,stroke:#FF9800,color:#E65100
+  style CLOSE fill:#1A237E,stroke:#5C6BC0,color:#FFF
+  style LEGAL fill:none,stroke:#EF5350,stroke-width:2
+  style FINANCE fill:none,stroke:#EF5350,stroke-width:2
+  style MGMT fill:none,stroke:#EF5350,stroke-width:2
+  style REG fill:none,stroke:#EF5350,stroke-width:2
+</pre></div></div></div>
+
+<div class="milestone navy-m">
+<h4>TRANSACTION CLOSES — April 15, 2026</h4>
+<p>$320M EV &middot; $119M SRCP Equity (65%) &middot; $180M Debt (5.9x) &middot; $25M Mgmt Rollover (17%)</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!-- TRANSITION: PART A → PART B                                      -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+
+<div style="text-align:center;margin:48px 0 16px;padding:32px;background:linear-gradient(135deg,#1A237E,#283593);border-radius:16px;border:2px solid #5C6BC0">
+<div style="font-size:13px;color:#C5CAE9;letter-spacing:2px;font-weight:600">ZOOMING IN ON PHASE 6</div>
+<div style="font-size:24px;color:white;font-weight:800;margin-top:8px">Part B: IC Memo Build Guide</div>
+<div style="font-size:14px;color:#9FA8DA;margin-top:8px">The 10 internal phases of constructing the final IC Memo document</div>
+<div style="font-size:12px;color:#7986CB;margin-top:4px">69 granular steps &middot; each individually executable by LLM &middot; RACI matrix by team</div>
+</div>
+
+nd:#BDBDBD"></div>I = Informed</div>
+</div>
+<div class="section-title">PART B: IC Memo Build Process — 10 Phases, Step-by-Step</div>
+<div class="section-sub">Each step is scoped for individual LLM execution with defined inputs, outputs, and source documents<br>This is the detailed breakdown of Phase 6 from Part A above</div>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#E65100">1</div>
