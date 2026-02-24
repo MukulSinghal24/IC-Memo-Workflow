@@ -182,40 +182,38 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 <div class="badge" style="background:#EDE7F6;color:#4527A0">7 PHASES &middot; 3 IC GATES</div>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  subgraph ROW1["Deal Origination"]
+flowchart LR
+  subgraph ROW1[" "]
     direction LR
-    P1["1: Origination"]
-    G0{"Screen?"}
-    P2["2: CIM Review and IOI"]
+    P1(["1 Origination"])
+    G0{"Screen Fit?"}
+    P2(["2 CIM and IOI"])
     G1{"IC Gate 1"}
-    P3["3: Mgmt Meetings and LOI"]
+    P3(["3 Mgmt and LOI"])
     G2{"IC Gate 2"}
   end
-  subgraph ROW2["Execution and Close"]
+  subgraph ROW2[" "]
     direction LR
-    LOI(["LOI Signed - Exclusivity"])
-    P4["4: Due Diligence"]
-    P5["5: Underwriting"]
-    P6["6: IC Memo Build"]
+    EX(["Exclusivity"])
+    P4(["4 Due Diligence"])
+    P5(["5 Underwriting"])
+    P6(["6 IC Memo"])
     G3{"IC Gate 3"}
-    P7["7: Docs and Close"]
-    DONE(["CLOSES Apr 15 2026"])
+    P7(["7 Docs and Close"])
+    DONE(["CLOSED"])
   end
   P1 --> G0
-  G0 -- No --> PASS1["Pass"]
+  G0 -- Pass --> X1["X"]
   G0 -- Yes --> P2 --> G1
-  G1 -- No --> PASS2["Decline"]
+  G1 -- Decline --> X2["X"]
   G1 -- Yes --> P3 --> G2
-  G2 -- No --> PASS3["Withdraw"]
-  G2 -- Yes --> LOI
-  LOI --> P4
-  LOI --> P5
+  G2 -- Withdraw --> X3["X"]
+  G2 -- Yes --> EX
+  EX --> P4 & P5
   P4 --> P6
   P5 --> P6
   P6 --> G3
   G3 -- Revise --> P6
-  G3 -- Reject --> KILL["Kill"]
   G3 -- Approved --> P7 --> DONE
   style P1 fill:#E65100,stroke:#FF9800,color:#FFF
   style P2 fill:#E65100,stroke:#FF9800,color:#FFF
@@ -224,18 +222,17 @@ flowchart TB
   style P5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style P6 fill:#E65100,stroke:#FF9800,color:#FFF
   style P7 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style EX fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style DONE fill:#1A237E,stroke:#5C6BC0,color:#FFF
   style G0 fill:#FFF,stroke:#C62828,color:#C62828
   style G1 fill:#FFF,stroke:#C62828,color:#C62828
   style G2 fill:#FFF,stroke:#C62828,color:#C62828
   style G3 fill:#FFF,stroke:#C62828,color:#C62828
-  style LOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DONE fill:#1A237E,stroke:#5C6BC0,color:#FFF
-  style PASS1 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style PASS2 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style PASS3 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style ROW1 fill:none,stroke:#9E9E9E,stroke-width:1,stroke-dasharray:5
-  style ROW2 fill:none,stroke:#9E9E9E,stroke-width:1,stroke-dasharray:5
+  style X1 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style X2 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style X3 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style ROW1 fill:none,stroke:none
+  style ROW2 fill:none,stroke:none
 </pre></div></div></div>
 
 <!-- PART A Phase 1: Origination -->
@@ -247,24 +244,20 @@ flowchart TB
 <span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS</span>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  A1["Sell-Side: Distribute teaser to sponsor universe"]
-  A2["Deal Team: Evaluate teaser against fund mandate"]
-  A3{"Mandate Fit?"}
-  A4["Deal Team: Prepare and execute NDA"]
-  A5["Deal Team: Draft Initial Screening Memo"]
-  PASS["Pass on opportunity"]
-  NEXT(["To Phase 2"])
-  A1 --> A2 --> A3
-  A3 -- No --> PASS
-  A3 -- Yes --> A4 --> A5 --> NEXT
-  style A1 fill:#B71C1C,stroke:#EF5350,color:#FFF
+flowchart LR
+  A1["Receive Teaser from Sell-Side"] --> A2["Evaluate Mandate Fit"]
+  A2 --> A3{"Screen Pass?"}
+  A3 -- No --> A4["Decline"]
+  A3 -- Yes --> A5["Execute NDA"]
+  A5 --> A6["Receive CIM"]
+  A6 --> A7["Draft Initial Screening Memo"]
+  style A1 fill:#E65100,stroke:#FF9800,color:#FFF
   style A2 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style A4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style A5 fill:#E65100,stroke:#FF9800,color:#FFF
   style A3 fill:#FFF,stroke:#C62828,color:#C62828
-  style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style NEXT fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style A4 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style A5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style A6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style A7 fill:#E65100,stroke:#FF9800,color:#FFF
 </pre></div></div></div>
 
 <!-- PART A Phase 2: CIM and IOI -->
@@ -276,33 +269,37 @@ flowchart TB
 <span class="badge" style="background:#FFF3E0;color:#E65100">7 TASKS</span>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  B0(["Receive CIM and Process Letter"])
-  B1["Deal Team: Deep-dive CIM - business, financials, market, risks"]
-  B2["Deal Team: Build Mini LBO Model from CIM data"]
-  B3["Deal Team: Solicit indicative financing terms"]
-  B4["Deal Team: Draft Initial IC Memo (5-15 pages)"]
-  B5{"IC GATE 1: Approve IOI?"}
-  B6["Deal Team: Draft and submit IOI"]
-  IOI(["IOI SUBMITTED"])
-  PASS["Decline to bid"]
-  B0 --> B1
-  B1 --> B2
-  B1 --> B3
-  B2 --> B4
-  B3 --> B4
+flowchart LR
+  subgraph ROW1[" "]
+    direction LR
+    B1["Deep-Dive CIM Analysis"] --> B2["Build Mini LBO Model"]
+    B2 --> B3["Solicit Preliminary Financing"]
+    B3 --> B4["Draft Initial IC Memo"]
+  end
+  subgraph ROW2[" "]
+    direction LR
+    B5{"IC GATE 1: Proceed?"}
+    B6["Submit IOI to Sell-Side"]
+    B7{"IOI Accepted?"}
+    B8["Advance to Mgmt Meetings"]
+  end
   B4 --> B5
-  B5 -- No --> PASS
-  B5 -- Approved --> B6 --> IOI
-  style B0 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  B5 -- No --> PASS["Decline"]
+  B5 -- Yes --> B6 --> B7
+  B7 -- No --> OUT["Process Ends"]
+  B7 -- Yes --> B8
   style B1 fill:#E65100,stroke:#FF9800,color:#FFF
   style B2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style B3 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style B4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style B6 fill:#E65100,stroke:#FF9800,color:#FFF
   style B5 fill:#FFF,stroke:#C62828,color:#C62828
-  style IOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style B6 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style B7 fill:#FFF,stroke:#C62828,color:#C62828
+  style B8 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style OUT fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style ROW1 fill:none,stroke:none
+  style ROW2 fill:none,stroke:none
 </pre></div></div></div>
 
 <div class="milestone green"><h4>IOI SUBMITTED — Invited to Second Round / Management Meetings</h4></div>
@@ -316,40 +313,41 @@ flowchart TB
 <span class="badge" style="background:#FFEBEE;color:#B71C1C">10 TASKS</span>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  C1["Deal Team: Attend management presentations"]
-  C2["Deal Team: Log Q and A, assess management"]
-  C3["Deal Team: Receive VDR access, initial review"]
-  C4["Deal Team: Prepare DDRL and diligence roadmap"]
-  C5["Deal Team: Retain advisors - QoE, Legal, Tax, Insurance, Env"]
-  C6["Deal Team: Evolve Mini Model into Preliminary UW Model"]
-  C7["Deal Team: Draft LOI - EV $320M, equity $119M"]
-  C8{"IC GATE 2: Approve LOI?"}
-  C9["Submit LOI to Meridian Capital"]
-  LOI(["LOI SIGNED - Exclusivity Oct 2025"])
-  PASS["Withdraw"]
-  C1 --> C2
-  C1 --> C3
-  C2 --> C4
-  C3 --> C4
-  C4 --> C5
-  C4 --> C6
-  C5 --> C7
-  C6 --> C7
-  C7 --> C8
-  C8 -- No --> PASS
-  C8 -- Approved --> C9 --> LOI
+flowchart LR
+  subgraph ROW1[" "]
+    direction LR
+    C1["Management Presentations"] --> C2["VDR Access Granted"]
+    C2 --> C3["Prepare DDRL"]
+    C3 --> C4["Retain Third-Party Advisors"]
+    C4 --> C5["Build Preliminary UW Model"]
+  end
+  subgraph ROW2[" "]
+    direction LR
+    C6["Draft LOI with Key Terms"]
+    C7{"IC GATE 2: Submit LOI?"}
+    C8["Submit Binding LOI"]
+    C9{"LOI Accepted?"}
+    C10(["Exclusivity Granted"])
+  end
+  C5 --> C6 --> C7
+  C7 -- No --> PASS["Withdraw"]
+  C7 -- Yes --> C8 --> C9
+  C9 -- No --> OUT["Counter or Exit"]
+  C9 -- Yes --> C10
   style C1 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C2 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style C4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style C5 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style C7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style C9 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C8 fill:#FFF,stroke:#C62828,color:#C62828
-  style LOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style C2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style C3 fill:#E65100,stroke:#FF9800,color:#FFF
+  style C4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style C5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style C6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style C7 fill:#FFF,stroke:#C62828,color:#C62828
+  style C8 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style C9 fill:#FFF,stroke:#C62828,color:#C62828
+  style C10 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style OUT fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style ROW1 fill:none,stroke:none
+  style ROW2 fill:none,stroke:none
 </pre></div></div></div>
 
 <div class="milestone green"><h4>LOI SIGNED — Exclusivity Granted — Confirmatory DD Commences October 2025</h4></div>
@@ -363,60 +361,46 @@ flowchart TB
 <span class="badge" style="background:#E3F2FD;color:#0D47A1">18 TASKS &middot; 6 WORKSTREAMS</span>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  START(["LOI Signed - Exclusivity Active"])
-  START --> FIN_START
-  START --> LEG_START
-  START --> OTHER_START
-  START --> COM_START
-  subgraph FIN["Financial QoE - Greenbrook"]
-    FIN_START["Analyze 3yr audited plus interim"]
-    FIN_MID["Validate EBITDA $30.5M"]
-    FIN_END["Deliver QoE Report Nov 2025"]
+flowchart LR
+  START(["Exclusivity Active"])
+  START --> FIN & LEG & TAX & COM
+  subgraph FIN["Financial QoE"]
+    direction LR
+    F1["Analyze 3yr Audited + Interim"] --> F2["Validate EBITDA $30.5M"] --> F3["Deliver QoE Report"]
   end
-  subgraph LEG["Legal - Crawford Sterling"]
-    LEG_START["Review contracts, MSAs, CoC"]
-    LEG_MID["Litigation, regulatory, IP review"]
-    LEG_END["Deliver Legal DD Memo Dec 2025"]
+  subgraph LEG["Legal DD"]
+    direction LR
+    L1["Review Contracts and MSAs"] --> L2["Litigation and IP Review"] --> L3["Deliver Legal Memo"]
   end
-  subgraph OTHER["Tax, Insurance, Environmental"]
-    OTHER_START["Tax: Whitmore and Partners"]
-    OTHER_INS["Insurance: Lakewood Risk - EMR 0.92"]
-    OTHER_ENV["Environmental: Clearwater"]
+  subgraph TAX["Tax, Insurance, Env"]
+    direction LR
+    T1["Tax: Structure Analysis"] --> T2["Insurance: EMR 0.92"] --> T3["Environmental: Phase I ESA"]
   end
-  subgraph COM["Commercial - Deal Team"]
-    COM_START["Deep-dive VDR: 234 documents"]
-    COM_CUST["Customer reference calls Top 10"]
-    COM_SITE["Site visits Dallas HQ plus branches"]
-    COM_COMP["Competitive analysis and market"]
+  subgraph COM["Commercial DD"]
+    direction LR
+    D1["Deep-Dive VDR 234 Docs"] --> D2["Customer Calls Top 10"]
+    D1 --> D3["Site Visits"]
+    D1 --> D4["Competitive Analysis"]
   end
-  FIN_START --> FIN_MID --> FIN_END
-  LEG_START --> LEG_MID --> LEG_END
-  COM_START --> COM_CUST
-  COM_START --> COM_SITE
-  COM_START --> COM_COMP
-  FIN_END --> DONE(["All DD Complete"])
-  LEG_END --> DONE
-  OTHER_ENV --> DONE
-  COM_COMP --> DONE
-  style FIN_START fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style FIN_MID fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style FIN_END fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style LEG_START fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style LEG_MID fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style LEG_END fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style OTHER_START fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style OTHER_INS fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style OTHER_ENV fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style COM_START fill:#E65100,stroke:#FF9800,color:#FFF
-  style COM_CUST fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style COM_SITE fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style COM_COMP fill:#E65100,stroke:#FF9800,color:#FFF
+  F3 & L3 & T3 & D4 --> DONE(["All DD Complete"])
+  style F1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style F2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style F3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style L1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style L2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style L3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style T1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style T2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style T3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style D1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style D2 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style D3 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style D4 fill:#E65100,stroke:#FF9800,color:#FFF
   style START fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style DONE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style FIN fill:none,stroke:#42A5F5,stroke-width:2
   style LEG fill:none,stroke:#42A5F5,stroke-width:2
-  style OTHER fill:none,stroke:#42A5F5,stroke-width:2
+  style TAX fill:none,stroke:#42A5F5,stroke-width:2
   style COM fill:none,stroke:#FF9800,stroke-width:2
 </pre></div></div></div>
 
@@ -429,53 +413,44 @@ flowchart TB
 <span class="badge" style="background:#E8F5E9;color:#1B5E20">14 TASKS &middot; 3 WORKSTREAMS</span>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  subgraph INPUTS["Inputs"]
-    direction LR
-    QOE(["QoE Report"])
-    DD_DATA(["Commercial DD"])
-    PRELIM(["Prelim Model"])
+flowchart LR
+  subgraph INPUTS[" "]
+    direction TB
+    I1(["QoE Report"])
+    I2(["Commercial DD"])
+    I3(["Prelim Model"])
   end
-  QOE --> E1
-  DD_DATA --> E1
-  PRELIM --> E1
-  E1["Build Full UW LBO Model"]
-  subgraph VALUATION["Valuation Outputs"]
-    direction LR
-    E2["S and U Table"]
+  I1 & I2 & I3 --> E1["Build Full UW LBO Model"]
+  subgraph MODEL["Model Outputs"]
+    direction TB
+    E2["Sources and Uses"]
     E3["Debt Schedule 5.9x to 1.9x"]
-    E4["Returns: 35% IRR, 4.2x MOIC"]
+    E4["Returns: 35% IRR 4.2x"]
     E5["Sensitivity Matrices"]
+    E6["EBITDA Bridge"]
   end
-  subgraph ANALYSIS["Supporting Analysis"]
-    direction LR
-    E6["EBITDA Bridge $30.5M to $92.4M"]
-    E7["Comps: 7 public cos"]
+  subgraph VALCOMP["Valuation"]
+    direction TB
+    E7["Comps: 7 Public Cos"]
     E8["Precedent Transactions"]
     E9["DCF Cross-Check"]
   end
-  subgraph FINANCING["Financing"]
-    E10["Engage lender group"]
-    E11["Lender credit diligence"]
-    E12["Commitments: TLA $100M, TLB $50M, Mezz $30M"]
+  subgraph FINCMT["Financing"]
+    direction TB
+    E10["Engage Lender Group"]
+    E11["Credit Diligence"]
+    E12["Commitment Letters"]
   end
   subgraph VCP_S["Value Creation"]
-    direction LR
-    E13["VCP: Organic plus MA plus Margin"]
-    E14["Cap Table: SRCP 65%, Mgmt 17%"]
+    direction TB
+    E13["Organic + MA + Margin"]
+    E14["Cap Table SRCP 65%"]
   end
-  E1 --> E2
-  E1 --> E3
-  E1 --> E4 --> E5
-  E1 --> E6
-  E1 --> E7
-  E1 --> E8
-  E1 --> E9
+  E1 --> E2 & E3 & E4 & E5 & E6
+  E1 --> E7 & E8 & E9
   E1 --> E10 --> E11 --> E12
-  E1 --> E13
-  E1 --> E14
-  E5 --> READY(["Model Locked and Financing Committed"])
-  E12 --> READY
+  E1 --> E13 & E14
+  E5 & E12 --> READY(["Model Locked"])
   style E1 fill:#E65100,stroke:#FF9800,color:#FFF
   style E2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style E3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
@@ -490,14 +465,14 @@ flowchart TB
   style E12 fill:#0D47A1,stroke:#42A5F5,color:#FFF
   style E13 fill:#E65100,stroke:#FF9800,color:#FFF
   style E14 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style QOE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DD_DATA fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style PRELIM fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style I1 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style I2 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style I3 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style READY fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style INPUTS fill:none,stroke:#9E9E9E,stroke-width:1,stroke-dasharray:5
-  style VALUATION fill:none,stroke:#4CAF50,stroke-width:2
-  style ANALYSIS fill:none,stroke:#4CAF50,stroke-width:2
-  style FINANCING fill:none,stroke:#EF5350,stroke-width:2
+  style INPUTS fill:none,stroke:none
+  style MODEL fill:none,stroke:#4CAF50,stroke-width:2
+  style VALCOMP fill:none,stroke:#4CAF50,stroke-width:2
+  style FINCMT fill:none,stroke:#EF5350,stroke-width:2
   style VCP_S fill:none,stroke:#FF9800,stroke-width:2
 </pre></div></div></div>
 
@@ -512,57 +487,39 @@ flowchart TB
 <span class="badge" style="background:#FFF3E0;color:#E65100">18 TASKS &middot; 12 SECTIONS</span>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  DD_IN(["DD Reports from Phase 4"])
-  MODEL_IN(["LBO Model from Phase 5"])
-  DD_IN --> F7
-  DD_IN --> F10
-  MODEL_IN --> F4
-  MODEL_IN --> F8
-  MODEL_IN --> F9
-  subgraph SECTIONS["12 IC Memo Sections"]
-    F1["1: Executive Summary"]
-    F2["2: Company Overview"]
-    F3["3: Market Overview"]
-    F4["4: Financial Overview"]
-    F5["5: Investment Thesis"]
-    F6["6: Value Creation Plan"]
-    F7["7: DD Summary"]
-    F8["8: Transaction Structure"]
-    F9["9: Returns Analysis"]
-    F10["10: Risk Factors"]
-    F11["11: Governance"]
-    F12["12: IC Recommendation"]
+flowchart LR
+  DD(["DD Reports"]) --> SEC
+  MDL(["LBO Model"]) --> SEC
+  subgraph SEC["12 IC Memo Sections"]
+    direction TB
+    F1["1 Exec Summary"]
+    F2["2 Company"]
+    F3["3 Market"]
+    F4["4 Financials"]
+    F5["5 Thesis"]
+    F6["6 Value Creation"]
+    F7["7 DD Summary"]
+    F8["8 Structure"]
+    F9["9 Returns"]
+    F10["10 Risks"]
+    F11["11 Governance"]
+    F12["12 Recommendation"]
   end
-  subgraph EXHIBITS["Supporting Exhibits"]
-    direction LR
-    FS1["Risk Matrix"]
-    FS2["Governance"]
-    FS3["KPI Dash"]
-    FS4["Comp Bench"]
-    FS5["Reports Summary"]
-    FS6["Appendices A-O"]
+  subgraph EXH["Exhibits"]
+    direction TB
+    X1["Risk Matrix"]
+    X2["KPI Dashboard"]
+    X3["Comp Benchmarking"]
+    X4["Appendices A-O"]
   end
-  F5 --> F1
-  F4 --> F1
-  F9 --> F1
-  FS1 --> F10
-  FS3 --> F4
-  FS4 --> F3
-  FS6 --> F12
-  F1 --> REVIEW["Senior Review: VP, Principal, Partner"]
-  F2 --> REVIEW
-  F3 --> REVIEW
-  F5 --> REVIEW
-  F7 --> REVIEW
-  F8 --> REVIEW
-  F9 --> REVIEW
-  F10 --> REVIEW
-  F12 --> REVIEW
-  REVIEW --> IC{"IC GATE 3: Authorize SPA?"}
-  IC -- Conditional --> REVISE["Revise"] --> REVIEW
-  IC -- Reject --> KILL["Kill Deal"]
-  IC -- APPROVED --> OK(["IC APPROVED Feb 2026"])
+  SEC --> REV["Senior Review VP, Principal, Partner"]
+  EXH --> REV
+  REV --> IC{"IC GATE 3"}
+  IC -- Revise --> REV
+  IC -- Reject --> KILL["Kill"]
+  IC -- Approved --> OK(["IC APPROVED"])
+  style DD fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style MDL fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style F1 fill:#E65100,stroke:#FF9800,color:#FFF
   style F2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style F3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
@@ -575,21 +532,16 @@ flowchart TB
   style F10 fill:#E65100,stroke:#FF9800,color:#FFF
   style F11 fill:#E65100,stroke:#FF9800,color:#FFF
   style F12 fill:#E65100,stroke:#FF9800,color:#FFF
-  style FS1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style FS2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style FS3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style FS4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style FS5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style FS6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style REVIEW fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style X1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style X2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style X3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style X4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style REV fill:#B71C1C,stroke:#EF5350,color:#FFF
   style IC fill:#FFF,stroke:#C62828,stroke-width:3,color:#C62828
   style OK fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style REVISE fill:#FFF3E0,stroke:#FF9800,color:#E65100
   style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style DD_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style MODEL_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style SECTIONS fill:none,stroke:#4CAF50,stroke-width:2
-  style EXHIBITS fill:none,stroke:#9E9E9E,stroke-width:1
+  style SEC fill:none,stroke:#4CAF50,stroke-width:2
+  style EXH fill:none,stroke:#9E9E9E,stroke-width:1
 </pre></div></div></div>
 
 <div class="milestone green"><h4>IC APPROVED — Authorized to Execute Definitive Documentation Feb 2026</h4></div>
@@ -603,44 +555,30 @@ flowchart TB
 <span class="badge" style="background:#FFEBEE;color:#B71C1C">11 TASKS</span>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart TB
-  IC_IN(["IC Approved"])
-  IC_IN --> G1
-  IC_IN --> G4
-  IC_IN --> G7
-  IC_IN --> G9
-  IC_IN --> G11
-  subgraph LEGAL["Legal Docs"]
-    G1["Negotiate SPA"]
-    G2["Disclosure Schedules"]
-    G3["Escrow Agreement"]
+flowchart LR
+  IC(["IC Approved"])
+  IC --> LEG & FIND & MGMT & REG & CAP
+  subgraph LEG["Legal"]
+    direction LR
+    G1["Negotiate SPA"] --> G2["Disclosure Schedules"] --> G3["Escrow"]
   end
-  subgraph FIN_D["Financing Docs"]
-    G4["Senior Credit: TLA $100M plus TLB $50M"]
-    G5["Mezzanine: $30M 12%/2% PIK"]
-    G6["Revolver $30M, Pledges"]
+  subgraph FIND["Financing"]
+    direction LR
+    G4["Senior Credit TLA + TLB"] --> G5["Mezzanine $30M"] --> G6["Revolver + Pledges"]
   end
-  subgraph MGMT_D["Management"]
-    G7["Rollover: $25M Class B"]
-    G8["Employment: CEO, CFO, COO, MIP"]
+  subgraph MGMT["Management"]
+    direction LR
+    G7["Rollover $25M Class B"] --> G8["Employment and MIP"]
   end
-  subgraph REG_D["Regulatory"]
-    G9["HSR Antitrust Filing"]
-    G10["Third-Party Consents"]
+  subgraph REG["Regulatory"]
+    direction LR
+    G9["HSR Filing"] --> G10["Third-Party Consents"]
   end
-  G11["Capital Call Memo: $119M"]
-  G1 --> G2 --> G3
-  G4 --> G5 --> G6
-  G7 --> G8
-  G9 --> G10
-  G3 --> G12["Closing Checklist and Funds Flow"]
-  G6 --> G12
-  G8 --> G12
-  G10 --> CHECK{"All Conditions Met?"}
-  G11 --> G12
-  G12 --> CHECK
-  CHECK -- No --> RESOLVE["Resolve"] --> CHECK
-  CHECK -- Yes --> CLOSE(["CLOSES April 15, 2026"])
+  CAP["Capital Call $119M"]
+  G3 & G6 & G8 & G10 & CAP --> CK["Closing Checklist"]
+  CK --> CHECK{"All Conditions Met?"}
+  CHECK -- No --> FIX["Resolve"] --> CHECK
+  CHECK -- Yes --> CLOSE(["TRANSACTION CLOSED"])
   style G1 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G2 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G3 fill:#B71C1C,stroke:#EF5350,color:#FFF
@@ -651,16 +589,16 @@ flowchart TB
   style G8 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G9 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G10 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G11 fill:#E65100,stroke:#FF9800,color:#FFF
-  style G12 fill:#E65100,stroke:#FF9800,color:#FFF
-  style IC_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style CAP fill:#E65100,stroke:#FF9800,color:#FFF
+  style CK fill:#E65100,stroke:#FF9800,color:#FFF
+  style IC fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style CHECK fill:#FFF,stroke:#C62828,color:#C62828
-  style RESOLVE fill:#FFF3E0,stroke:#FF9800,color:#E65100
+  style FIX fill:#FFF3E0,stroke:#FF9800,color:#E65100
   style CLOSE fill:#1A237E,stroke:#5C6BC0,color:#FFF
-  style LEGAL fill:none,stroke:#EF5350,stroke-width:2
-  style FIN_D fill:none,stroke:#EF5350,stroke-width:2
-  style MGMT_D fill:none,stroke:#EF5350,stroke-width:2
-  style REG_D fill:none,stroke:#EF5350,stroke-width:2
+  style LEG fill:none,stroke:#EF5350,stroke-width:2
+  style FIND fill:none,stroke:#EF5350,stroke-width:2
+  style MGMT fill:none,stroke:#EF5350,stroke-width:2
+  style REG fill:none,stroke:#EF5350,stroke-width:2
 </pre></div></div></div>
 
 <div class="milestone navy-m">
@@ -694,36 +632,36 @@ nd:#BDBDBD"></div>I = Informed</div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S1_1["1.1: Extract company and deal profile from CIM"]
-  S1_2["1.2: Review Management Presentation (buy-side analysis)"]
-  S1_1 --> S1_2
-  S1_3["1.3: Map corporate structure"]
-  S1_2 --> S1_3
-  S1_4["1.4: Understand process and timeline"]
-  S1_3 --> S1_4
-  S1_5["1.5: Cross-reference KPIs against CIM claims"]
-  S1_4 --> S1_5
-  S1_6["1.6: Review NDA and corporate documents"]
-  S1_5 --> S1_6
-  S1_7["1.7: Draft Transaction Overview section"]
-  S1_6 --> S1_7
-  CP1(["CHECKPOINT 1"])
-  S1_7 --> CP1
-  style S1_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S1_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S1_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S1_4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S1_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S1_6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S1_7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP1 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S1_1["1.1: Extract company and deal profile from CIM"]
+ S1_2["1.2: Review Management Presentation (buy-side analysis)"]
+ S1_1 --> S1_2
+ S1_3["1.3: Map corporate structure"]
+ S1_2 --> S1_3
+ S1_4["1.4: Understand process and timeline"]
+ S1_3 --> S1_4
+ S1_5["1.5: Cross-reference KPIs against CIM claims"]
+ S1_4 --> S1_5
+ S1_6["1.6: Review NDA and corporate documents"]
+ S1_5 --> S1_6
+ S1_7["1.7: Draft Transaction Overview section"]
+ S1_6 --> S1_7
+ CP1(["CHECKPOINT 1"])
+ S1_7 --> CP1
+ style S1_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S1_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S1_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S1_4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S1_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S1_6 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S1_7 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP1 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">1.1</td>
@@ -777,40 +715,40 @@ CHECKPOINT 1: CIM verified, mgmt presentation reviewed, structure mapped, timeli
 <div class="phase-head">
 <div class="num" style="background:#2E7D32">2</div>
 <h2>Step 2: Business Description</h2>
-<span class="team-badge">Business & Operations</span>
+<span class="team-badge">Commercial DD</span>
 <span class="timing">1-2 days</span>
 <span class="badge" style="background:#E8F5E9;color:#2E7D32">6 TASKS &middot; 1G 5Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S2_1["2.1: Build brand/product matrix"]
-  S2_2["2.2: Analyze facilities and unit economics"]
-  S2_1 --> S2_2
-  S2_3["2.3: Map supply chain (top 10 suppliers)"]
-  S2_2 --> S2_3
-  S2_4["2.4: Map distribution network and CoC provisions"]
-  S2_3 --> S2_4
-  S2_5["2.5: Review locations and QC procedures"]
-  S2_4 --> S2_5
-  S2_6["2.6: Draft Business Description section (4-6 pages)"]
-  S2_5 --> S2_6
-  CP2(["CHECKPOINT 2"])
-  S2_6 --> CP2
-  style S2_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S2_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S2_3 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S2_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S2_5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S2_6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP2 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S2_1["2.1: Build brand/product matrix"]
+ S2_2["2.2: Analyze facilities and unit economics"]
+ S2_1 --> S2_2
+ S2_3["2.3: Map supply chain (top 10 suppliers)"]
+ S2_2 --> S2_3
+ S2_4["2.4: Map distribution network and CoC provisions"]
+ S2_3 --> S2_4
+ S2_5["2.5: Review locations and QC procedures"]
+ S2_4 --> S2_5
+ S2_6["2.6: Draft Business Description section (4-6 pages)"]
+ S2_5 --> S2_6
+ CP2(["CHECKPOINT 2"])
+ S2_6 --> CP2
+ style S2_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S2_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S2_3 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S2_4 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S2_5 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S2_6 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP2 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">2.1</td>
@@ -858,34 +796,34 @@ CHECKPOINT 2: Brands profiled, facilities mapped, supply chain documented<br>
 <div class="phase-head">
 <div class="num" style="background:#2E7D32">3</div>
 <h2>Step 3: Industry & Market Overview</h2>
-<span class="team-badge">Business & Operations</span>
+<span class="team-badge">Commercial DD</span>
 <span class="timing">1 day</span>
 <span class="badge" style="background:#E8F5E9;color:#2E7D32">4 TASKS &middot; 1G 3Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S3_1["3.1: Extract market data (TAM, growth, drivers)"]
-  S3_2["3.2: Analyze competitive landscape (3-5 competitors)"]
-  S3_1 --> S3_2
-  S3_3["3.3: Consumer insights and emerging threats"]
-  S3_2 --> S3_3
-  S3_4["3.4: Draft Industry and Market section (2-3 pages)"]
-  S3_3 --> S3_4
-  CP4(["CHECKPOINT 4"])
-  S3_4 --> CP4
-  style S3_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S3_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S3_3 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S3_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP4 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S3_1["3.1: Extract market data (TAM, growth, drivers)"]
+ S3_2["3.2: Analyze competitive landscape (3-5 competitors)"]
+ S3_1 --> S3_2
+ S3_3["3.3: Consumer insights and emerging threats"]
+ S3_2 --> S3_3
+ S3_4["3.4: Draft Industry and Market section (2-3 pages)"]
+ S3_3 --> S3_4
+ CP4(["CHECKPOINT 4"])
+ S3_4 --> CP4
+ style S3_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S3_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S3_3 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S3_4 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP4 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">3.1</td>
@@ -921,46 +859,46 @@ CHECKPOINT 3: Market sized, competitors profiled, threats identified<br>
 <div class="phase-head">
 <div class="num" style="background:#1565C0">4</div>
 <h2>Step 4: Financial Overview</h2>
-<span class="team-badge">Financial Analysis</span>
+<span class="team-badge">Financial DD</span>
 <span class="timing">2-3 days</span>
 <span class="badge" style="background:#E3F2FD;color:#1565C0">8 TASKS &middot; 4G 4Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S4_1["4.1: Compile historical financials (3-5yr IS, BS, CF, LTM)"]
-  S4_2["4.2: Quality of Earnings analysis and EBITDA reconciliation"]
-  S4_1 --> S4_2
-  S4_3["4.3: Revenue bridge and concentration analysis"]
-  S4_2 --> S4_3
-  S4_4["4.4: Validate financial model and build EBITDA bridge"]
-  S4_3 --> S4_4
-  S4_5["4.5: Working capital analysis"]
-  S4_4 --> S4_5
-  S4_6["4.6: Debt and covenant analysis"]
-  S4_5 --> S4_6
-  S4_7["4.7: Capex split (maint vs growth) and accounting review"]
-  S4_6 --> S4_7
-  S4_8["4.8: Compile financial analysis package"]
-  S4_7 --> S4_8
-  CP3(["CHECKPOINT 3"])
-  S4_8 --> CP3
-  style S4_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S4_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S4_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S4_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S4_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S4_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S4_7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S4_8 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP3 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S4_1["4.1: Compile historical financials (3-5yr IS, BS, CF, LTM)"]
+ S4_2["4.2: Quality of Earnings analysis and EBITDA reconciliation"]
+ S4_1 --> S4_2
+ S4_3["4.3: Revenue bridge and concentration analysis"]
+ S4_2 --> S4_3
+ S4_4["4.4: Validate financial model and build EBITDA bridge"]
+ S4_3 --> S4_4
+ S4_5["4.5: Working capital analysis"]
+ S4_4 --> S4_5
+ S4_6["4.6: Debt and covenant analysis"]
+ S4_5 --> S4_6
+ S4_7["4.7: Capex split (maint vs growth) and accounting review"]
+ S4_6 --> S4_7
+ S4_8["4.8: Compile financial analysis package"]
+ S4_7 --> S4_8
+ CP3(["CHECKPOINT 3"])
+ S4_8 --> CP3
+ style S4_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S4_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S4_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S4_4 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S4_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S4_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S4_7 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S4_8 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP3 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">4.1</td>
@@ -1027,30 +965,30 @@ CHECKPOINT 4: Historicals normalized, QoE reconciled, EBITDA bridge built, model
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S5_1["5.1: Distill top 3-5 investment highlights from Phases 2-4"]
-  S5_2["5.2: Define value creation thesis"]
-  S5_1 --> S5_2
-  S5_3["5.3: Build upside case (quantified)"]
-  S5_2 --> S5_3
-  S5_4["5.4: Identify differentiated insights"]
-  S5_3 --> S5_4
-  S5_5["5.5: Draft Investment Thesis section (2-3 pages)"]
-  S5_4 --> S5_5
-  CP5(["CHECKPOINT 5"])
-  S5_5 --> CP5
-  style S5_1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S5_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S5_3 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S5_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S5_5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP5 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S5_1["5.1: Distill top 3-5 investment highlights from Phases 2-4"]
+ S5_2["5.2: Define value creation thesis"]
+ S5_1 --> S5_2
+ S5_3["5.3: Build upside case (quantified)"]
+ S5_2 --> S5_3
+ S5_4["5.4: Identify differentiated insights"]
+ S5_3 --> S5_4
+ S5_5["5.5: Draft Investment Thesis section (2-3 pages)"]
+ S5_4 --> S5_5
+ CP5(["CHECKPOINT 5"])
+ S5_5 --> CP5
+ style S5_1 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S5_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S5_3 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S5_4 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S5_5 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP5 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">5.1</td>
@@ -1099,36 +1037,36 @@ CHECKPOINT 5: Thesis quantified, upside modeled, differentiation clear<br>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S6_1["6.1: Compile all prior-phase flags (RAG, concentration, ops)"]
-  S6_2["6.2: Review litigation, regulatory, environmental and tax risks"]
-  S6_1 --> S6_2
-  S6_3["6.3: Assess customer and revenue durability risks"]
-  S6_2 --> S6_3
-  S6_4["6.4: Assess deal-specific risks (antitrust, CoC, consents)"]
-  S6_3 --> S6_4
-  S6_5["6.5: Build Risk Factor Matrix (min 10-15 risks)"]
-  S6_4 --> S6_5
-  S6_6["6.6: Build sensitivity analysis (-5%, -10% rev, margin)"]
-  S6_5 --> S6_6
-  S6_7["6.7: Draft Key Risks section (3-4 pages)"]
-  S6_6 --> S6_7
-  CP6(["CHECKPOINT 6"])
-  S6_7 --> CP6
-  style S6_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S6_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S6_3 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S6_4 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style S6_5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S6_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S6_7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP6 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S6_1["6.1: Compile all prior-phase flags (RAG, concentration, ops)"]
+ S6_2["6.2: Review litigation, regulatory, environmental and tax risks"]
+ S6_1 --> S6_2
+ S6_3["6.3: Assess customer and revenue durability risks"]
+ S6_2 --> S6_3
+ S6_4["6.4: Assess deal-specific risks (antitrust, CoC, consents)"]
+ S6_3 --> S6_4
+ S6_5["6.5: Build Risk Factor Matrix (min 10-15 risks)"]
+ S6_4 --> S6_5
+ S6_6["6.6: Build sensitivity analysis (-5%, -10% rev, margin)"]
+ S6_5 --> S6_6
+ S6_7["6.7: Draft Key Risks section (3-4 pages)"]
+ S6_6 --> S6_7
+ CP6(["CHECKPOINT 6"])
+ S6_7 --> CP6
+ style S6_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S6_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S6_3 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S6_4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+ style S6_5 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S6_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S6_7 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP6 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">6.1</td>
@@ -1189,48 +1127,48 @@ CHECKPOINT 6: Risk matrix complete, sensitivities run, mitigants defined<br>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S7_1["7.1: Compute fully diluted cap table"]
-  S7_2["7.2: Shareholder base and cost basis analysis (13F data)"]
-  S7_1 --> S7_2
-  S7_3["7.3: Build change-of-control matrix"]
-  S7_2 --> S7_3
-  S7_4["7.4: Build consent and approval tracker"]
-  S7_3 --> S7_4
-  S7_5["7.5: Review Board authorization and deal process"]
-  S7_4 --> S7_5
-  S7_6["7.6: Analyze shareholder agreements"]
-  S7_5 --> S7_6
-  S7_7["7.7: 280G golden parachute analysis"]
-  S7_6 --> S7_7
-  S7_8["7.8: HSR/antitrust assessment"]
-  S7_7 --> S7_8
-  S7_9["7.9: Section 382 NOL limitation analysis"]
-  S7_8 --> S7_9
-  S7_10["7.10: RWI pre-diligence report review"]
-  S7_9 --> S7_10
-  S7_11["7.11: Draft Deal Terms section (2-3 pages)"]
-  S7_10 --> S7_11
-  CP7(["CHECKPOINT 7"])
-  S7_11 --> CP7
-  style S7_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S7_2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S7_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S7_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_8 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_9 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_10 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_11 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP7 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S7_1["7.1: Compute fully diluted cap table"]
+ S7_2["7.2: Shareholder base and cost basis analysis (13F data)"]
+ S7_1 --> S7_2
+ S7_3["7.3: Build change-of-control matrix"]
+ S7_2 --> S7_3
+ S7_4["7.4: Build consent and approval tracker"]
+ S7_3 --> S7_4
+ S7_5["7.5: Review Board authorization and deal process"]
+ S7_4 --> S7_5
+ S7_6["7.6: Analyze shareholder agreements"]
+ S7_5 --> S7_6
+ S7_7["7.7: 280G golden parachute analysis"]
+ S7_6 --> S7_7
+ S7_8["7.8: HSR/antitrust assessment"]
+ S7_7 --> S7_8
+ S7_9["7.9: Section 382 NOL limitation analysis"]
+ S7_8 --> S7_9
+ S7_10["7.10: RWI pre-diligence report review"]
+ S7_9 --> S7_10
+ S7_11["7.11: Draft Deal Terms section (2-3 pages)"]
+ S7_10 --> S7_11
+ CP7(["CHECKPOINT 7"])
+ S7_11 --> CP7
+ style S7_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S7_2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S7_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S7_4 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S7_5 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S7_6 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S7_7 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S7_8 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S7_9 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S7_10 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S7_11 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP7 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">7.1</td>
@@ -1315,36 +1253,36 @@ CHECKPOINT 7: Cap table verified, 13F analyzed, consents tracked, 280G/382 quant
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S8_1["8.1: Categorize and quantify synergies (confidence-weighted)"]
-  S8_2["8.2: Estimate one-time costs to achieve synergies"]
-  S8_1 --> S8_2
-  S8_3["8.3: Review prior acquisition integration performance"]
-  S8_2 --> S8_3
-  S8_4["8.4: Outline integration plan (Day 1, 30/60/90, Year 1)"]
-  S8_3 --> S8_4
-  S8_5["8.5: People and organizational integration assessment"]
-  S8_4 --> S8_5
-  S8_6["8.6: IT systems integration assessment"]
-  S8_5 --> S8_6
-  S8_7["8.7: Draft Value Creation Plans section with waterfall"]
-  S8_6 --> S8_7
-  CP8(["CHECKPOINT 8"])
-  S8_7 --> CP8
-  style S8_1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S8_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S8_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S8_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S8_5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S8_6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S8_7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP8 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S8_1["8.1: Categorize and quantify synergies (confidence-weighted)"]
+ S8_2["8.2: Estimate one-time costs to achieve synergies"]
+ S8_1 --> S8_2
+ S8_3["8.3: Review prior acquisition integration performance"]
+ S8_2 --> S8_3
+ S8_4["8.4: Outline integration plan (Day 1, 30/60/90, Year 1)"]
+ S8_3 --> S8_4
+ S8_5["8.5: People and organizational integration assessment"]
+ S8_4 --> S8_5
+ S8_6["8.6: IT systems integration assessment"]
+ S8_5 --> S8_6
+ S8_7["8.7: Draft Value Creation Plans section with waterfall"]
+ S8_6 --> S8_7
+ CP8(["CHECKPOINT 8"])
+ S8_7 --> CP8
+ style S8_1 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S8_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S8_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S8_4 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S8_5 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S8_6 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S8_7 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP8 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">8.1</td>
@@ -1398,49 +1336,49 @@ CHECKPOINT 8: Value creation plans quantified, integration planned, IT assessed<
 <div class="phase-head">
 <div class="num" style="background:#1565C0">9</div>
 <h2>Step 9: Valuation & Returns</h2>
-<span class="team-badge">Financial Analysis</span>
+<span class="team-badge">Financial DD</span>
 <span class="timing">2-3 days</span>
 <span class="badge" style="background:#E3F2FD;color:#1565C0">9 TASKS &middot; 8G 1Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S9_1["9.1: Comparable companies analysis (5-10 comps)"]
-  S9_2["9.2: Precedent transactions analysis (5-10 deals)"]
-  S9_1 --> S9_2
-  S9_3["9.3: DCF model (WACC build, FCF, terminal value)"]
-  S9_2 --> S9_3
-  S9_4["9.4: Historical stock price and trading analysis (VWAP, premium)"]
-  S9_3 --> S9_4
-  S9_5["9.5: Valuation triangulation and football field"]
-  S9_4 --> S9_5
-  S9_6["9.6: Returns analysis (IRR/MOIC: base/down/up)"]
-  S9_5 --> S9_6
-  S9_7["9.7: Premium analysis (vs precedent premiums)"]
-  S9_6 --> S9_7
-  S9_8["9.8: Sources and uses table"]
-  S9_7 --> S9_8
-  S9_9["9.9: Draft Valuation and Returns section (3-4 pages)"]
-  S9_8 --> S9_9
-  CP9(["CHECKPOINT 9"])
-  S9_9 --> CP9
-  style S9_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_7 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S9_9 fill:#E65100,stroke:#FF9800,color:#FFF
-  style CP9 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S9_1["9.1: Comparable companies analysis (5-10 comps)"]
+ S9_2["9.2: Precedent transactions analysis (5-10 deals)"]
+ S9_1 --> S9_2
+ S9_3["9.3: DCF model (WACC build, FCF, terminal value)"]
+ S9_2 --> S9_3
+ S9_4["9.4: Historical stock price and trading analysis (VWAP, premium)"]
+ S9_3 --> S9_4
+ S9_5["9.5: Valuation triangulation and football field"]
+ S9_4 --> S9_5
+ S9_6["9.6: Returns analysis (IRR/MOIC: base/down/up)"]
+ S9_5 --> S9_6
+ S9_7["9.7: Premium analysis (vs precedent premiums)"]
+ S9_6 --> S9_7
+ S9_8["9.8: Sources and uses table"]
+ S9_7 --> S9_8
+ S9_9["9.9: Draft Valuation and Returns section (3-4 pages)"]
+ S9_8 --> S9_9
+ CP9(["CHECKPOINT 9"])
+ S9_9 --> CP9
+ style S9_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_7 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S9_9 fill:#E65100,stroke:#FF9800,color:#FFF
+ style CP9 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">9.1</td>
@@ -1513,30 +1451,30 @@ CHECKPOINT 9: Valuation triangulated, trading analyzed, returns modeled, S&U bal
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  S10_1["10.1: Draft recommendation (Proceed / Conditions / Do Not Proceed)"]
-  S10_2["10.2: Write Executive Summary (1-2 pages, standalone)"]
-  S10_1 --> S10_2
-  S10_3["10.3: Compile appendix (all exhibits, numbered)"]
-  S10_2 --> S10_3
-  S10_4["10.4: Full document review: consistency, traceability, coherence"]
-  S10_3 --> S10_4
-  S10_5["10.5: Senior review and finalization"]
-  S10_4 --> S10_5
-  CP10(["CHECKPOINT 10"])
-  S10_5 --> CP10
-  style S10_1 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style S10_2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S10_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S10_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S10_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style CP10 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+ S10_1["10.1: Draft recommendation (Proceed / Conditions / Do Not Proceed)"]
+ S10_2["10.2: Write Executive Summary (1-2 pages, standalone)"]
+ S10_1 --> S10_2
+ S10_3["10.3: Compile appendix (all exhibits, numbered)"]
+ S10_2 --> S10_3
+ S10_4["10.4: Full document review: consistency, traceability, coherence"]
+ S10_3 --> S10_4
+ S10_5["10.5: Senior review and finalization"]
+ S10_4 --> S10_5
+ CP10(["CHECKPOINT 10"])
+ S10_5 --> CP10
+ style S10_1 fill:#B71C1C,stroke:#EF5350,color:#FFF
+ style S10_2 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S10_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+ style S10_4 fill:#E65100,stroke:#FF9800,color:#FFF
+ style S10_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+ style CP10 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
 
 <table class="step-table">
 <thead><tr>
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
-<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
-<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Deal Leadership">DL</th><th title="Financial DD">FDD</th>
+<th title="Business & Ops">CDD</th><th title="Legal & Tax">LT</th>
 <th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">10.1</td>
@@ -1703,13 +1641,13 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">31</span></td>
 <td>Steps 1, 5, 6, 10</td></tr>
 <tr>
-<td style="font-weight:700;color:#1565C0">Financial Analysis</td>
+<td style="font-weight:700;color:#1565C0">Financial DD</td>
 <td><span style="font-size:20px;font-weight:800;color:#1565C0">17</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#7B1FA2">25</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">27</span></td>
 <td>Steps 3, 9</td></tr>
 <tr>
-<td style="font-weight:700;color:#2E7D32">Business & Operations</td>
+<td style="font-weight:700;color:#2E7D32">Commercial DD</td>
 <td><span style="font-size:20px;font-weight:800;color:#2E7D32">10</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#7B1FA2">21</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">38</span></td>
