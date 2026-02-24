@@ -97,6 +97,25 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 .footer{text-align:center;margin-top:24px;font-size:11px;color:#9E9E9E}
 
 @media(max-width:768px){.stats-row{flex-direction:column;align-items:flex-start}.phase-body{padding:0 12px 16px}.step-table{font-size:11px}.donut-section{flex-direction:column}}
+
+/* Lightbox Modal */
+.mermaid-wrap{cursor:pointer;position:relative}
+.mermaid-wrap::after{content:"Click to zoom";position:absolute;top:8px;right:8px;background:rgba(26,35,126,.85);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;opacity:0;transition:opacity .2s}
+.mermaid-wrap:hover::after{opacity:1}
+.lightbox-overlay{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.88);z-index:9999;justify-content:center;align-items:center;flex-direction:column}
+.lightbox-overlay.active{display:flex}
+.lightbox-header{display:flex;align-items:center;gap:12px;padding:12px 24px;width:100%;justify-content:space-between;flex-shrink:0}
+.lightbox-title{color:white;font-size:16px;font-weight:700}
+.lightbox-controls{display:flex;gap:8px}
+.lightbox-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:white;padding:6px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:background .15s}
+.lightbox-btn:hover{background:rgba(255,255,255,.3)}
+.lightbox-close{background:#C62828;border-color:#EF5350}
+.lightbox-close:hover{background:#E53935}
+.lightbox-body{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:16px;width:100%}
+.lightbox-content{transform-origin:top center;transition:transform .2s ease;min-width:100%;display:flex;justify-content:center}
+.lightbox-content svg{max-width:none!important;height:auto!important}
+.lightbox-hint{color:rgba(255,255,255,.5);font-size:11px;padding:8px 24px;text-align:center;flex-shrink:0}
+
 </style>
 </head>
 <body>
@@ -683,15 +702,15 @@ flowchart TB
 
 nd:#BDBDBD"></div>I = Informed</div>
 </div>
-<div class="section-title">PART B: IC Memo Build Process — 10 Phases, Step-by-Step</div>
-<div class="section-sub">Each step is scoped for individual LLM execution with defined inputs, outputs, and source documents<br>This is the detailed breakdown of Phase 6 from Part A above</div>
+<div class="section-title">PART B: IC Memo Build Process — 10 Steps, Task-by-Task</div>
+<div class="section-sub">Each task is scoped for individual LLM execution with defined inputs, outputs, and source documents<br>This is the detailed breakdown of Phase 6 from Part A above — each Step maps to one memo section</div>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#E65100">1</div>
-<h2>Phase 1: Transaction Overview</h2>
+<h2>Step 1: Transaction Overview</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">0.5 day</span>
-<span class="badge" style="background:#FFF3E0;color:#E65100">7 STEPS &middot; 4G 3Y 0R</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">7 TASKS &middot; 4G 3Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -778,10 +797,10 @@ CHECKPOINT 1: CIM verified, mgmt presentation reviewed, structure mapped, timeli
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#2E7D32">2</div>
-<h2>Phase 2: Business Description</h2>
+<h2>Step 2: Business Description</h2>
 <span class="team-badge">Business & Operations</span>
 <span class="timing">1-2 days</span>
-<span class="badge" style="background:#E8F5E9;color:#2E7D32">6 STEPS &middot; 1G 5Y 0R</span>
+<span class="badge" style="background:#E8F5E9;color:#2E7D32">6 TASKS &middot; 1G 5Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -859,10 +878,10 @@ CHECKPOINT 2: Brands profiled, facilities mapped, supply chain documented<br>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#1565C0">3</div>
-<h2>Phase 3: Financial Foundation</h2>
+<h2>Step 3: Financial Foundation</h2>
 <span class="team-badge">Financial Analysis</span>
 <span class="timing">2-3 days</span>
-<span class="badge" style="background:#E3F2FD;color:#1565C0">8 STEPS &middot; 4G 4Y 0R</span>
+<span class="badge" style="background:#E3F2FD;color:#1565C0">8 TASKS &middot; 4G 4Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -958,10 +977,10 @@ CHECKPOINT 3: Historicals normalized, QoE reconciled, EBITDA bridge built, model
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#2E7D32">4</div>
-<h2>Phase 4: Industry & Market Context</h2>
+<h2>Step 4: Industry & Market Context</h2>
 <span class="team-badge">Business & Operations</span>
 <span class="timing">1 day</span>
-<span class="badge" style="background:#E8F5E9;color:#2E7D32">4 STEPS &middot; 1G 3Y 0R</span>
+<span class="badge" style="background:#E8F5E9;color:#2E7D32">4 TASKS &middot; 1G 3Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1021,10 +1040,10 @@ CHECKPOINT 4: Market sized, competitors profiled, threats identified<br>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#E65100">5</div>
-<h2>Phase 5: Investment Thesis & Upside Case</h2>
+<h2>Step 5: Investment Thesis & Upside Case</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">1 day</span>
-<span class="badge" style="background:#FFF3E0;color:#E65100">5 STEPS &middot; 0G 2Y 3R</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS &middot; 0G 2Y 3R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1093,10 +1112,10 @@ CHECKPOINT 5: Thesis quantified, upside modeled, differentiation clear<br>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#E65100">6</div>
-<h2>Phase 6: Key Risks</h2>
+<h2>Step 6: Key Risks</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">1 day</span>
-<span class="badge" style="background:#FFF3E0;color:#E65100">7 STEPS &middot; 2G 4Y 1R</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">7 TASKS &middot; 2G 4Y 1R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1183,10 +1202,10 @@ CHECKPOINT 6: Risk matrix complete, sensitivities run, mitigants defined<br>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#B71C1C">7</div>
-<h2>Phase 7: Deal Terms & Structure</h2>
+<h2>Step 7: Deal Terms & Structure</h2>
 <span class="team-badge">Legal & Tax</span>
 <span class="timing">1-2 days</span>
-<span class="badge" style="background:#FFEBEE;color:#B71C1C">11 STEPS &middot; 3G 4Y 4R</span>
+<span class="badge" style="background:#FFEBEE;color:#B71C1C">11 TASKS &middot; 3G 4Y 4R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1309,10 +1328,10 @@ CHECKPOINT 7: Cap table verified, 13F analyzed, consents tracked, 280G/382 quant
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#6A1B9A">8</div>
-<h2>Phase 8: Synergies & Integration</h2>
+<h2>Step 8: Synergies & Integration</h2>
 <span class="team-badge">Synergies & Integration</span>
 <span class="timing">1-2 days</span>
-<span class="badge" style="background:#F3E5F5;color:#6A1B9A">7 STEPS &middot; 1G 5Y 1R</span>
+<span class="badge" style="background:#F3E5F5;color:#6A1B9A">7 TASKS &middot; 1G 5Y 1R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1399,10 +1418,10 @@ CHECKPOINT 8: Synergies quantified, integration planned, IT assessed<br>
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#1565C0">9</div>
-<h2>Phase 9: Valuation & Returns</h2>
+<h2>Step 9: Valuation & Returns</h2>
 <span class="team-badge">Financial Analysis</span>
 <span class="timing">2-3 days</span>
-<span class="badge" style="background:#E3F2FD;color:#1565C0">9 STEPS &middot; 8G 1Y 0R</span>
+<span class="badge" style="background:#E3F2FD;color:#1565C0">9 TASKS &middot; 8G 1Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1507,10 +1526,10 @@ CHECKPOINT 9: Valuation triangulated, trading analyzed, returns modeled, S&U bal
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#E65100">10</div>
-<h2>Phase 10: Recommendation & Final Assembly</h2>
+<h2>Step 10: Recommendation & Final Assembly</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">1 day</span>
-<span class="badge" style="background:#FFF3E0;color:#E65100">5 STEPS &middot; 1G 1Y 3R</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS &middot; 1G 1Y 3R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1576,11 +1595,11 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <span style="font-weight:400;font-size:11px">Key Outputs: Executive summary, recommendation, final memo</span>
 </div>
 </div></div>
-<div class="section-title">RACI Summary Matrix — By Phase & Team</div>
+<div class="section-title">RACI Summary Matrix — By Step & Team</div>
 <div class="section-sub">R = Responsible (does the work) | A = Accountable (owns outcome) | C = Consulted (provides input) | I = Informed (kept updated)</div>
 <div class="stats-card"><table class="raci-summary">
 <thead><tr>
-<th>Phase</th><th>Title</th><th>Duration</th><th>Steps</th>
+<th>Step</th><th>Title</th><th>Duration</th><th>Tasks</th>
 <th>Deal<br>Leadership</th><th>Financial<br>Analysis</th><th>Business<br>& Ops</th>
 <th>Legal<br>& Tax</th><th>Synergies &<br>Integration</th>
 <th>LLM<br>Full</th><th>LLM<br>Assist</th><th>Human<br>Only</th>
@@ -1697,25 +1716,25 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <div class="section-title">Team Responsibility Summary</div>
 <div class="stats-card">
 <table class="raci-summary">
-<thead><tr><th>Team</th><th>Responsible (R)</th><th>Consulted (C)</th><th>Informed (I)</th><th>Primary Phases</th></tr></thead><tbody>
+<thead><tr><th>Team</th><th>Responsible (R)</th><th>Consulted (C)</th><th>Informed (I)</th><th>Primary Steps</th></tr></thead><tbody>
 <tr>
 <td style="font-weight:700;color:#E65100">Deal Leadership</td>
 <td><span style="font-size:20px;font-weight:800;color:#E65100">24</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#7B1FA2">14</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">31</span></td>
-<td>Phases 1, 5, 6, 10</td></tr>
+<td>Steps 1, 5, 6, 10</td></tr>
 <tr>
 <td style="font-weight:700;color:#1565C0">Financial Analysis</td>
 <td><span style="font-size:20px;font-weight:800;color:#1565C0">17</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#7B1FA2">25</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">27</span></td>
-<td>Phases 3, 9</td></tr>
+<td>Steps 3, 9</td></tr>
 <tr>
 <td style="font-weight:700;color:#2E7D32">Business & Operations</td>
 <td><span style="font-size:20px;font-weight:800;color:#2E7D32">10</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#7B1FA2">21</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">38</span></td>
-<td>Phases 2, 4</td></tr>
+<td>Steps 2, 4</td></tr>
 <tr>
 <td style="font-weight:700;color:#B71C1C">Legal & Tax</td>
 <td><span style="font-size:20px;font-weight:800;color:#B71C1C">11</span></td>
@@ -1755,4 +1774,100 @@ mermaid.initialize({
   }
 });
 </script>
+
+<!-- Lightbox Modal -->
+<div class="lightbox-overlay" id="lightbox">
+<div class="lightbox-header">
+<span class="lightbox-title" id="lightbox-title"></span>
+<div class="lightbox-controls">
+<button class="lightbox-btn" onclick="lbZoom(-1)">&#x2212; Zoom Out</button>
+<button class="lightbox-btn" id="lb-zoom-level">100%</button>
+<button class="lightbox-btn" onclick="lbZoom(1)">&#x2b; Zoom In</button>
+<button class="lightbox-btn" onclick="lbReset()">Reset</button>
+<button class="lightbox-btn lightbox-close" onclick="lbClose()">&#x2715; Close</button>
+</div>
+</div>
+<div class="lightbox-body" id="lightbox-body">
+<div class="lightbox-content" id="lightbox-content"></div>
+</div>
+<div class="lightbox-hint">Scroll to pan &middot; Use buttons or mouse wheel to zoom &middot; Press Escape to close</div>
+</div>
+
+
+<script>
+let lbScale = 1;
+const lbScales = [0.5, 0.6, 0.75, 0.85, 1, 1.15, 1.3, 1.5, 1.75, 2, 2.5, 3];
+let lbIdx = 4;
+
+function lbOpen(wrap) {
+  const svg = wrap.querySelector('svg');
+  if (!svg) return;
+  const card = wrap.closest('.phase-card');
+  const title = card ? (card.querySelector('h2')?.textContent || 'Flowchart') : 'Flowchart';
+  document.getElementById('lightbox-title').textContent = title;
+  const clone = svg.cloneNode(true);
+  clone.style.width = '100%';
+  clone.style.height = 'auto';
+  clone.style.maxWidth = 'none';
+  clone.removeAttribute('width');
+  const content = document.getElementById('lightbox-content');
+  content.innerHTML = '';
+  content.appendChild(clone);
+  lbIdx = 4;
+  lbApply();
+  document.getElementById('lightbox').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function lbClose() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function lbZoom(dir) {
+  lbIdx = Math.max(0, Math.min(lbScales.length - 1, lbIdx + dir));
+  lbApply();
+}
+
+function lbReset() {
+  lbIdx = 4;
+  lbApply();
+}
+
+function lbApply() {
+  const s = lbScales[lbIdx];
+  document.getElementById('lightbox-content').style.transform = 'scale(' + s + ')';
+  document.getElementById('lb-zoom-level').textContent = Math.round(s * 100) + '%';
+}
+
+// Escape key
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') lbClose();
+});
+
+// Click overlay to close
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this || e.target === document.getElementById('lightbox-body')) lbClose();
+});
+
+// Mouse wheel zoom in lightbox
+document.getElementById('lightbox-body').addEventListener('wheel', function(e) {
+  if (document.getElementById('lightbox').classList.contains('active')) {
+    e.preventDefault();
+    lbZoom(e.deltaY < 0 ? 1 : -1);
+  }
+}, {passive: false});
+
+// Attach click handlers after mermaid renders
+function attachLightbox() {
+  document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
+    wrap.addEventListener('click', function() { lbOpen(this); });
+  });
+}
+
+// Wait for mermaid to finish rendering
+setTimeout(attachLightbox, 2000);
+setTimeout(attachLightbox, 4000);
+</script>
+
 </body></html>
