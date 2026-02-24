@@ -3,674 +3,1194 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LBO IC Memo Build Workflow — LLM Capability Classification</title>
+<title>IC Memo Build Workflow — LLM Capability Classification & RACI Matrix</title>
 <style>
-  :root {
-    --navy: #1A237E; --navy-light: #283593; --indigo: #5C6BC0;
-    --green-bg: #1B5E20; --green-border: #4CAF50;
-    --yellow-bg: #E65100; --yellow-border: #FF9800;
-    --red-bg: #B71C1C; --red-border: #EF5350;
-    --blue-bg: #0D47A1; --blue-border: #42A5F5;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F1F5F9; color: #1E293B; line-height: 1.5; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
-  .header { text-align: center; margin-bottom: 32px; }
-  .header h1 { font-size: 28px; font-weight: 800; color: var(--navy); }
-  .header .sub { font-size: 18px; color: var(--indigo); margin-top: 4px; font-weight: 500; }
-  .header .meta { font-size: 13px; color: #757575; margin-top: 8px; }
-  .stats { background: white; border-radius: 16px; padding: 24px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border: 1px solid #E0E0E0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
-  .stats-total { font-size: 36px; font-weight: 800; color: var(--navy); }
-  .stats-total span { font-size: 14px; font-weight: 400; color: #757575; margin-left: 8px; }
-  .stat-boxes { display: flex; gap: 20px; flex-wrap: wrap; }
-  .stat-box { display: flex; align-items: center; gap: 10px; }
-  .stat-num { border-radius: 8px; padding: 8px 14px; text-align: center; min-width: 60px; }
-  .stat-num .c { font-size: 22px; font-weight: 800; color: white; }
-  .stat-num .p { font-size: 11px; color: rgba(255,255,255,.7); }
-  .stat-label { font-size: 13px; font-weight: 700; }
-  .stat-desc { font-size: 11px; color: #757575; }
-  .bar-wrap { background: white; border-radius: 0 0 16px 16px; padding: 0 24px 16px; margin-top: -20px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border: 1px solid #E0E0E0; border-top: 0; }
-  .bar { height: 8px; border-radius: 99px; overflow: hidden; display: flex; margin-top: 16px; }
-  .bar-labels { display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: #9E9E9E; }
-  .legend { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 24px; }
-  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #616161; }
-  .legend-dot { width: 14px; height: 14px; border-radius: 3px; }
-  .phase { background: white; border-radius: 16px; padding: 28px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border: 1px solid #E0E0E0; }
-  .phase-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-  .phase-head .num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 16px; flex-shrink: 0; }
-  .phase-head h2 { font-size: 18px; font-weight: 700; color: var(--navy); flex: 1; }
-  .phase-head .timing { font-size: 12px; color: #9E9E9E; font-weight: 500; white-space: nowrap; }
-  .phase-head .badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
-  .phase .mermaid-wrap { width: 100%; overflow-x: auto; }
-  .milestone { margin: 0 0 24px 0; padding: 14px 24px; border-radius: 10px; text-align: center; }
-  .milestone.green { background: #E8F5E9; border: 2px solid #4CAF50; }
-  .milestone.green h4 { color: #1B5E20; font-size: 14px; }
-  .milestone.navy-m { background: linear-gradient(135deg, #1A237E, #283593); border: 2px solid #5C6BC0; }
-  .milestone.navy-m h4 { color: white; font-size: 16px; }
-  .milestone.navy-m p { color: #C5CAE9; font-size: 13px; margin-top: 4px; }
-  .footer { text-align: center; margin-top: 24px; font-size: 11px; color: #9E9E9E; }
-  @media (max-width: 768px) { .stats { flex-direction: column; align-items: flex-start; } .phase { padding: 16px; } }
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F9;color:#1E293B;line-height:1.5}
+.container{max-width:1300px;margin:0 auto;padding:32px 20px}
+.header{text-align:center;margin-bottom:32px}
+.header h1{font-size:28px;font-weight:800;color:#1A237E}
+.header .sub{font-size:18px;color:#5C6BC0;margin-top:4px;font-weight:500}
+.header .meta{font-size:13px;color:#757575;margin-top:8px}
+
+/* Stats */
+.stats-card{background:white;border-radius:16px;padding:24px;margin-bottom:28px;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid #E0E0E0}
+.stats-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.stats-total{font-size:36px;font-weight:800;color:#1A237E}
+.stats-total span{font-size:14px;font-weight:400;color:#757575;margin-left:8px}
+.stat-boxes{display:flex;gap:20px;flex-wrap:wrap}
+.stat-box{display:flex;align-items:center;gap:10px}
+.stat-num{border-radius:8px;padding:8px 14px;text-align:center;min-width:60px}
+.stat-num .c{font-size:22px;font-weight:800;color:white}
+.stat-num .p{font-size:11px;color:rgba(255,255,255,.7)}
+.stat-label{font-size:13px;font-weight:700}
+.stat-desc{font-size:11px;color:#757575}
+.bar{height:8px;border-radius:99px;overflow:hidden;display:flex;margin-top:16px}
+.bar-labels{display:flex;justify-content:space-between;margin-top:4px;font-size:11px;color:#9E9E9E}
+
+/* Donut chart */
+.donut-section{display:flex;gap:32px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:20px;padding-top:20px;border-top:1px solid #EEEEEE}
+.donut-wrap{position:relative;width:160px;height:160px}
+.donut-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.donut-center .num{font-size:28px;font-weight:800;color:#1A237E}
+.donut-center .lbl{font-size:11px;color:#757575}
+.donut-legend{display:flex;flex-direction:column;gap:8px}
+.donut-legend-item{display:flex;align-items:center;gap:8px;font-size:13px}
+.donut-legend-dot{width:16px;height:16px;border-radius:3px;flex-shrink:0}
+.donut-legend-val{font-weight:700;min-width:28px}
+
+/* Legend */
+.legend{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:24px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:#616161}
+.legend-dot{width:14px;height:14px;border-radius:3px}
+
+/* Phase cards */
+.phase-card{background:white;border-radius:16px;margin-bottom:24px;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid #E0E0E0;overflow:hidden}
+.phase-head{display:flex;align-items:center;gap:12px;padding:20px 24px;cursor:pointer}
+.phase-head .num{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:18px;flex-shrink:0}
+.phase-head h2{font-size:18px;font-weight:700;color:#1A237E;flex:1}
+.phase-head .timing{font-size:12px;color:#9E9E9E;font-weight:500;white-space:nowrap;margin-right:8px}
+.phase-head .badge{font-size:10px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.phase-head .team-badge{font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;background:#EDE7F6;color:#4527A0;white-space:nowrap;margin-right:4px}
+.phase-body{padding:0 24px 24px}
+
+/* Mermaid */
+.mermaid-wrap{width:100%;overflow-x:auto}
+
+/* Step table */
+.step-table{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px}
+.step-table th{background:#F5F5F5;padding:8px 12px;text-align:left;font-size:11px;font-weight:700;color:#616161;border-bottom:2px solid #E0E0E0;white-space:nowrap}
+.step-table td{padding:8px 12px;border-bottom:1px solid #F5F5F5;vertical-align:top}
+.step-table tr:hover{background:#FAFAFA}
+.step-id{font-weight:700;color:#1A237E;white-space:nowrap}
+.step-task{max-width:320px}
+.step-src{font-size:11px;color:#9E9E9E;max-width:200px}
+.llm-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:99px;white-space:nowrap;display:inline-block}
+.raci-cell{width:28px;height:28px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white}
+.raci-r{background:#1565C0}.raci-a{background:#E65100}.raci-c{background:#7B1FA2}.raci-i{background:#BDBDBD;color:#757575}
+
+/* Checkpoint */
+.checkpoint{margin:8px 0 0;padding:10px 16px;border-radius:8px;border-left:4px solid;font-size:12px;font-weight:600}
+
+/* Milestone */
+.milestone{margin:0 0 24px;padding:14px 24px;border-radius:10px;text-align:center}
+.milestone.green{background:#E8F5E9;border:2px solid #4CAF50}
+.milestone.green h4{color:#1B5E20;font-size:14px}
+.milestone.navy-m{background:linear-gradient(135deg,#1A237E,#283593);border:2px solid #5C6BC0}
+.milestone.navy-m h4{color:white;font-size:16px}
+.milestone.navy-m p{color:#C5CAE9;font-size:13px;margin-top:4px}
+
+/* RACI Summary table */
+.raci-summary{width:100%;border-collapse:collapse;margin-top:16px;font-size:13px}
+.raci-summary th{background:#1A237E;color:white;padding:10px 12px;text-align:center;font-size:11px;font-weight:700}
+.raci-summary th:first-child,.raci-summary th:nth-child(2){text-align:left}
+.raci-summary td{padding:8px 12px;border-bottom:1px solid #EEEEEE;text-align:center}
+.raci-summary td:first-child,.raci-summary td:nth-child(2){text-align:left}
+.raci-summary tr:nth-child(even){background:#FAFAFA}
+.raci-summary .phase-row{background:#F5F5F5;font-weight:700}
+.raci-summary .phase-row td{border-bottom:2px solid #E0E0E0}
+
+/* Section titles */
+.section-title{text-align:center;margin:40px 0 24px;font-size:22px;font-weight:800;color:#1A237E}
+.section-sub{text-align:center;margin:-16px 0 24px;font-size:14px;color:#5C6BC0}
+
+.footer{text-align:center;margin-top:24px;font-size:11px;color:#9E9E9E}
+
+@media(max-width:768px){.stats-row{flex-direction:column;align-items:flex-start}.phase-body{padding:0 12px 16px}.step-table{font-size:11px}.donut-section{flex-direction:column}}
 </style>
 </head>
 <body>
 <div class="container">
 
-  <div class="header">
-    <h1>LBO IC Memo Build Workflow</h1>
-    <div class="sub">LLM Capability Classification — All Steps, All Phases</div>
-    <div class="meta">Project Gate — Gate Doors &amp; Equipment Industries, Inc. — $320M EV — Target Close: April 15, 2026</div>
-  </div>
+<div class="header">
+<h1>IC Memo Build Workflow</h1>
+<div class="sub">LLM Capability Classification & RACI Matrix</div>
+<div class="meta">Project Gate — Gate Doors & Equipment Industries, Inc. — $320M EV — 10 Phases, 69 Granular Steps</div>
+</div>
+<div class="stats-card">
+<div class="stats-row">
+<div><span class="stats-total">69<span>Steps across 10 Memo Build Phases</span></span></div>
+<div class="stat-boxes">
+<div class="stat-box"><div class="stat-num" style="background:#1B5E20"><div class="c">25</div><div class="p">36%</div></div><div><div class="stat-label" style="color:#1B5E20">FULL LLM</div><div class="stat-desc">Autonomous from VDR data</div></div></div>
+<div class="stat-box"><div class="stat-num" style="background:#E65100"><div class="c">32</div><div class="p">46%</div></div><div><div class="stat-label" style="color:#E65100">LLM-ASSISTED</div><div class="stat-desc">LLM drafts, human reviews</div></div></div>
+<div class="stat-box"><div class="stat-num" style="background:#B71C1C"><div class="c">12</div><div class="p">18%</div></div><div><div class="stat-label" style="color:#B71C1C">HUMAN-ONLY</div><div class="stat-desc">Professional judgment</div></div></div>
+</div>
+</div>
+<div class="bar">
+<div style="width:36%;background:#4CAF50"></div>
+<div style="width:46%;background:#FF9800"></div>
+<div style="width:18%;background:#EF5350"></div>
+</div>
+<div class="bar-labels"><span>Fully Automated</span><span>Human Judgment Required</span></div>
 
-  <div class="stats">
-    <div><span class="stats-total">66<span>Total Tasks &middot; 7 Phases &middot; 3 IC Gates</span></span></div>
-    <div class="stat-boxes">
-      <div class="stat-box"><div class="stat-num" style="background:#1B5E20"><div class="c">14</div><div class="p">21%</div></div><div><div class="stat-label" style="color:#1B5E20">FULL LLM</div><div class="stat-desc">Autonomous generation</div></div></div>
-      <div class="stat-box"><div class="stat-num" style="background:#E65100"><div class="c">21</div><div class="p">32%</div></div><div><div class="stat-label" style="color:#E65100">LLM-ASSISTED</div><div class="stat-desc">LLM drafts, human reviews</div></div></div>
-      <div class="stat-box"><div class="stat-num" style="background:#B71C1C"><div class="c">18</div><div class="p">27%</div></div><div><div class="stat-label" style="color:#B71C1C">HUMAN-ONLY</div><div class="stat-desc">Professional judgment</div></div></div>
-      <div class="stat-box"><div class="stat-num" style="background:#0D47A1"><div class="c">13</div><div class="p">20%</div></div><div><div class="stat-label" style="color:#0D47A1">THIRD-PARTY</div><div class="stat-desc">Advisor deliverables</div></div></div>
-    </div>
-  </div>
-  <div class="bar-wrap">
-    <div class="bar"><div style="width:21%;background:#4CAF50"></div><div style="width:32%;background:#FF9800"></div><div style="width:27%;background:#EF5350"></div><div style="width:20%;background:#42A5F5"></div></div>
-    <div class="bar-labels"><span>Fully Automated</span><span>Human Judgment Required</span></div>
-  </div>
-
-  <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#1B5E20"></div>FULL LLM — Autonomous from structured data</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#E65100"></div>LLM-ASSISTED — LLM drafts, human reviews</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#B71C1C"></div>HUMAN-ONLY — Professional judgment required</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#0D47A1"></div>THIRD-PARTY — External advisor deliverable</div>
-    <div class="legend-item"><div class="legend-dot" style="background:white;border:2px solid #C62828"></div>Decision Gate — IC approval checkpoint</div>
-  </div>
-
-  <!-- ══════ MASTER OVERVIEW ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:var(--navy)">M</div>
-      <h2>Master Overview — Full Deal Process</h2>
-      <div class="badge" style="background:#EDE7F6;color:#4527A0">7 PHASES</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
-flowchart LR
-  P1["Phase 1: Origination"]
-  G0{"Screen Fit?"}
-  P2["Phase 2: CIM and IOI"]
-  G1{"IC Gate 1: Approve IOI?"}
-  P3["Phase 3: Mgmt and LOI"]
-  G2{"IC Gate 2: Approve LOI?"}
-  LOI(["LOI Signed"])
-  P4["Phase 4: Due Diligence"]
-  P5["Phase 5: Underwriting"]
-  P6["Phase 6: IC Memo"]
-  G3{"IC Gate 3: Authorize SPA?"}
-  P7["Phase 7: Close"]
-  DONE(["CLOSES Apr 15 2026"])
-  PASS1["Pass"]
-  PASS2["Decline"]
-  PASS3["Withdraw"]
-  KILL["Kill"]
-  P1 --> G0
-  G0 -- No --> PASS1
-  G0 -- Yes --> P2
-  P2 --> G1
-  G1 -- No --> PASS2
-  G1 -- Yes --> P3
-  P3 --> G2
-  G2 -- No --> PASS3
-  G2 -- Yes --> LOI
-  LOI --> P4
-  LOI --> P5
-  P4 --> P6
-  P5 --> P6
-  P6 --> G3
-  G3 -- Revise --> P6
-  G3 -- Reject --> KILL
-  G3 -- Approved --> P7
-  P7 --> DONE
-  style P1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style P2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style P3 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style P4 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style P5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style P6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style P7 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G0 fill:#FFF,stroke:#C62828,color:#C62828
-  style G1 fill:#FFF,stroke:#C62828,color:#C62828
-  style G2 fill:#FFF,stroke:#C62828,color:#C62828
-  style G3 fill:#FFF,stroke:#C62828,color:#C62828
-  style LOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DONE fill:#1A237E,stroke:#5C6BC0,color:#FFF
-  style PASS1 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style PASS2 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style PASS3 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-      </pre>
-    </div>
-  </div>
-
-  <!-- ══════ PHASE 1 ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:#E65100">1</div>
-      <h2>Phase 1: Origination and Screening</h2>
-      <div class="timing">1-2 Weeks</div>
-      <div class="badge" style="background:#FFF3E0;color:#E65100">3 TASKS</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
+<div class="donut-section">
+<div class="donut-wrap">
+<svg viewBox="0 0 160 160" width="160" height="160"><path d="M 80.0,10.0 A 70,70 0 0 1 133.674292348453,124.93406659643436 L 116.80522903893922,110.81193138041213 A 48,48 0 0 0 80.0,32.0 Z" fill="#4CAF50"/><path d="M 133.28012986862754,125.40074626239291 A 70,70 0 0 1 17.56936709639514,48.33904494088452 L 37.19042315181381,58.28963081660653 A 48,48 0 0 0 116.53494619563031,111.13194029421228 Z" fill="#FF9800"/><path d="M 17.84803471183374,47.79544735881933 A 70,70 0 0 1 79.38914251511392,10.00266538550801 L 79.58112629607811,32.001827692919775 A 48,48 0 0 0 37.381509516685995,57.91687818890468 Z" fill="#EF5350"/></svg>
+<div class="donut-center"><div class="num">69</div><div class="lbl">TASKS</div></div>
+</div>
+<div class="donut-legend">
+<div class="donut-legend-item"><div class="donut-legend-dot" style="background:#4CAF50"></div><div class="donut-legend-val">25</div> FULL LLM — Autonomous generation from structured VDR data</div>
+<div class="donut-legend-item"><div class="donut-legend-dot" style="background:#FF9800"></div><div class="donut-legend-val">32</div> LLM-ASSISTED — LLM drafts section, human expert reviews & approves</div>
+<div class="donut-legend-item"><div class="donut-legend-dot" style="background:#EF5350"></div><div class="donut-legend-val">12</div> HUMAN-ONLY — Requires professional judgment, cannot be delegated</div>
+</div>
+</div>
+</div>
+<div class="legend">
+<div class="legend-item"><div class="legend-dot" style="background:#1B5E20"></div>FULL LLM — Autonomous</div>
+<div class="legend-item"><div class="legend-dot" style="background:#E65100"></div>LLM-ASSISTED — Draft + Review</div>
+<div class="legend-item"><div class="legend-dot" style="background:#B71C1C"></div>HUMAN-ONLY — Judgment Required</div>
+<div class="legend-item"><div class="legend-dot" style="background:#1565C0"></div>R = Responsible</div>
+<div class="legend-item"><div class="legend-dot" style="background:#E65100"></div>A = Accountable</div>
+<div class="legend-item"><div class="legend-dot" style="background:#7B1FA2"></div>C = Consulted</div>
+<div class="legend-item"><div class="legend-dot" style="background:#BDBDBD"></div>I = Informed</div>
+</div>
+<div class="section-title">IC Memo Build Process — 10 Phases, Step-by-Step</div>
+<div class="section-sub">Each step is scoped for individual LLM execution with defined inputs, outputs, and source documents</div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#E65100">1</div>
+<h2>Phase 1: Transaction Overview</h2>
+<span class="team-badge">Deal Leadership</span>
+<span class="timing">0.5 day</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">7 STEPS &middot; 4G 3Y 0R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  A1["Sell-Side Advisor: Distribute teaser to sponsor universe"]
-  A2["Deal Team: Evaluate teaser against fund mandate criteria - sector, size, geography, return profile"]
-  A3{"Mandate Fit?"}
-  A4["Deal Team: Prepare and execute NDA with sell-side advisor"]
-  A5["Deal Team: Draft Initial Screening Memo - Go/no-go recommendation - Key risks and open questions - Preliminary valuation framing"]
-  A6{"Proceed to CIM?"}
-  PASS["Pass on opportunity"]
-  NEXT(["To Phase 2: CIM Review"])
-  A1 --> A2
-  A2 --> A3
-  A3 -- No --> PASS
-  A3 -- Yes --> A4
-  A4 --> A5
-  A5 --> A6
-  A6 -- No --> PASS
-  A6 -- Yes --> NEXT
-  style A1 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style A2 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style A4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style A5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style A3 fill:#FFF,stroke:#C62828,color:#C62828
-  style A6 fill:#FFF,stroke:#C62828,color:#C62828
-  style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style NEXT fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-      </pre>
-    </div>
-  </div>
+  S1_1["1.1: Extract company and deal profile from CIM"]
+  S1_2["1.2: Review Management Presentation (buy-side analysis)"]
+  S1_1 --> S1_2
+  S1_3["1.3: Map corporate structure"]
+  S1_2 --> S1_3
+  S1_4["1.4: Understand process and timeline"]
+  S1_3 --> S1_4
+  S1_5["1.5: Cross-reference KPIs against CIM claims"]
+  S1_4 --> S1_5
+  S1_6["1.6: Review NDA and corporate documents"]
+  S1_5 --> S1_6
+  S1_7["1.7: Draft Transaction Overview section"]
+  S1_6 --> S1_7
+  CP1(["CHECKPOINT 1"])
+  S1_7 --> CP1
+  style S1_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S1_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S1_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S1_4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S1_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S1_6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S1_7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP1 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <!-- ══════ PHASE 2 ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:#E65100">2</div>
-      <h2>Phase 2: CIM Review and First-Round Bid</h2>
-      <div class="timing">2-4 Weeks</div>
-      <div class="badge" style="background:#FFF3E0;color:#E65100">7 TASKS</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">1.1</td>
+<td class="step-task">Extract company & deal profile from CIM</td>
+<td class="step-src">#1 CIM</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">1.2</td>
+<td class="step-task">Review Management Presentation (buy-side analysis)</td>
+<td class="step-src">#2 Mgmt Presentation</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">1.3</td>
+<td class="step-task">Map corporate structure</td>
+<td class="step-src">#7 Org Chart, #10 Subsidiaries</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">1.4</td>
+<td class="step-task">Understand process & timeline</td>
+<td class="step-src">#5 Process Letter</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">1.5</td>
+<td class="step-task">Cross-reference KPIs against CIM claims</td>
+<td class="step-src">#4 KPI Dashboard</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">1.6</td>
+<td class="step-task">Review NDA & corporate documents</td>
+<td class="step-src">#6 NDA, #8 Cert, #9 Good Standing</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">1.7</td>
+<td class="step-task">Draft Transaction Overview section</td>
+<td class="step-src">All Phase 1 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#FFF3E0;border-color:#E65100;color:#E65100">
+CHECKPOINT 1: CIM verified, mgmt presentation reviewed, structure mapped, timeline set<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Summary table, org chart, timeline, mgmt presentation analysis</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#2E7D32">2</div>
+<h2>Phase 2: Business Description</h2>
+<span class="team-badge">Business & Operations</span>
+<span class="timing">1-2 days</span>
+<span class="badge" style="background:#E8F5E9;color:#2E7D32">6 STEPS &middot; 1G 5Y 0R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  B0(["Receive CIM and Process Letter from Sell-Side"])
-  B1["Deal Team: Deep-dive CIM - Business model, revenue composition - Financial performance and trends - Market positioning, competition - Key risks and open questions"]
-  B2["Deal Team: Build Mini Model - Preliminary LBO from CIM data - Entry valuation range - Indicative S and U structure - Returns at multiple scenarios"]
-  B3["Deal Team: Solicit indicative financing terms from lenders - Leverage capacity - Pricing expectations"]
-  B4["Deal Team: Draft Initial IC Memo - 5-15 page pre-IOI document - Company overview and thesis - Preliminary returns - Key risks and open items"]
-  B5{"IC GATE 1: Approve IOI Submission?"}
-  B6["Deal Team: Draft and Submit IOI - Valuation range - Equity commitment - DD scope and timeline"]
-  IOI(["IOI SUBMITTED"])
-  PASS["Decline to bid"]
-  B0 --> B1
-  B1 --> B2
-  B1 --> B3
-  B2 --> B4
-  B3 --> B4
-  B4 --> B5
-  B5 -- No-Go --> PASS
-  B5 -- Approved --> B6
-  B6 --> IOI
-  style B0 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style B1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style B2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style B3 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style B4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style B6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style B5 fill:#FFF,stroke:#C62828,color:#C62828
-  style IOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-      </pre>
-    </div>
-  </div>
+  S2_1["2.1: Build brand/product matrix"]
+  S2_2["2.2: Analyze facilities and unit economics"]
+  S2_1 --> S2_2
+  S2_3["2.3: Map supply chain (top 10 suppliers)"]
+  S2_2 --> S2_3
+  S2_4["2.4: Map distribution network and CoC provisions"]
+  S2_3 --> S2_4
+  S2_5["2.5: Review locations and QC procedures"]
+  S2_4 --> S2_5
+  S2_6["2.6: Draft Business Description section (4-6 pages)"]
+  S2_5 --> S2_6
+  CP2(["CHECKPOINT 2"])
+  S2_6 --> CP2
+  style S2_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S2_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S2_3 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S2_4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S2_5 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S2_6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP2 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <div class="milestone green"><h4>IOI SUBMITTED — Invited to Second Round / Management Meetings</h4></div>
-
-  <!-- ══════ PHASE 3 ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:#B71C1C">3</div>
-      <h2>Phase 3: Management Meetings and LOI</h2>
-      <div class="timing">2-6 Weeks</div>
-      <div class="badge" style="background:#FFEBEE;color:#B71C1C">8 TASKS</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">2.1</td>
+<td class="step-task">Build brand/product matrix</td>
+<td class="step-src">#11 Brand, #12 SKU, #33 Revenue</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">2.2</td>
+<td class="step-task">Analyze facilities & unit economics</td>
+<td class="step-src">#13-15 Facility/Capacity/Cost, #43 Capex</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">2.3</td>
+<td class="step-task">Map supply chain (top 10 suppliers)</td>
+<td class="step-src">#17 Suppliers, #18 Input Contracts</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">2.4</td>
+<td class="step-task">Map distribution network & CoC provisions</td>
+<td class="step-src">#19 Distribution, #20 Agreements</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">2.5</td>
+<td class="step-task">Review locations & QC procedures</td>
+<td class="step-src">#21 Location P&L, #22 Leases, #16 QC</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">2.6</td>
+<td class="step-task">Draft Business Description section (4-6 pages)</td>
+<td class="step-src">All Phase 2 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#E8F5E9;border-color:#2E7D32;color:#2E7D32">
+CHECKPOINT 2: Brands profiled, facilities mapped, supply chain documented<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Brand matrix, facility table, distribution map</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#1565C0">3</div>
+<h2>Phase 3: Financial Foundation</h2>
+<span class="team-badge">Financial Analysis</span>
+<span class="timing">2-3 days</span>
+<span class="badge" style="background:#E3F2FD;color:#1565C0">8 STEPS &middot; 4G 4Y 0R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  C1["Deal Team: Attend management presentations - Assess depth and credibility - Evaluate chemistry and alignment - Founder-to-PE transition dynamics"]
-  C2["Deal Team: Log detailed Q and A - Operational specifics - Growth plans and track record"]
-  C3["Deal Team: Receive VDR access - Initial review of 234 documents - 15 sections across all DD areas"]
-  C4["Deal Team: Prepare DDRL - Comprehensive request list - Diligence roadmap and timelines"]
-  C5["Deal Team: Retain advisors - QoE: Greenbrook Advisory - Legal: Crawford Sterling LLP - Tax: Whitmore and Partners - Insurance: Lakewood Risk - Env: Clearwater Environmental"]
-  C6["Deal Team: Evolve Mini Model into Preliminary UW Model - Incorporate early VDR data - Refine assumptions"]
-  C7["Deal Team: Draft LOI - EV: $320M at 10.5x EBITDA - SRCP equity: $119M at 65 pct - Mgmt rollover: $25M at 17 pct"]
-  C8{"IC GATE 2: Approve LOI?"}
-  C9["Submit LOI to Meridian Capital"]
-  LOI(["LOI SIGNED - Exclusivity Granted Oct 2025"])
-  PASS["Withdraw"]
-  C1 --> C2
-  C1 --> C3
-  C2 --> C4
-  C3 --> C4
-  C4 --> C5
-  C4 --> C6
-  C5 --> C7
-  C6 --> C7
-  C7 --> C8
-  C8 -- No-Go --> PASS
-  C8 -- Approved --> C9
-  C9 --> LOI
-  style C1 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C2 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style C4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style C5 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style C7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style C9 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style C8 fill:#FFF,stroke:#C62828,color:#C62828
-  style LOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-      </pre>
-    </div>
-  </div>
+  S3_1["3.1: Compile historical financials (3-5yr IS, BS, CF, LTM)"]
+  S3_2["3.2: Quality of Earnings analysis and EBITDA reconciliation"]
+  S3_1 --> S3_2
+  S3_3["3.3: Revenue bridge and concentration analysis"]
+  S3_2 --> S3_3
+  S3_4["3.4: Validate financial model and build EBITDA bridge"]
+  S3_3 --> S3_4
+  S3_5["3.5: Working capital analysis"]
+  S3_4 --> S3_5
+  S3_6["3.6: Debt and covenant analysis"]
+  S3_5 --> S3_6
+  S3_7["3.7: Capex split (maint vs growth) and accounting review"]
+  S3_6 --> S3_7
+  S3_8["3.8: Compile financial analysis package"]
+  S3_7 --> S3_8
+  CP3(["CHECKPOINT 3"])
+  S3_8 --> CP3
+  style S3_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S3_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S3_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S3_4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S3_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S3_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S3_7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S3_8 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP3 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <div class="milestone green"><h4>LOI SIGNED — Exclusivity Granted — Confirmatory DD Commences October 2025</h4></div>
-
-  <!-- ══════ PHASE 4 ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:#0D47A1">4</div>
-      <h2>Phase 4: Confirmatory Due Diligence</h2>
-      <div class="timing">4-12 Weeks Post-LOI</div>
-      <div class="badge" style="background:#E3F2FD;color:#0D47A1">18 TASKS</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">3.1</td>
+<td class="step-task">Compile historical financials (3-5yr IS, BS, CF, LTM)</td>
+<td class="step-src">#31 Audited, #32 Interim, #33 Monthly</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">3.2</td>
+<td class="step-task">Quality of Earnings analysis & EBITDA reconciliation</td>
+<td class="step-src">#34 QoE Report, #31 Audited, #33 Monthly</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">3.3</td>
+<td class="step-task">Revenue bridge & concentration analysis</td>
+<td class="step-src">#35 Revenue Disagg, #55 Customer Conc</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">3.4</td>
+<td class="step-task">Validate financial model & build EBITDA bridge</td>
+<td class="step-src">#36 Model, #37 BvA, #38 EBITDA Bridge</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">3.5</td>
+<td class="step-task">Working capital analysis</td>
+<td class="step-src">#39 WC, #40 AR, #41 AP, #42 Inventory</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">3.6</td>
+<td class="step-task">Debt & covenant analysis</td>
+<td class="step-src">#43 Debt, #44 Covenant, #46 Maturity</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">3.7</td>
+<td class="step-task">Capex split (maint vs growth) & accounting review</td>
+<td class="step-src">#45 Capex, #122 RevRec, #123 Impairment</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">3.8</td>
+<td class="step-task">Compile financial analysis package</td>
+<td class="step-src">All Phase 3 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#E3F2FD;border-color:#1565C0;color:#1565C0">
+CHECKPOINT 3: Historicals normalized, QoE reconciled, EBITDA bridge built, model audited<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: EBITDA bridge, QoE reconciliation, model audit, WC, debt analysis</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#2E7D32">4</div>
+<h2>Phase 4: Industry & Market Context</h2>
+<span class="team-badge">Business & Operations</span>
+<span class="timing">1 day</span>
+<span class="badge" style="background:#E8F5E9;color:#2E7D32">4 STEPS &middot; 1G 3Y 0R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  START(["LOI Signed - Exclusivity Active"])
-  subgraph FIN["Financial and QoE — Greenbrook Advisory"]
-    D_F1["Analyze 3yr audited financials plus YTD interim statements"]
-    D_F2["Validate EBITDA of $30.5M - Revenue recognition - NWC requirements"]
-    D_F3["Deliver Quality of Earnings Report - November 2025"]
-  end
-  subgraph LEG["Legal — Crawford Sterling LLP"]
-    D_L1["Review material contracts - MSAs, PM contracts - CoC provisions"]
-    D_L2["Review litigation, regulatory - IP, trademarks"]
-    D_L3["Analyze consent requirements - Prepare consent matrix"]
-    D_L4["Deliver Legal DD Memorandum - December 2025"]
-  end
-  subgraph TAX["Tax — Whitmore and Partners"]
-    D_T1["Analyze returns, provisions - ASC 740, structuring"]
-    D_T2["Deliver Tax DD Report"]
-  end
-  subgraph INS["Insurance — Lakewood Risk"]
-    D_I1["Review policies - EMR: 0.92 - TRIR: 2.8 - WC claims"]
-    D_I2["Deliver Insurance Assessment Report"]
-  end
-  subgraph ENV["Environmental — Clearwater"]
-    D_E1["Phase I ESAs - permits - hazmat inventory"]
-    D_E2["Deliver Environmental Assessment Report"]
-  end
-  subgraph COM["Commercial and Ops — Deal Team"]
-    D_C1["Deep-dive VDR: customers, vendors, ops, HR, safety, IT - 234 documents"]
-    D_C2["Customer reference calls - Top 10 accounts"]
-    D_C3["Site visits - Dallas HQ plus 3-4 key branches"]
-    D_C4["Compile competitive analysis - market data - benchmarking"]
-  end
-  DD_DONE(["All DD Workstreams Complete"])
-  START --> D_F1
-  START --> D_L1
-  START --> D_T1
-  START --> D_I1
-  START --> D_E1
-  START --> D_C1
-  D_F1 --> D_F2 --> D_F3
-  D_L1 --> D_L2 --> D_L3 --> D_L4
-  D_T1 --> D_T2
-  D_I1 --> D_I2
-  D_E1 --> D_E2
-  D_C1 --> D_C2
-  D_C1 --> D_C3
-  D_C1 --> D_C4
-  D_F3 --> DD_DONE
-  D_L4 --> DD_DONE
-  D_T2 --> DD_DONE
-  D_I2 --> DD_DONE
-  D_E2 --> DD_DONE
-  D_C4 --> DD_DONE
-  style D_F1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_F2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_F3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_L1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_L2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_L3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_L4 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_T1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_T2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_I1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_I2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_E1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_E2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style D_C1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style D_C2 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style D_C3 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style D_C4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style START fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DD_DONE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style FIN fill:none,stroke:#42A5F5,stroke-width:2
-  style LEG fill:none,stroke:#42A5F5,stroke-width:2
-  style TAX fill:none,stroke:#42A5F5,stroke-width:2
-  style INS fill:none,stroke:#42A5F5,stroke-width:2
-  style ENV fill:none,stroke:#42A5F5,stroke-width:2
-  style COM fill:none,stroke:#FF9800,stroke-width:2
-      </pre>
-    </div>
-  </div>
+  S4_1["4.1: Extract market data (TAM, growth, drivers)"]
+  S4_2["4.2: Analyze competitive landscape (3-5 competitors)"]
+  S4_1 --> S4_2
+  S4_3["4.3: Consumer insights and emerging threats"]
+  S4_2 --> S4_3
+  S4_4["4.4: Draft Industry and Market section (2-3 pages)"]
+  S4_3 --> S4_4
+  CP4(["CHECKPOINT 4"])
+  S4_4 --> CP4
+  style S4_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S4_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S4_3 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S4_4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP4 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <!-- ══════ PHASE 5 ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:#1B5E20">5</div>
-      <h2>Phase 5: Underwriting, Valuation and Financing</h2>
-      <div class="timing">4-12 Weeks parallel with Phase 4</div>
-      <div class="badge" style="background:#E8F5E9;color:#1B5E20">12 TASKS</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">4.1</td>
+<td class="step-task">Extract market data (TAM, growth, drivers)</td>
+<td class="step-src">#24 Industry, #25 Stats</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.2</td>
+<td class="step-task">Analyze competitive landscape (3-5 competitors)</td>
+<td class="step-src">#26 Competitors, #27 Share, #56 Bench</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.3</td>
+<td class="step-task">Consumer insights & emerging threats</td>
+<td class="step-src">#28 Consumer, #29 Pipeline</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">4.4</td>
+<td class="step-task">Draft Industry & Market section (2-3 pages)</td>
+<td class="step-src">All Phase 4 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#E8F5E9;border-color:#2E7D32;color:#2E7D32">
+CHECKPOINT 4: Market sized, competitors profiled, threats identified<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Market overview, competitive matrix, Wall Street view</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#E65100">5</div>
+<h2>Phase 5: Investment Thesis & Upside Case</h2>
+<span class="team-badge">Deal Leadership</span>
+<span class="timing">1 day</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">5 STEPS &middot; 0G 2Y 3R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  QOE(["QoE Report from Phase 4"])
-  DD_DATA(["Commercial DD Data from Phase 4"])
-  PRELIM(["Prelim UW Model from Phase 3"])
-  subgraph MODEL["LBO Model and Valuation — Deal Team"]
-    E1["Build Full Underwriting LBO Model - 3-statement operating model - Revenue build by segment - Cost structure and margins"]
-    E2["Sources and Uses - TLA $100M plus TLB $50M - Mezz $30M plus Equity $119M - Mgmt rollover $25M - Total: $352M"]
-    E3["Debt Schedule - SOFR plus spreads by tranche - Amortization and PIK - Leverage: 5.9x to 1.9x"]
-    E4["Returns Analysis - Base: 35.2 pct IRR, 4.2x MOIC - Downside at 8x: 31.6 pct IRR - Upside at 12x: 44.4 pct IRR"]
-    E5["Sensitivity Analysis - 6x6 IRR matrix - 6x6 MOIC matrix"]
-    E6["EBITDA Bridge - LTM $30.5M to $92.4M - Volume, mix, efficiency"]
-    E7["Comparable Companies - 7 public comps - Median EV/EBITDA: 10.9x"]
-    E8["Precedent Transactions - MA deal multiples - PE-backed platform comps"]
-    E9["DCF Cross-Check - WACC, terminal value - Implied valuation range"]
-  end
-  subgraph DEBT["Financing — Lender Group"]
-    E10["Engage lender group with lender model - First National as Lead - Pacific Coast, Silverstone - Ridgeline Mezzanine"]
-    E11["Lender credit diligence and committee process"]
-    E12["Obtain commitment letters - TLA: $100M, SOFR+300 - TLB: $50M, SOFR+400 - Revolver: $30M - Mezz: $30M, 12pct/2pctPIK"]
-  end
-  subgraph VCP["Value Creation — Deal Team"]
-    E13["Value Creation Plan - Organic: 6-8 pct growth - MA: 8-12 tuck-ins at 4.5-6.5x - Margin: +190-270 bps - Tech: ServiceTitan, NetSuite"]
-    E14["Post-Close Cap Table - SRCP 65 pct Class A - Mgmt rollover 17 pct Class B - MIP pool 5 pct"]
-  end
-  READY(["Model Locked and Financing Committed"])
-  QOE --> E1
-  DD_DATA --> E1
-  PRELIM --> E1
-  E1 --> E2
-  E1 --> E3
-  E1 --> E4
-  E4 --> E5
-  E1 --> E6
-  E1 --> E7
-  E1 --> E8
-  E1 --> E9
-  E1 --> E10
-  E10 --> E11 --> E12
-  DD_DATA --> E13
-  E1 --> E13
-  E1 --> E14
-  E5 --> READY
-  E6 --> READY
-  E7 --> READY
-  E8 --> READY
-  E9 --> READY
-  E12 --> READY
-  E13 --> READY
-  E14 --> READY
-  style E1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style E2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E7 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E9 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style E10 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style E11 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style E12 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style E13 fill:#E65100,stroke:#FF9800,color:#FFF
-  style E14 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style QOE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DD_DATA fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style PRELIM fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style READY fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style MODEL fill:none,stroke:#4CAF50,stroke-width:2
-  style DEBT fill:none,stroke:#EF5350,stroke-width:2
-  style VCP fill:none,stroke:#FF9800,stroke-width:2
-      </pre>
-    </div>
-  </div>
+  S5_1["5.1: Distill top 3-5 investment highlights from Phases 2-4"]
+  S5_2["5.2: Define value creation thesis"]
+  S5_1 --> S5_2
+  S5_3["5.3: Build upside case (quantified)"]
+  S5_2 --> S5_3
+  S5_4["5.4: Identify differentiated insights"]
+  S5_3 --> S5_4
+  S5_5["5.5: Draft Investment Thesis section (2-3 pages)"]
+  S5_4 --> S5_5
+  CP5(["CHECKPOINT 5"])
+  S5_5 --> CP5
+  style S5_1 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S5_2 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S5_3 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S5_4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S5_5 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP5 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <div class="milestone green"><h4>FINANCING COMMITTED and MODEL LOCKED — Ready for Final IC Memo January 2026</h4></div>
-
-  <!-- ══════ PHASE 6 ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:#E65100">6</div>
-      <h2>Phase 6: Final IC Memo Construction</h2>
-      <div class="timing">2-4 Weeks</div>
-      <div class="badge" style="background:#FFF3E0;color:#E65100">14 TASKS</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">5.1</td>
+<td class="step-task">Distill top 3-5 investment highlights from Phases 2-4</td>
+<td class="step-src">#51 Highlights + Phase 2-4 outputs</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">5.2</td>
+<td class="step-task">Define value creation thesis</td>
+<td class="step-src">#36 EBITDA Bridge, #72 Synergy</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">5.3</td>
+<td class="step-task">Build upside case (quantified)</td>
+<td class="step-src">#53 Sensitivity, #34 Model</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">5.4</td>
+<td class="step-task">Identify differentiated insights</td>
+<td class="step-src">Phase 2-4 analysis, #28 Consumer</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">5.5</td>
+<td class="step-task">Draft Investment Thesis section (2-3 pages)</td>
+<td class="step-src">All Phase 5 inputs</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#FFF3E0;border-color:#E65100;color:#E65100">
+CHECKPOINT 5: Thesis quantified, upside modeled, differentiation clear<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Thesis statement, value creation bridge</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#E65100">6</div>
+<h2>Phase 6: Key Risks</h2>
+<span class="team-badge">Deal Leadership</span>
+<span class="timing">1 day</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">7 STEPS &middot; 2G 4Y 1R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  DD_IN(["DD Reports from Phase 4"])
-  MODEL_IN(["LBO Model and Financing from Phase 5"])
-  subgraph DATA_SEC["Data-Driven Sections — Full LLM"]
-    F_S2["Sec 2 Company Overview - Business description - Corporate structure - 45 branches, 22 states - Service composition - Management team"]
-    F_S3["Sec 3 Market Overview - TAM: $8-10B - Segmentation - 3000+ operators - Competitive positioning"]
-    F_S4["Sec 4 Financial Overview - 10.5 pct revenue CAGR - 43.6 pct gross margins - 17.9 pct EBITDA margins - Operating metrics"]
-    F_S8["Sec 8 Transaction Structure - S and U: $352M total - Post-close ownership - Debt terms by tranche"]
-    F_S9["Sec 9 Returns Analysis - 5-year projections - Leverage profile - Exit assumptions - IRR/MOIC tables"]
-  end
-  subgraph JUDGE_SEC["Judgment Sections — LLM-Assisted"]
-    F_S5["Sec 5 Investment Thesis - Platform in fragmented market - Recurring revenue 35 pct PM - Proven MA playbook - Defensive end markets"]
-    F_S6["Sec 6 Value Creation Plan - Organic plus MA roadmap - Margin initiatives - Technology investments"]
-    F_S7["Sec 7 DD Summary - QoE findings - Legal findings - Tax, Insurance, Env, IT"]
-    F_S10["Sec 10 Risk Factors - 6 risk categories - Severity and likelihood - Specific mitigants"]
-    F_S11["Sec 11 Governance - Board: 7 members - Mgmt agreements - MIP: 5 pct pool, 4yr vest"]
-    F_S12["Sec 12 IC Recommendation - Summary recommendation - Requested approvals - Transaction milestones"]
-  end
-  F_S1["Sec 1 Executive Summary - Synthesizes thesis plus numbers from all other sections"]
-  subgraph SUPPORT["Supporting Deliverables"]
-    F_X1["Risk Factor Matrix with severity/likelihood"]
-    F_X2["Governance Framework and Board composition"]
-    F_X3["KPI Dashboard - IC presentation format"]
-    F_X4["Competitive Benchmarking Exhibits"]
-    F_X5["Third-Party Reports Summary Matrix"]
-    F_X6["Appendices A through O - Compiled and indexed"]
-  end
-  REVIEW["Senior Review - VP then Principal then Partner - Iterative markup and revision"]
-  IC{"IC GATE 3: Authorize SPA Execution?"}
-  APPROVED(["IC APPROVED Feb 2026"])
-  REVISE["Revise and Resubmit"]
-  KILL["Kill Deal"]
-  DD_IN --> F_S7
-  DD_IN --> F_S10
-  MODEL_IN --> F_S4
-  MODEL_IN --> F_S8
-  MODEL_IN --> F_S9
-  F_S5 --> F_S1
-  F_S4 --> F_S1
-  F_S9 --> F_S1
-  F_X1 --> F_S10
-  F_X2 --> F_S11
-  F_X3 --> F_S4
-  F_X4 --> F_S3
-  F_X5 --> F_S7
-  F_X6 --> F_S12
-  F_S1 --> REVIEW
-  F_S2 --> REVIEW
-  F_S3 --> REVIEW
-  F_S5 --> REVIEW
-  F_S6 --> REVIEW
-  F_S7 --> REVIEW
-  F_S8 --> REVIEW
-  F_S9 --> REVIEW
-  F_S10 --> REVIEW
-  F_S11 --> REVIEW
-  F_S12 --> REVIEW
-  REVIEW --> IC
-  IC -- Conditional --> REVISE
-  REVISE --> REVIEW
-  IC -- Reject --> KILL
-  IC -- APPROVED --> APPROVED
-  style F_S2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F_S3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F_S4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F_S8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F_S9 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F_S1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_S5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_S6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_S7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_S10 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_S11 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_S12 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_X1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_X2 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_X3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F_X4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F_X5 fill:#E65100,stroke:#FF9800,color:#FFF
-  style F_X6 fill:#E65100,stroke:#FF9800,color:#FFF
-  style REVIEW fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style IC fill:#FFF,stroke:#C62828,stroke-width:3,color:#C62828
-  style APPROVED fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style REVISE fill:#FFF3E0,stroke:#FF9800,color:#E65100
-  style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-  style DD_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style MODEL_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DATA_SEC fill:none,stroke:#4CAF50,stroke-width:2
-  style JUDGE_SEC fill:none,stroke:#FF9800,stroke-width:2
-  style SUPPORT fill:none,stroke:#9E9E9E,stroke-width:1
-      </pre>
-    </div>
-  </div>
+  S6_1["6.1: Compile all prior-phase flags (RAG, concentration, ops)"]
+  S6_2["6.2: Review litigation, regulatory, environmental and tax risks"]
+  S6_1 --> S6_2
+  S6_3["6.3: Assess customer and revenue durability risks"]
+  S6_2 --> S6_3
+  S6_4["6.4: Assess deal-specific risks (antitrust, CoC, consents)"]
+  S6_3 --> S6_4
+  S6_5["6.5: Build Risk Factor Matrix (min 10-15 risks)"]
+  S6_4 --> S6_5
+  S6_6["6.6: Build sensitivity analysis (-5%, -10% rev, margin)"]
+  S6_5 --> S6_6
+  S6_7["6.7: Draft Key Risks section (3-4 pages)"]
+  S6_6 --> S6_7
+  CP6(["CHECKPOINT 6"])
+  S6_7 --> CP6
+  style S6_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S6_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S6_3 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S6_4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S6_5 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S6_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S6_7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP6 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <div class="milestone green"><h4>IC APPROVED — Authorized to Execute Definitive Documentation February 2026</h4></div>
-
-  <!-- ══════ PHASE 7 ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:#B71C1C">7</div>
-      <h2>Phase 7: Definitive Documentation and Close</h2>
-      <div class="timing">4-8 Weeks</div>
-      <div class="badge" style="background:#FFEBEE;color:#B71C1C">11 TASKS</div>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">6.1</td>
+<td class="step-task">Compile all prior-phase flags (RAG, concentration, ops)</td>
+<td class="step-src">Phase 2-5 outputs</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">6.2</td>
+<td class="step-task">Review litigation, regulatory, environmental & tax risks</td>
+<td class="step-src">#83, #94-98, #99-104</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">6.3</td>
+<td class="step-task">Assess customer & revenue durability risks</td>
+<td class="step-src">#54 Concentration, #55 Churn, #86 Contracts</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">6.4</td>
+<td class="step-task">Assess deal-specific risks (antitrust, CoC, consents)</td>
+<td class="step-src">#67 CoC, #68 Consent, #70 HSR, #77 Key Man</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">6.5</td>
+<td class="step-task">Build Risk Factor Matrix (min 10-15 risks)</td>
+<td class="step-src">#52 Risk Matrix + all above</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">6.6</td>
+<td class="step-task">Build sensitivity analysis (-5%, -10% rev, margin)</td>
+<td class="step-src">#53 Sensitivity, #34 Model</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">6.7</td>
+<td class="step-task">Draft Key Risks section (3-4 pages)</td>
+<td class="step-src">All Phase 6 inputs</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#FFF3E0;border-color:#E65100;color:#E65100">
+CHECKPOINT 6: Risk matrix complete, sensitivities run, mitigants defined<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Risk matrix, sensitivities, deal-breaker assessment</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#B71C1C">7</div>
+<h2>Phase 7: Deal Terms & Structure</h2>
+<span class="team-badge">Legal & Tax</span>
+<span class="timing">1-2 days</span>
+<span class="badge" style="background:#FFEBEE;color:#B71C1C">11 STEPS &middot; 3G 4Y 4R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  IC_IN(["IC Approved from Phase 6"])
-  subgraph LEGAL["Legal Documentation"]
-    G1["Negotiate and execute SPA - Reps and warranties - Indemnification - Baskets and caps"]
-    G2["Finalize disclosure schedules to SPA - Material exceptions - Known liabilities"]
-    G3["Escrow agreement - Holdback terms - Release conditions"]
-  end
-  subgraph FINANCE["Financing Documentation"]
-    G4["Senior Credit Agreement - $100M TLA plus $50M TLB - Covenants and defaults"]
-    G5["Mezzanine Agreement - $30M, 12 pct cash / 2 pct PIK - Security and guaranty docs"]
-    G6["Revolver $30M - Pledge agreements - UCC filings"]
-  end
-  subgraph MGMT["Management Agreements"]
-    G7["Management rollover agreements - $25M equity into Class B units"]
-    G8["Post-close employment agreements - CEO, CFO, COO, Chairman - MIP: 5 pct pool, 4yr vest"]
-  end
-  subgraph REG["Regulatory and Consents"]
-    G9["HSR antitrust filing - $320M EV exceeds threshold - Prepare, file, await clearance"]
-    G10["Third-party consents - 45 branch landlords - Key customer CoC - OEM authorizations"]
-  end
-  subgraph OPS["Deal Team Operations"]
-    G11["Capital call memo to LPs - $119M equity commitment"]
-    G12["Closing checklist and funds flow - 50+ conditions - Wire instructions across 10+ parties"]
-  end
-  CLOSE_CHECK{"All closing conditions satisfied?"}
-  RESOLVE["Resolve open items"]
-  CLOSE(["TRANSACTION CLOSES April 15, 2026"])
-  IC_IN --> G1
-  IC_IN --> G4
-  IC_IN --> G7
-  IC_IN --> G9
-  IC_IN --> G11
-  G1 --> G2 --> G3
-  G4 --> G5 --> G6
-  G7 --> G8
-  G9 --> G10
-  G3 --> G12
-  G6 --> G12
-  G8 --> G12
-  G10 --> CLOSE_CHECK
-  G11 --> G12
-  G12 --> CLOSE_CHECK
-  CLOSE_CHECK -- No --> RESOLVE
-  RESOLVE --> CLOSE_CHECK
-  CLOSE_CHECK -- Yes --> CLOSE
-  style G1 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G2 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G3 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G4 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G5 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G6 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G7 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G8 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G9 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G10 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style G11 fill:#E65100,stroke:#FF9800,color:#FFF
-  style G12 fill:#E65100,stroke:#FF9800,color:#FFF
-  style IC_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style CLOSE_CHECK fill:#FFF,stroke:#C62828,color:#C62828
-  style RESOLVE fill:#FFF3E0,stroke:#FF9800,color:#E65100
-  style CLOSE fill:#1A237E,stroke:#5C6BC0,color:#FFF
-  style LEGAL fill:none,stroke:#EF5350,stroke-width:2
-  style FINANCE fill:none,stroke:#EF5350,stroke-width:2
-  style MGMT fill:none,stroke:#EF5350,stroke-width:2
-  style REG fill:none,stroke:#EF5350,stroke-width:2
-  style OPS fill:none,stroke:#FF9800,stroke-width:2
-      </pre>
-    </div>
-  </div>
+  S7_1["7.1: Compute fully diluted cap table"]
+  S7_2["7.2: Shareholder base and cost basis analysis (13F data)"]
+  S7_1 --> S7_2
+  S7_3["7.3: Build change-of-control matrix"]
+  S7_2 --> S7_3
+  S7_4["7.4: Build consent and approval tracker"]
+  S7_3 --> S7_4
+  S7_5["7.5: Review Board authorization and deal process"]
+  S7_4 --> S7_5
+  S7_6["7.6: Analyze shareholder agreements"]
+  S7_5 --> S7_6
+  S7_7["7.7: 280G golden parachute analysis"]
+  S7_6 --> S7_7
+  S7_8["7.8: HSR/antitrust assessment"]
+  S7_7 --> S7_8
+  S7_9["7.9: Section 382 NOL limitation analysis"]
+  S7_8 --> S7_9
+  S7_10["7.10: RWI pre-diligence report review"]
+  S7_9 --> S7_10
+  S7_11["7.11: Draft Deal Terms section (2-3 pages)"]
+  S7_10 --> S7_11
+  CP7(["CHECKPOINT 7"])
+  S7_11 --> CP7
+  style S7_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S7_2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S7_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S7_4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S7_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S7_6 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S7_7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S7_8 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S7_9 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S7_10 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S7_11 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP7 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <div class="milestone navy-m">
-    <h4>TRANSACTION CLOSES — April 15, 2026</h4>
-    <p>$320M Enterprise Value &middot; $119M SRCP Equity (65%) &middot; $180M Debt (5.9x) &middot; $25M Management Rollover (17%)</p>
-    <p>Base Case: 35.2% Gross IRR &middot; 4.2x Gross MOIC at 9.0x Exit Multiple (5-Year Hold)</p>
-  </div>
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">7.1</td>
+<td class="step-task">Compute fully diluted cap table</td>
+<td class="step-src">#65 Cap Table, #66 Equity Plans, #67 Awards</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.2</td>
+<td class="step-task">Shareholder base & cost basis analysis (13F data)</td>
+<td class="step-src">#68 Shareholder/13F Data</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.3</td>
+<td class="step-task">Build change-of-control matrix</td>
+<td class="step-src">#70 CoC, #43 Debt, #21 Dist, #80 Employment</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.4</td>
+<td class="step-task">Build consent & approval tracker</td>
+<td class="step-src">#72 Consent Matrix</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.5</td>
+<td class="step-task">Review Board authorization & deal process</td>
+<td class="step-src">#61 Board, #62 Advisor, #63 Fairness, #64 LOIs</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.6</td>
+<td class="step-task">Analyze shareholder agreements</td>
+<td class="step-src">#69 Shareholder, #70 Strategic Partner</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.7</td>
+<td class="step-task">280G golden parachute analysis</td>
+<td class="step-src">#73 280G, #84 Severance</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.8</td>
+<td class="step-task">HSR/antitrust assessment</td>
+<td class="step-src">#74 HSR</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.9</td>
+<td class="step-task">Section 382 NOL limitation analysis</td>
+<td class="step-src">#103 Section 382, #105 Excise</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.10</td>
+<td class="step-task">RWI pre-diligence report review</td>
+<td class="step-src">#75 RWI</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">7.11</td>
+<td class="step-task">Draft Deal Terms section (2-3 pages)</td>
+<td class="step-src">All Phase 7 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#FFEBEE;border-color:#B71C1C;color:#B71C1C">
+CHECKPOINT 7: Cap table verified, 13F analyzed, consents tracked, 280G/382 quantified<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Cap table, 13F analysis, CoC matrix, consent tracker</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#6A1B9A">8</div>
+<h2>Phase 8: Synergies & Integration</h2>
+<span class="team-badge">Synergies & Integration</span>
+<span class="timing">1-2 days</span>
+<span class="badge" style="background:#F3E5F5;color:#6A1B9A">7 STEPS &middot; 1G 5Y 1R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  S8_1["8.1: Categorize and quantify synergies (confidence-weighted)"]
+  S8_2["8.2: Estimate one-time costs to achieve synergies"]
+  S8_1 --> S8_2
+  S8_3["8.3: Review prior acquisition integration performance"]
+  S8_2 --> S8_3
+  S8_4["8.4: Outline integration plan (Day 1, 30/60/90, Year 1)"]
+  S8_3 --> S8_4
+  S8_5["8.5: People and organizational integration assessment"]
+  S8_4 --> S8_5
+  S8_6["8.6: IT systems integration assessment"]
+  S8_5 --> S8_6
+  S8_7["8.7: Draft Synergies and Integration section with waterfall"]
+  S8_6 --> S8_7
+  CP8(["CHECKPOINT 8"])
+  S8_7 --> CP8
+  style S8_1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S8_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S8_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S8_4 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S8_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S8_6 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S8_7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP8 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <!-- ══════ PIE CHART ══════ -->
-  <div class="phase">
-    <div class="phase-head">
-      <div class="num" style="background:var(--navy)">S</div>
-      <h2>LLM Capability Distribution Summary</h2>
-    </div>
-    <div class="mermaid-wrap">
-      <pre class="mermaid">
-pie title Task Classification Across 66 IC Memo Workflow Steps
-    "Full LLM - 14 tasks" : 14
-    "LLM-Assisted - 21 tasks" : 21
-    "Human-Only - 18 tasks" : 18
-    "Third-Party - 13 tasks" : 13
-      </pre>
-    </div>
-  </div>
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">8.1</td>
+<td class="step-task">Categorize & quantify synergies (confidence-weighted)</td>
+<td class="step-src">#72 Synergy Analysis + Phase 2-3</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
+<tr>
+<td class="step-id">8.2</td>
+<td class="step-task">Estimate one-time costs to achieve synergies</td>
+<td class="step-src">#72 Synergy Analysis</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
+<tr>
+<td class="step-id">8.3</td>
+<td class="step-task">Review prior acquisition integration performance</td>
+<td class="step-src">#74 Integration Reports, #117 Prior Acq</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
+<tr>
+<td class="step-id">8.4</td>
+<td class="step-task">Outline integration plan (Day 1, 30/60/90, Year 1)</td>
+<td class="step-src">#73 Integration Playbook</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
+<tr>
+<td class="step-id">8.5</td>
+<td class="step-task">People & organizational integration assessment</td>
+<td class="step-src">#76-82 People/Key Man/Employment/Comp</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
+<tr>
+<td class="step-id">8.6</td>
+<td class="step-task">IT systems integration assessment</td>
+<td class="step-src">#75 IT Assessment, #111 IT Overview</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
+<tr>
+<td class="step-id">8.7</td>
+<td class="step-task">Draft Synergies & Integration section with waterfall</td>
+<td class="step-src">All Phase 8 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#F3E5F5;border-color:#6A1B9A;color:#6A1B9A">
+CHECKPOINT 8: Synergies quantified, integration planned, IT assessed<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Synergy table, integration plan, IT assessment</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#1565C0">9</div>
+<h2>Phase 9: Valuation & Returns</h2>
+<span class="team-badge">Financial Analysis</span>
+<span class="timing">2-3 days</span>
+<span class="badge" style="background:#E3F2FD;color:#1565C0">9 STEPS &middot; 8G 1Y 0R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  S9_1["9.1: Comparable companies analysis (5-10 comps)"]
+  S9_2["9.2: Precedent transactions analysis (5-10 deals)"]
+  S9_1 --> S9_2
+  S9_3["9.3: DCF model (WACC build, FCF, terminal value)"]
+  S9_2 --> S9_3
+  S9_4["9.4: Historical stock price and trading analysis (VWAP, premium)"]
+  S9_3 --> S9_4
+  S9_5["9.5: Valuation triangulation and football field"]
+  S9_4 --> S9_5
+  S9_6["9.6: Returns analysis (IRR/MOIC: base/down/up)"]
+  S9_5 --> S9_6
+  S9_7["9.7: Premium analysis (vs precedent premiums)"]
+  S9_6 --> S9_7
+  S9_8["9.8: Sources and uses table"]
+  S9_7 --> S9_8
+  S9_9["9.9: Draft Valuation and Returns section (3-4 pages)"]
+  S9_8 --> S9_9
+  CP9(["CHECKPOINT 9"])
+  S9_9 --> CP9
+  style S9_1 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_5 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_6 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_7 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S9_9 fill:#E65100,stroke:#FF9800,color:#FFF
+  style CP9 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
-  <div class="footer">PROJECT GATE — LBO IC Memo Build Workflow — LLM Capability Classification — Summit Ridge Capital Partners — CONFIDENTIAL</div>
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">9.1</td>
+<td class="step-task">Comparable companies analysis (5-10 comps)</td>
+<td class="step-src">#48 Comps</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">9.2</td>
+<td class="step-task">Precedent transactions analysis (5-10 deals)</td>
+<td class="step-src">#49 Precedents, #50 Premiums</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">9.3</td>
+<td class="step-task">DCF model (WACC build, FCF, terminal value)</td>
+<td class="step-src">#53 DCF, #36 Model</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">9.4</td>
+<td class="step-task">Historical stock price & trading analysis (VWAP, premium)</td>
+<td class="step-src">#52 Stock Price & Trading Data</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">9.5</td>
+<td class="step-task">Valuation triangulation & football field</td>
+<td class="step-src">#47 Pro Forma Cap, #65 Diluted Shares</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">9.6</td>
+<td class="step-task">Returns analysis (IRR/MOIC: base/down/up)</td>
+<td class="step-src">#56 Sensitivity + Phase 8 synergies</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">9.7</td>
+<td class="step-task">Premium analysis (vs precedent premiums)</td>
+<td class="step-src">#50 Premiums Paid, #52 Trading Data</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">9.8</td>
+<td class="step-task">Sources & uses table</td>
+<td class="step-src">#47 Pro Forma Cap, #43 Debt</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">9.9</td>
+<td class="step-task">Draft Valuation & Returns section (3-4 pages)</td>
+<td class="step-src">All Phase 9 sources</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#E3F2FD;border-color:#1565C0;color:#1565C0">
+CHECKPOINT 9: Valuation triangulated, trading analyzed, returns modeled, S&U balanced<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Comps, DCF, trading analysis, football field, returns</span>
+</div>
+</div></div>
+<div class="phase-card">
+<div class="phase-head">
+<div class="num" style="background:#E65100">10</div>
+<h2>Phase 10: Recommendation & Final Assembly</h2>
+<span class="team-badge">Deal Leadership</span>
+<span class="timing">1 day</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">5 STEPS &middot; 1G 1Y 3R</span>
+</div>
+<div class="phase-body">
+<div class="mermaid-wrap"><pre class="mermaid">
+flowchart TB
+  S10_1["10.1: Draft recommendation (Proceed / Conditions / Do Not Proceed)"]
+  S10_2["10.2: Write Executive Summary (1-2 pages, standalone)"]
+  S10_1 --> S10_2
+  S10_3["10.3: Compile appendix (all exhibits, numbered)"]
+  S10_2 --> S10_3
+  S10_4["10.4: Full document review: consistency, traceability, coherence"]
+  S10_3 --> S10_4
+  S10_5["10.5: Senior review and finalization"]
+  S10_4 --> S10_5
+  CP10(["CHECKPOINT 10"])
+  S10_5 --> CP10
+  style S10_1 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S10_2 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S10_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style S10_4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S10_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style CP10 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+</pre></div>
 
+<table class="step-table">
+<thead><tr>
+<th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
+<th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
+<th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
+<th title="Synergies">SI</th></tr></thead><tbody>
+<tr>
+<td class="step-id">10.1</td>
+<td class="step-task">Draft recommendation (Proceed / Conditions / Do Not Proceed)</td>
+<td class="step-src">All phase outputs</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">10.2</td>
+<td class="step-task">Write Executive Summary (1-2 pages, standalone)</td>
+<td class="step-src">All phase outputs</td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+<tr>
+<td class="step-id">10.3</td>
+<td class="step-task">Compile appendix (all exhibits, numbered)</td>
+<td class="step-src">All exhibits from Phases 1-9</td>
+<td><span class="llm-badge" style="background:#E8F5E9;color:#1B5E20">● FULL LLM</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">10.4</td>
+<td class="step-task">Full document review: consistency, traceability, coherence</td>
+<td class="step-src">Full memo draft</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
+<tr>
+<td class="step-id">10.5</td>
+<td class="step-task">Senior review & finalization</td>
+<td class="step-src">N/A</td>
+<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
+</tbody></table>
+<div class="checkpoint" style="background:#FFF3E0;border-color:#E65100;color:#E65100">
+CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Executive summary, recommendation, final memo</span>
+</div>
+</div></div>
+<div class="section-title">RACI Summary Matrix — By Phase & Team</div>
+<div class="section-sub">R = Responsible (does the work) | A = Accountable (owns outcome) | C = Consulted (provides input) | I = Informed (kept updated)</div>
+<div class="stats-card"><table class="raci-summary">
+<thead><tr>
+<th>Phase</th><th>Title</th><th>Duration</th><th>Steps</th>
+<th>Deal<br>Leadership</th><th>Financial<br>Analysis</th><th>Business<br>& Ops</th>
+<th>Legal<br>& Tax</th><th>Synergies &<br>Integration</th>
+<th>LLM<br>Full</th><th>LLM<br>Assist</th><th>Human<br>Only</th>
+</tr></thead><tbody>
+<tr>
+<td style="font-weight:700;color:#E65100">1</td>
+<td style="font-weight:600">Transaction Overview</td>
+<td>0.5 day</td>
+<td style="font-weight:700">7</td>
+<td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x7</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-i">I</span></td>
+<td><span style="color:#1B5E20;font-weight:700">4</span></td>
+<td><span style="color:#E65100;font-weight:700">3</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#2E7D32">2</td>
+<td style="font-weight:600">Business Description</td>
+<td>1-2 days</td>
+<td style="font-weight:700">6</td>
+<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x6</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td>
+<td><span style="color:#1B5E20;font-weight:700">1</span></td>
+<td><span style="color:#E65100;font-weight:700">5</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#1565C0">3</td>
+<td style="font-weight:600">Financial Foundation</td>
+<td>2-3 days</td>
+<td style="font-weight:700">8</td>
+<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x8</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-i">I</span></td>
+<td><span style="color:#1B5E20;font-weight:700">4</span></td>
+<td><span style="color:#E65100;font-weight:700">4</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#2E7D32">4</td>
+<td style="font-weight:600">Industry & Market Context</td>
+<td>1 day</td>
+<td style="font-weight:700">4</td>
+<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td>
+<td><span style="color:#1B5E20;font-weight:700">1</span></td>
+<td><span style="color:#E65100;font-weight:700">3</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#E65100">5</td>
+<td style="font-weight:600">Investment Thesis & Upside Case</td>
+<td>1 day</td>
+<td style="font-weight:700">5</td>
+<td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td>
+<td><span style="color:#1B5E20;font-weight:700">0</span></td>
+<td><span style="color:#E65100;font-weight:700">2</span></td>
+<td><span style="color:#B71C1C;font-weight:700">3</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#E65100">6</td>
+<td style="font-weight:600">Key Risks</td>
+<td>1 day</td>
+<td style="font-weight:700">7</td>
+<td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x7</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td>
+<td><span style="color:#1B5E20;font-weight:700">2</span></td>
+<td><span style="color:#E65100;font-weight:700">4</span></td>
+<td><span style="color:#B71C1C;font-weight:700">1</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#B71C1C">7</td>
+<td style="font-weight:600">Deal Terms & Structure</td>
+<td>1-2 days</td>
+<td style="font-weight:700">11</td>
+<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x11</span></td><td><span class="raci-cell raci-i">I</span></td>
+<td><span style="color:#1B5E20;font-weight:700">3</span></td>
+<td><span style="color:#E65100;font-weight:700">4</span></td>
+<td><span style="color:#B71C1C;font-weight:700">4</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#6A1B9A">8</td>
+<td style="font-weight:600">Synergies & Integration</td>
+<td>1-2 days</td>
+<td style="font-weight:700">7</td>
+<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x7</span></td>
+<td><span style="color:#1B5E20;font-weight:700">1</span></td>
+<td><span style="color:#E65100;font-weight:700">5</span></td>
+<td><span style="color:#B71C1C;font-weight:700">1</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#1565C0">9</td>
+<td style="font-weight:600">Valuation & Returns</td>
+<td>2-3 days</td>
+<td style="font-weight:700">9</td>
+<td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x9</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td>
+<td><span style="color:#1B5E20;font-weight:700">8</span></td>
+<td><span style="color:#E65100;font-weight:700">1</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
+</tr>
+<tr>
+<td style="font-weight:700;color:#E65100">10</td>
+<td style="font-weight:600">Recommendation & Final Assembly</td>
+<td>1 day</td>
+<td style="font-weight:700">5</td>
+<td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td>
+<td><span style="color:#1B5E20;font-weight:700">1</span></td>
+<td><span style="color:#E65100;font-weight:700">1</span></td>
+<td><span style="color:#B71C1C;font-weight:700">3</span></td>
+</tr>
+<tr style="background:#1A237E;color:white;font-weight:700">
+<td colspan="3" style="color:white">TOTALS</td>
+<td style="color:white">69</td>
+<td colspan="5"></td>
+<td style="color:#A5D6A7">25</td>
+<td style="color:#FFE0B2">32</td>
+<td style="color:#FFCDD2">12</td>
+</tr>
+</tbody></table></div>
+<div class="section-title">Team Responsibility Summary</div>
+<div class="stats-card">
+<table class="raci-summary">
+<thead><tr><th>Team</th><th>Responsible (R)</th><th>Consulted (C)</th><th>Informed (I)</th><th>Primary Phases</th></tr></thead><tbody>
+<tr>
+<td style="font-weight:700;color:#E65100">Deal Leadership</td>
+<td><span style="font-size:20px;font-weight:800;color:#E65100">24</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#7B1FA2">14</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#BDBDBD">31</span></td>
+<td>Phases 1, 5, 6, 10</td></tr>
+<tr>
+<td style="font-weight:700;color:#1565C0">Financial Analysis</td>
+<td><span style="font-size:20px;font-weight:800;color:#1565C0">17</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#7B1FA2">25</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#BDBDBD">27</span></td>
+<td>Phases 3, 9</td></tr>
+<tr>
+<td style="font-weight:700;color:#2E7D32">Business & Operations</td>
+<td><span style="font-size:20px;font-weight:800;color:#2E7D32">10</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#7B1FA2">21</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#BDBDBD">38</span></td>
+<td>Phases 2, 4</td></tr>
+<tr>
+<td style="font-weight:700;color:#B71C1C">Legal & Tax</td>
+<td><span style="font-size:20px;font-weight:800;color:#B71C1C">11</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#7B1FA2">16</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#BDBDBD">42</span></td>
+<td>Phases 7</td></tr>
+<tr>
+<td style="font-weight:700;color:#6A1B9A">Synergies & Integration</td>
+<td><span style="font-size:20px;font-weight:800;color:#6A1B9A">7</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#7B1FA2">8</span></td>
+<td><span style="font-size:20px;font-weight:800;color:#BDBDBD">54</span></td>
+<td>Phases 8</td></tr>
+</tbody></table></div>
+<div class="footer">PROJECT GATE — IC Memo Build Workflow — LLM Capability Classification & RACI Matrix — Summit Ridge Capital Partners — CONFIDENTIAL</div>
 </div>
 
 <script type="module">
@@ -681,22 +1201,19 @@ mermaid.initialize({
   securityLevel: 'loose',
   themeVariables: {
     fontFamily: 'Segoe UI, system-ui, sans-serif',
-    fontSize: '13px',
+    fontSize: '12px',
     primaryColor: '#E8F5E9',
     primaryBorderColor: '#4CAF50',
-    lineColor: '#90A4AE',
-    secondaryColor: '#FFF3E0',
-    tertiaryColor: '#FFEBEE'
+    lineColor: '#90A4AE'
   },
   flowchart: {
     htmlLabels: true,
     curve: 'basis',
-    padding: 15,
-    nodeSpacing: 30,
-    rankSpacing: 40,
+    padding: 12,
+    nodeSpacing: 25,
+    rankSpacing: 35,
     useMaxWidth: true
   }
 });
 </script>
-</body>
-</html>
+</body></html>
