@@ -99,9 +99,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 @media(max-width:768px){.stats-row{flex-direction:column;align-items:flex-start}.phase-body{padding:0 12px 16px}.step-table{font-size:11px}.donut-section{flex-direction:column}}
 
 /* Lightbox Modal */
-.mermaid-wrap{cursor:pointer;position:relative}
-.mermaid-wrap::after{content:"Click to zoom";position:absolute;top:8px;right:8px;background:rgba(26,35,126,.85);color:white;font-size:10px;font-weight:600;padding:3px 10px;border-radius:99px;opacity:0;transition:opacity .2s}
-.mermaid-wrap:hover::after{opacity:1}
+.mermaid-wrap{position:relative}
+
+
 .lightbox-overlay{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,.88);z-index:9999;justify-content:center;align-items:center;flex-direction:column}
 .lightbox-overlay.active{display:flex}
 .lightbox-header{display:flex;align-items:center;gap:12px;padding:12px 24px;width:100%;justify-content:space-between;flex-shrink:0}
@@ -111,11 +111,16 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 .lightbox-btn:hover{background:rgba(255,255,255,.3)}
 .lightbox-close{background:#C62828;border-color:#EF5350}
 .lightbox-close:hover{background:#E53935}
-.lightbox-body{flex:1;overflow:auto;padding:16px;width:100%}
-.lightbox-content{transform-origin:top left;transition:transform .2s ease;width:max-content;min-width:100%;margin:0 auto}
-.lightbox-content svg{max-width:none!important;min-width:800px;height:auto!important;width:100%!important}
+.lightbox-body{flex:1;overflow:auto;padding:16px 24px;width:100%;display:flex;justify-content:center}
+.lightbox-content{transform-origin:center top;transition:transform .2s ease;width:95%;max-width:1400px;margin:0 auto}
+.lightbox-content svg{height:auto!important;width:100%!important}
 .lightbox-hint{color:rgba(255,255,255,.5);font-size:11px;padding:8px 24px;text-align:center;flex-shrink:0}
 
+
+.zoom-btn{position:absolute;top:10px;right:10px;z-index:50;background:#1A237E;color:white;border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);transition:background .15s,transform .15s;display:flex;align-items:center;gap:5px}
+.zoom-btn:hover{background:#283593;transform:scale(1.05)}
+.zoom-btn svg{width:14px;height:14px;fill:white}
+.mermaid-wrap .mermaid-chart{overflow-x:auto;overflow-y:hidden;padding-bottom:8px}
 </style>
 </head>
 <body>
@@ -177,32 +182,32 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 <div class="badge" style="background:#EDE7F6;color:#4527A0">7 PHASES &middot; 3 IC GATES</div>
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
-flowchart LR
-  P1["Phase 1: Origination"]
-  G0{"Screen Fit?"}
-  P2["Phase 2: CIM and IOI"]
-  G1{"IC Gate 1: Approve IOI?"}
-  P3["Phase 3: Mgmt and LOI"]
-  G2{"IC Gate 2: Approve LOI?"}
-  LOI(["LOI Signed"])
-  P4["Phase 4: Due Diligence"]
-  P5["Phase 5: Underwriting"]
-  P6["Phase 6: IC Memo"]
-  G3{"IC Gate 3: Authorize SPA?"}
-  P7["Phase 7: Close"]
-  DONE(["CLOSES Apr 15 2026"])
-  PASS1["Pass"] 
-  PASS2["Decline"]
-  PASS3["Withdraw"]
-  KILL["Kill"]
+flowchart TB
+  subgraph ROW1["Deal Origination"]
+    direction LR
+    P1["1: Origination"]
+    G0{"Screen?"}
+    P2["2: CIM Review and IOI"]
+    G1{"IC Gate 1"}
+    P3["3: Mgmt Meetings and LOI"]
+    G2{"IC Gate 2"}
+  end
+  subgraph ROW2["Execution and Close"]
+    direction LR
+    LOI(["LOI Signed - Exclusivity"])
+    P4["4: Due Diligence"]
+    P5["5: Underwriting"]
+    P6["6: IC Memo Build"]
+    G3{"IC Gate 3"}
+    P7["7: Docs and Close"]
+    DONE(["CLOSES Apr 15 2026"])
+  end
   P1 --> G0
-  G0 -- No --> PASS1
-  G0 -- Yes --> P2
-  P2 --> G1
-  G1 -- No --> PASS2
-  G1 -- Yes --> P3
-  P3 --> G2
-  G2 -- No --> PASS3
+  G0 -- No --> PASS1["Pass"]
+  G0 -- Yes --> P2 --> G1
+  G1 -- No --> PASS2["Decline"]
+  G1 -- Yes --> P3 --> G2
+  G2 -- No --> PASS3["Withdraw"]
   G2 -- Yes --> LOI
   LOI --> P4
   LOI --> P5
@@ -210,9 +215,8 @@ flowchart LR
   P5 --> P6
   P6 --> G3
   G3 -- Revise --> P6
-  G3 -- Reject --> KILL
-  G3 -- Approved --> P7
-  P7 --> DONE
+  G3 -- Reject --> KILL["Kill"]
+  G3 -- Approved --> P7 --> DONE
   style P1 fill:#E65100,stroke:#FF9800,color:#FFF
   style P2 fill:#E65100,stroke:#FF9800,color:#FFF
   style P3 fill:#B71C1C,stroke:#EF5350,color:#FFF
@@ -230,6 +234,8 @@ flowchart LR
   style PASS2 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
   style PASS3 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
   style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
+  style ROW1 fill:none,stroke:#9E9E9E,stroke-width:1,stroke-dasharray:5
+  style ROW2 fill:none,stroke:#9E9E9E,stroke-width:1,stroke-dasharray:5
 </pre></div></div></div>
 
 <!-- PART A Phase 1: Origination -->
@@ -359,80 +365,58 @@ flowchart TB
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
   START(["LOI Signed - Exclusivity Active"])
-  subgraph FIN["Financial and QoE -- Greenbrook Advisory"]
-    DF1["Analyze 3yr audited financials plus interim"]
-    DF2["Validate EBITDA $30.5M, rev recognition"]
-    DF3["Deliver QoE Report - Nov 2025"]
+  START --> FIN_START
+  START --> LEG_START
+  START --> OTHER_START
+  START --> COM_START
+  subgraph FIN["Financial QoE - Greenbrook"]
+    FIN_START["Analyze 3yr audited plus interim"]
+    FIN_MID["Validate EBITDA $30.5M"]
+    FIN_END["Deliver QoE Report Nov 2025"]
   end
-  subgraph LEG["Legal -- Crawford Sterling LLP"]
-    DL1["Review material contracts, MSAs, CoC"]
-    DL2["Review litigation, regulatory, IP"]
-    DL3["Analyze consent requirements"]
-    DL4["Deliver Legal DD Memo - Dec 2025"]
+  subgraph LEG["Legal - Crawford Sterling"]
+    LEG_START["Review contracts, MSAs, CoC"]
+    LEG_MID["Litigation, regulatory, IP review"]
+    LEG_END["Deliver Legal DD Memo Dec 2025"]
   end
-  subgraph TAX["Tax -- Whitmore and Partners"]
-    DT1["Analyze returns, provisions, structuring"]
-    DT2["Deliver Tax DD Report"]
+  subgraph OTHER["Tax, Insurance, Environmental"]
+    OTHER_START["Tax: Whitmore and Partners"]
+    OTHER_INS["Insurance: Lakewood Risk - EMR 0.92"]
+    OTHER_ENV["Environmental: Clearwater"]
   end
-  subgraph INS["Insurance -- Lakewood Risk"]
-    DI1["Review policies, EMR 0.92, TRIR 2.8"]
-    DI2["Deliver Insurance Assessment"]
+  subgraph COM["Commercial - Deal Team"]
+    COM_START["Deep-dive VDR: 234 documents"]
+    COM_CUST["Customer reference calls Top 10"]
+    COM_SITE["Site visits Dallas HQ plus branches"]
+    COM_COMP["Competitive analysis and market"]
   end
-  subgraph ENV["Env -- Clearwater"]
-    DE1["Phase I ESAs, permits, hazmat"]
-    DE2["Deliver Environmental Report"]
-  end
-  subgraph COM["Commercial -- Deal Team"]
-    DC1["Deep-dive VDR: 234 documents"]
-    DC2["Customer reference calls - Top 10"]
-    DC3["Site visits - Dallas HQ plus branches"]
-    DC4["Competitive analysis and market data"]
-  end
-  DD_DONE(["All DD Workstreams Complete"])
-  START --> DF1
-  START --> DL1
-  START --> DT1
-  START --> DI1
-  START --> DE1
-  START --> DC1
-  DF1 --> DF2 --> DF3
-  DL1 --> DL2 --> DL3 --> DL4
-  DT1 --> DT2
-  DI1 --> DI2
-  DE1 --> DE2
-  DC1 --> DC2
-  DC1 --> DC3
-  DC1 --> DC4
-  DF3 --> DD_DONE
-  DL4 --> DD_DONE
-  DT2 --> DD_DONE
-  DI2 --> DD_DONE
-  DE2 --> DD_DONE
-  DC4 --> DD_DONE
-  style DF1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DF2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DF3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DL1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DL2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DL3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DL4 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DT1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DT2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DI1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DI2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DE1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DE2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
-  style DC1 fill:#E65100,stroke:#FF9800,color:#FFF
-  style DC2 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style DC3 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style DC4 fill:#E65100,stroke:#FF9800,color:#FFF
+  FIN_START --> FIN_MID --> FIN_END
+  LEG_START --> LEG_MID --> LEG_END
+  COM_START --> COM_CUST
+  COM_START --> COM_SITE
+  COM_START --> COM_COMP
+  FIN_END --> DONE(["All DD Complete"])
+  LEG_END --> DONE
+  OTHER_ENV --> DONE
+  COM_COMP --> DONE
+  style FIN_START fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style FIN_MID fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style FIN_END fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style LEG_START fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style LEG_MID fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style LEG_END fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style OTHER_START fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style OTHER_INS fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style OTHER_ENV fill:#0D47A1,stroke:#42A5F5,color:#FFF
+  style COM_START fill:#E65100,stroke:#FF9800,color:#FFF
+  style COM_CUST fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style COM_SITE fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style COM_COMP fill:#E65100,stroke:#FF9800,color:#FFF
   style START fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DD_DONE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style DONE fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style FIN fill:none,stroke:#42A5F5,stroke-width:2
   style LEG fill:none,stroke:#42A5F5,stroke-width:2
-  style TAX fill:none,stroke:#42A5F5,stroke-width:2
-  style INS fill:none,stroke:#42A5F5,stroke-width:2
-  style ENV fill:none,stroke:#42A5F5,stroke-width:2
+  style OTHER fill:none,stroke:#42A5F5,stroke-width:2
   style COM fill:none,stroke:#FF9800,stroke-width:2
 </pre></div></div></div>
 
@@ -446,33 +430,40 @@ flowchart TB
 </div>
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
-  QOE(["QoE Report from Phase 4"])
-  DD_DATA(["Commercial DD Data"])
-  PRELIM(["Prelim UW Model from Phase 3"])
-  subgraph MODEL["LBO Model and Valuation"]
-    E1["Build Full UW LBO Model - 3-stmt, S and U, debt sched"]
-    E2["S and U: TLA $100M, TLB $50M, Mezz $30M, Eq $119M"]
-    E3["Debt Schedule: SOFR spreads, amort, leverage 5.9x to 1.9x"]
-    E4["Returns: Base 35.2% IRR 4.2x, Down 31.6%, Up 44.4%"]
-    E5["Sensitivity: 6x6 IRR and MOIC matrices"]
-    E6["EBITDA Bridge: LTM $30.5M to $92.4M"]
-    E7["Comps: 7 public companies, median 10.9x"]
-    E8["Precedent Transactions: PE deal multiples"]
-    E9["DCF Cross-Check: WACC, terminal value"]
+  subgraph INPUTS["Inputs"]
+    direction LR
+    QOE(["QoE Report"])
+    DD_DATA(["Commercial DD"])
+    PRELIM(["Prelim Model"])
   end
-  subgraph DEBT["Financing"]
-    E10["Engage lender group: First National, Pacific Coast, Ridgeline"]
-    E11["Lender credit diligence and committee"]
-    E12["Commitment letters: TLA $100M, TLB $50M, Rev $30M, Mezz $30M"]
-  end
-  subgraph VCP["Value Creation"]
-    E13["VCP: Organic 6-8%, MA 8-12 tuck-ins, Margin +190-270bps"]
-    E14["Post-Close Cap Table: SRCP 65% Class A, Mgmt 17% Class B"]
-  end
-  READY(["Model Locked and Financing Committed"])
   QOE --> E1
   DD_DATA --> E1
   PRELIM --> E1
+  E1["Build Full UW LBO Model"]
+  subgraph VALUATION["Valuation Outputs"]
+    direction LR
+    E2["S and U Table"]
+    E3["Debt Schedule 5.9x to 1.9x"]
+    E4["Returns: 35% IRR, 4.2x MOIC"]
+    E5["Sensitivity Matrices"]
+  end
+  subgraph ANALYSIS["Supporting Analysis"]
+    direction LR
+    E6["EBITDA Bridge $30.5M to $92.4M"]
+    E7["Comps: 7 public cos"]
+    E8["Precedent Transactions"]
+    E9["DCF Cross-Check"]
+  end
+  subgraph FINANCING["Financing"]
+    E10["Engage lender group"]
+    E11["Lender credit diligence"]
+    E12["Commitments: TLA $100M, TLB $50M, Mezz $30M"]
+  end
+  subgraph VCP_S["Value Creation"]
+    direction LR
+    E13["VCP: Organic plus MA plus Margin"]
+    E14["Cap Table: SRCP 65%, Mgmt 17%"]
+  end
   E1 --> E2
   E1 --> E3
   E1 --> E4 --> E5
@@ -481,12 +472,10 @@ flowchart TB
   E1 --> E8
   E1 --> E9
   E1 --> E10 --> E11 --> E12
-  DD_DATA --> E13
   E1 --> E13
   E1 --> E14
-  E5 --> READY
+  E5 --> READY(["Model Locked and Financing Committed"])
   E12 --> READY
-  E13 --> READY
   style E1 fill:#E65100,stroke:#FF9800,color:#FFF
   style E2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style E3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
@@ -505,9 +494,11 @@ flowchart TB
   style DD_DATA fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style PRELIM fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style READY fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style MODEL fill:none,stroke:#4CAF50,stroke-width:2
-  style DEBT fill:none,stroke:#EF5350,stroke-width:2
-  style VCP fill:none,stroke:#FF9800,stroke-width:2
+  style INPUTS fill:none,stroke:#9E9E9E,stroke-width:1,stroke-dasharray:5
+  style VALUATION fill:none,stroke:#4CAF50,stroke-width:2
+  style ANALYSIS fill:none,stroke:#4CAF50,stroke-width:2
+  style FINANCING fill:none,stroke:#EF5350,stroke-width:2
+  style VCP_S fill:none,stroke:#FF9800,stroke-width:2
 </pre></div></div></div>
 
 <div class="milestone green"><h4>FINANCING COMMITTED and MODEL LOCKED — Ready for Final IC Memo Jan 2026</h4></div>
@@ -524,71 +515,63 @@ flowchart TB
 flowchart TB
   DD_IN(["DD Reports from Phase 4"])
   MODEL_IN(["LBO Model from Phase 5"])
-  subgraph DRAFT["IC Memo Sections"]
-    F1["Sec 1: Exec Summary - synthesizes all"]
-    F2["Sec 2: Company Overview"]
-    F3["Sec 3: Market Overview"]
-    F4["Sec 4: Financial Overview"]
-    F5["Sec 5: Investment Thesis"]
-    F6["Sec 6: Value Creation Plan"]
-    F7["Sec 7: DD Summary"]
-    F8["Sec 8: Transaction Structure"]
-    F9["Sec 9: Returns Analysis"]
-    F10["Sec 10: Risk Factors"]
-    F11["Sec 11: Governance"]
-    F12["Sec 12: IC Recommendation"]
-  end
-  subgraph SUPPORT["Supporting Exhibits"]
-    FS1["Risk Factor Matrix"]
-    FS2["Governance Framework"]
-    FS3["KPI Dashboard"]
-    FS4["Competitive Benchmarking"]
-    FS5["Third-Party Reports Summary"]
-    FS6["Appendices A through O"]
-  end
-  REVIEW["Senior Review: VP, Principal, Partner"]
-  IC{"IC GATE 3: Authorize SPA?"}
-  APPROVED(["IC APPROVED Feb 2026"])
-  REVISE["Revise"]
-  KILL["Kill Deal"]
   DD_IN --> F7
   DD_IN --> F10
   MODEL_IN --> F4
   MODEL_IN --> F8
   MODEL_IN --> F9
+  subgraph SECTIONS["12 IC Memo Sections"]
+    F1["1: Executive Summary"]
+    F2["2: Company Overview"]
+    F3["3: Market Overview"]
+    F4["4: Financial Overview"]
+    F5["5: Investment Thesis"]
+    F6["6: Value Creation Plan"]
+    F7["7: DD Summary"]
+    F8["8: Transaction Structure"]
+    F9["9: Returns Analysis"]
+    F10["10: Risk Factors"]
+    F11["11: Governance"]
+    F12["12: IC Recommendation"]
+  end
+  subgraph EXHIBITS["Supporting Exhibits"]
+    direction LR
+    FS1["Risk Matrix"]
+    FS2["Governance"]
+    FS3["KPI Dash"]
+    FS4["Comp Bench"]
+    FS5["Reports Summary"]
+    FS6["Appendices A-O"]
+  end
   F5 --> F1
   F4 --> F1
   F9 --> F1
   FS1 --> F10
-  FS2 --> F11
   FS3 --> F4
   FS4 --> F3
-  FS5 --> F7
   FS6 --> F12
-  F1 --> REVIEW
+  F1 --> REVIEW["Senior Review: VP, Principal, Partner"]
   F2 --> REVIEW
   F3 --> REVIEW
   F5 --> REVIEW
-  F6 --> REVIEW
   F7 --> REVIEW
   F8 --> REVIEW
   F9 --> REVIEW
   F10 --> REVIEW
-  F11 --> REVIEW
   F12 --> REVIEW
-  REVIEW --> IC
-  IC -- Conditional --> REVISE --> REVIEW
-  IC -- Reject --> KILL
-  IC -- APPROVED --> APPROVED
+  REVIEW --> IC{"IC GATE 3: Authorize SPA?"}
+  IC -- Conditional --> REVISE["Revise"] --> REVIEW
+  IC -- Reject --> KILL["Kill Deal"]
+  IC -- APPROVED --> OK(["IC APPROVED Feb 2026"])
+  style F1 fill:#E65100,stroke:#FF9800,color:#FFF
   style F2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style F3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style F4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F9 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style F1 fill:#E65100,stroke:#FF9800,color:#FFF
   style F5 fill:#E65100,stroke:#FF9800,color:#FFF
   style F6 fill:#E65100,stroke:#FF9800,color:#FFF
   style F7 fill:#E65100,stroke:#FF9800,color:#FFF
+  style F8 fill:#1B5E20,stroke:#4CAF50,color:#FFF
+  style F9 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style F10 fill:#E65100,stroke:#FF9800,color:#FFF
   style F11 fill:#E65100,stroke:#FF9800,color:#FFF
   style F12 fill:#E65100,stroke:#FF9800,color:#FFF
@@ -600,13 +583,13 @@ flowchart TB
   style FS6 fill:#E65100,stroke:#FF9800,color:#FFF
   style REVIEW fill:#B71C1C,stroke:#EF5350,color:#FFF
   style IC fill:#FFF,stroke:#C62828,stroke-width:3,color:#C62828
-  style APPROVED fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
+  style OK fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style REVISE fill:#FFF3E0,stroke:#FF9800,color:#E65100
   style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
   style DD_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style MODEL_IN fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-  style DRAFT fill:none,stroke:#4CAF50,stroke-width:2
-  style SUPPORT fill:none,stroke:#9E9E9E,stroke-width:1
+  style SECTIONS fill:none,stroke:#4CAF50,stroke-width:2
+  style EXHIBITS fill:none,stroke:#9E9E9E,stroke-width:1
 </pre></div></div></div>
 
 <div class="milestone green"><h4>IC APPROVED — Authorized to Execute Definitive Documentation Feb 2026</h4></div>
@@ -622,46 +605,42 @@ flowchart TB
 <div class="phase-body"><div class="mermaid-wrap"><pre class="mermaid">
 flowchart TB
   IC_IN(["IC Approved"])
-  subgraph LEGAL["Legal"]
-    G1["Negotiate and execute SPA"]
-    G2["Finalize disclosure schedules"]
-    G3["Escrow agreement"]
-  end
-  subgraph FINANCE["Financing"]
-    G4["Senior Credit Agreement: $100M TLA plus $50M TLB"]
-    G5["Mezzanine Agreement: $30M, 12%/2%PIK"]
-    G6["Revolver $30M, pledge agreements"]
-  end
-  subgraph MGMT["Management"]
-    G7["Rollover agreements: $25M into Class B"]
-    G8["Employment agreements: CEO, CFO, COO, MIP"]
-  end
-  subgraph REG["Regulatory"]
-    G9["HSR antitrust filing"]
-    G10["Third-party consents: landlords, customers, OEMs"]
-  end
-  G11["Capital call memo to LPs: $119M"]
-  G12["Closing checklist and funds flow"]
-  CHECK{"All conditions satisfied?"}
-  RESOLVE["Resolve open items"]
-  CLOSE(["CLOSES April 15, 2026"])
   IC_IN --> G1
   IC_IN --> G4
   IC_IN --> G7
   IC_IN --> G9
   IC_IN --> G11
+  subgraph LEGAL["Legal Docs"]
+    G1["Negotiate SPA"]
+    G2["Disclosure Schedules"]
+    G3["Escrow Agreement"]
+  end
+  subgraph FIN_D["Financing Docs"]
+    G4["Senior Credit: TLA $100M plus TLB $50M"]
+    G5["Mezzanine: $30M 12%/2% PIK"]
+    G6["Revolver $30M, Pledges"]
+  end
+  subgraph MGMT_D["Management"]
+    G7["Rollover: $25M Class B"]
+    G8["Employment: CEO, CFO, COO, MIP"]
+  end
+  subgraph REG_D["Regulatory"]
+    G9["HSR Antitrust Filing"]
+    G10["Third-Party Consents"]
+  end
+  G11["Capital Call Memo: $119M"]
   G1 --> G2 --> G3
   G4 --> G5 --> G6
   G7 --> G8
   G9 --> G10
-  G3 --> G12
+  G3 --> G12["Closing Checklist and Funds Flow"]
   G6 --> G12
   G8 --> G12
-  G10 --> CHECK
+  G10 --> CHECK{"All Conditions Met?"}
   G11 --> G12
   G12 --> CHECK
-  CHECK -- No --> RESOLVE --> CHECK
-  CHECK -- Yes --> CLOSE
+  CHECK -- No --> RESOLVE["Resolve"] --> CHECK
+  CHECK -- Yes --> CLOSE(["CLOSES April 15, 2026"])
   style G1 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G2 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G3 fill:#B71C1C,stroke:#EF5350,color:#FFF
@@ -679,9 +658,9 @@ flowchart TB
   style RESOLVE fill:#FFF3E0,stroke:#FF9800,color:#E65100
   style CLOSE fill:#1A237E,stroke:#5C6BC0,color:#FFF
   style LEGAL fill:none,stroke:#EF5350,stroke-width:2
-  style FINANCE fill:none,stroke:#EF5350,stroke-width:2
-  style MGMT fill:none,stroke:#EF5350,stroke-width:2
-  style REG fill:none,stroke:#EF5350,stroke-width:2
+  style FIN_D fill:none,stroke:#EF5350,stroke-width:2
+  style MGMT_D fill:none,stroke:#EF5350,stroke-width:2
+  style REG_D fill:none,stroke:#EF5350,stroke-width:2
 </pre></div></div></div>
 
 <div class="milestone navy-m">
@@ -1803,22 +1782,31 @@ function lbOpen(wrap) {
   const svg = wrap.querySelector('svg');
   if (!svg) return;
   const card = wrap.closest('.phase-card');
-  const title = card ? (card.querySelector('h2')?.textContent || 'Flowchart') : 'Flowchart';
+  let title = 'Flowchart';
+  if (card) {
+    const h2 = card.querySelector('h2');
+    if (h2) title = h2.textContent;
+  }
   document.getElementById('lightbox-title').textContent = title;
   const clone = svg.cloneNode(true);
-  // Get original dimensions for proper display
   const vb = svg.getAttribute('viewBox');
-  const origW = svg.getAttribute('width') || svg.style.width;
-  const origH = svg.getAttribute('height') || svg.style.height;
+  // Get computed dimensions as fallback
+  const rect = svg.getBoundingClientRect();
   clone.removeAttribute('width');
   clone.removeAttribute('height');
   clone.removeAttribute('style');
+  clone.removeAttribute('class');
+  // Set viewBox if missing (use computed dimensions)
+  if (!vb && rect.width > 0) {
+    clone.setAttribute('viewBox', '0 0 ' + Math.round(rect.width) + ' ' + Math.round(rect.height));
+  }
   clone.style.width = '100%';
-  clone.style.minWidth = '900px';
   clone.style.height = 'auto';
   clone.style.maxWidth = 'none';
   clone.style.display = 'block';
-  if (vb) clone.setAttribute('viewBox', vb);
+  clone.style.background = 'white';
+  clone.style.borderRadius = '12px';
+  clone.style.padding = '24px';
   const content = document.getElementById('lightbox-content');
   content.innerHTML = '';
   content.appendChild(clone);
@@ -1867,16 +1855,47 @@ document.getElementById('lightbox-body').addEventListener('wheel', function(e) {
   }
 }, {passive: false});
 
-// Attach click handlers after mermaid renders
+// Inject zoom buttons and attach click handlers
 function attachLightbox() {
   document.querySelectorAll('.mermaid-wrap').forEach(function(wrap) {
-    wrap.addEventListener('click', function() { lbOpen(this); });
+    // Check if SVG has rendered inside this wrap
+    var svg = wrap.querySelector('svg');
+    if (!svg) return;
+    if (wrap.dataset.lbReady) return;
+    wrap.dataset.lbReady = '1';
+    
+    // Inject a visible zoom button
+    var btn = document.createElement('button');
+    btn.className = 'zoom-btn';
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/><path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z"/></svg> Zoom';
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      lbOpen(wrap);
+    });
+    wrap.style.position = 'relative';
+    wrap.appendChild(btn);
+    
+    // Also make the whole chart area clickable
+    wrap.style.cursor = 'pointer';
+    wrap.addEventListener('click', function(e) {
+      if (e.target.closest('.zoom-btn')) return;
+      if (e.target.closest('a')) return;
+      lbOpen(this);
+    });
   });
 }
 
-// Wait for mermaid to finish rendering
-setTimeout(attachLightbox, 2000);
-setTimeout(attachLightbox, 4000);
+// Use MutationObserver to detect when mermaid SVGs appear
+var lbObserver = new MutationObserver(function(mutations) {
+  for (var m of mutations) {
+    if (m.addedNodes.length) { attachLightbox(); break; }
+  }
+});
+lbObserver.observe(document.body, {childList: true, subtree: true});
+// Fallback timers
+[1000, 2000, 3500, 5000, 8000, 12000].forEach(function(t) {
+  setTimeout(attachLightbox, t);
+});
 </script>
 
 </body></html>
