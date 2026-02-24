@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LBO IC Memo Build Workflow — LLM Capability Classification</title>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 <style>
   :root {
     --navy: #1A237E; --navy-light: #283593; --indigo: #5C6BC0;
@@ -18,10 +17,8 @@
   .container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
   .header { text-align: center; margin-bottom: 32px; }
   .header h1 { font-size: 28px; font-weight: 800; color: var(--navy); }
-  .header .sub { font-size: 18px; color: var(--indigo); margin-top: 4px; }
+  .header .sub { font-size: 18px; color: var(--indigo); margin-top: 4px; font-weight: 500; }
   .header .meta { font-size: 13px; color: #757575; margin-top: 8px; }
-
-  /* Stats */
   .stats { background: white; border-radius: 16px; padding: 24px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border: 1px solid #E0E0E0; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
   .stats-total { font-size: 36px; font-weight: 800; color: var(--navy); }
   .stats-total span { font-size: 14px; font-weight: 400; color: #757575; margin-left: 8px; }
@@ -32,121 +29,87 @@
   .stat-num .p { font-size: 11px; color: rgba(255,255,255,.7); }
   .stat-label { font-size: 13px; font-weight: 700; }
   .stat-desc { font-size: 11px; color: #757575; }
-  .bar { margin-top: 16px; height: 8px; border-radius: 99px; overflow: hidden; display: flex; width: 100%; }
-  .bar-labels { display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: #9E9E9E; width: 100%; }
-
-  /* Legend */
+  .bar-wrap { background: white; border-radius: 0 0 16px 16px; padding: 0 24px 16px; margin-top: -20px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border: 1px solid #E0E0E0; border-top: 0; }
+  .bar { height: 8px; border-radius: 99px; overflow: hidden; display: flex; margin-top: 16px; }
+  .bar-labels { display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: #9E9E9E; }
   .legend { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 24px; }
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #616161; }
   .legend-dot { width: 14px; height: 14px; border-radius: 3px; }
-
-  /* Phase sections */
   .phase { background: white; border-radius: 16px; padding: 28px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,.08); border: 1px solid #E0E0E0; }
-  .phase-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; cursor: pointer; }
+  .phase-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
   .phase-head .num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; color: white; font-size: 16px; flex-shrink: 0; }
   .phase-head h2 { font-size: 18px; font-weight: 700; color: var(--navy); flex: 1; }
   .phase-head .timing { font-size: 12px; color: #9E9E9E; font-weight: 500; white-space: nowrap; }
   .phase-head .badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 99px; white-space: nowrap; }
-  .phase .mermaid { width: 100%; overflow-x: auto; }
-  .phase .mermaid svg { max-width: 100%; height: auto; }
-
-  /* Milestone bars */
+  .phase .mermaid-wrap { width: 100%; overflow-x: auto; }
   .milestone { margin: 0 0 24px 0; padding: 14px 24px; border-radius: 10px; text-align: center; }
   .milestone.green { background: #E8F5E9; border: 2px solid #4CAF50; }
   .milestone.green h4 { color: #1B5E20; font-size: 14px; }
   .milestone.navy-m { background: linear-gradient(135deg, #1A237E, #283593); border: 2px solid #5C6BC0; }
   .milestone.navy-m h4 { color: white; font-size: 16px; }
   .milestone.navy-m p { color: #C5CAE9; font-size: 13px; margin-top: 4px; }
-
   .footer { text-align: center; margin-top: 24px; font-size: 11px; color: #9E9E9E; }
-
-  @media (max-width: 768px) {
-    .stats { flex-direction: column; align-items: flex-start; }
-    .phase { padding: 16px; }
-  }
+  @media (max-width: 768px) { .stats { flex-direction: column; align-items: flex-start; } .phase { padding: 16px; } }
 </style>
 </head>
 <body>
-
 <div class="container">
 
-  <!-- HEADER -->
   <div class="header">
     <h1>LBO IC Memo Build Workflow</h1>
     <div class="sub">LLM Capability Classification — All Steps, All Phases</div>
-    <div class="meta">Project Gate — Gate Doors & Equipment Industries, Inc. — $320M EV — Target Close: April 15, 2026</div>
+    <div class="meta">Project Gate — Gate Doors &amp; Equipment Industries, Inc. — $320M EV — Target Close: April 15, 2026</div>
   </div>
 
-  <!-- STATS -->
   <div class="stats">
-    <div><span class="stats-total">66<span>Total Tasks · 7 Phases · 3 IC Gates</span></span></div>
+    <div><span class="stats-total">66<span>Total Tasks &middot; 7 Phases &middot; 3 IC Gates</span></span></div>
     <div class="stat-boxes">
-      <div class="stat-box">
-        <div class="stat-num" style="background:#1B5E20"><div class="c">14</div><div class="p">21%</div></div>
-        <div><div class="stat-label" style="color:#1B5E20">FULL LLM</div><div class="stat-desc">Autonomous generation</div></div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num" style="background:#E65100"><div class="c">21</div><div class="p">32%</div></div>
-        <div><div class="stat-label" style="color:#E65100">LLM-ASSISTED</div><div class="stat-desc">LLM drafts, human reviews</div></div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num" style="background:#B71C1C"><div class="c">18</div><div class="p">27%</div></div>
-        <div><div class="stat-label" style="color:#B71C1C">HUMAN-ONLY</div><div class="stat-desc">Professional judgment</div></div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num" style="background:#0D47A1"><div class="c">13</div><div class="p">20%</div></div>
-        <div><div class="stat-label" style="color:#0D47A1">THIRD-PARTY</div><div class="stat-desc">Advisor deliverables</div></div>
-      </div>
+      <div class="stat-box"><div class="stat-num" style="background:#1B5E20"><div class="c">14</div><div class="p">21%</div></div><div><div class="stat-label" style="color:#1B5E20">FULL LLM</div><div class="stat-desc">Autonomous generation</div></div></div>
+      <div class="stat-box"><div class="stat-num" style="background:#E65100"><div class="c">21</div><div class="p">32%</div></div><div><div class="stat-label" style="color:#E65100">LLM-ASSISTED</div><div class="stat-desc">LLM drafts, human reviews</div></div></div>
+      <div class="stat-box"><div class="stat-num" style="background:#B71C1C"><div class="c">18</div><div class="p">27%</div></div><div><div class="stat-label" style="color:#B71C1C">HUMAN-ONLY</div><div class="stat-desc">Professional judgment</div></div></div>
+      <div class="stat-box"><div class="stat-num" style="background:#0D47A1"><div class="c">13</div><div class="p">20%</div></div><div><div class="stat-label" style="color:#0D47A1">THIRD-PARTY</div><div class="stat-desc">Advisor deliverables</div></div></div>
     </div>
   </div>
-  <div style="background:white;border-radius:16px;padding:0 24px 16px;margin-top:-20px;margin-bottom:28px;box-shadow:0 1px 3px rgba(0,0,0,.08);border:1px solid #E0E0E0">
-    <div class="bar" style="margin-top:16px">
-      <div style="width:21%;background:#4CAF50"></div>
-      <div style="width:32%;background:#FF9800"></div>
-      <div style="width:27%;background:#EF5350"></div>
-      <div style="width:20%;background:#42A5F5"></div>
-    </div>
-    <div class="bar-labels"><span>← Fully Automated</span><span>Human Judgment →</span></div>
+  <div class="bar-wrap">
+    <div class="bar"><div style="width:21%;background:#4CAF50"></div><div style="width:32%;background:#FF9800"></div><div style="width:27%;background:#EF5350"></div><div style="width:20%;background:#42A5F5"></div></div>
+    <div class="bar-labels"><span>Fully Automated</span><span>Human Judgment Required</span></div>
   </div>
 
-  <!-- LEGEND -->
   <div class="legend">
-    <div class="legend-item"><div class="legend-dot" style="background:#1B5E20"></div>🟢 FULL LLM — Autonomous from structured data</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#E65100"></div>🟡 LLM-ASSISTED — LLM drafts, human reviews</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#B71C1C"></div>🔴 HUMAN-ONLY — Professional judgment required</div>
-    <div class="legend-item"><div class="legend-dot" style="background:#0D47A1"></div>🔵 THIRD-PARTY — External advisor deliverable</div>
-    <div class="legend-item"><div class="legend-dot" style="background:white;border:2px solid #C62828"></div>◇ Decision Gate — IC approval checkpoint</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1B5E20"></div>FULL LLM — Autonomous from structured data</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E65100"></div>LLM-ASSISTED — LLM drafts, human reviews</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#B71C1C"></div>HUMAN-ONLY — Professional judgment required</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#0D47A1"></div>THIRD-PARTY — External advisor deliverable</div>
+    <div class="legend-item"><div class="legend-dot" style="background:white;border:2px solid #C62828"></div>Decision Gate — IC approval checkpoint</div>
   </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- MASTER OVERVIEW -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ MASTER OVERVIEW ══════ -->
   <div class="phase">
     <div class="phase-head">
-      <div class="num" style="background:var(--navy)">⊕</div>
+      <div class="num" style="background:var(--navy)">M</div>
       <h2>Master Overview — Full Deal Process</h2>
-      <div class="badge" style="background:#EDE7F6;color:#4527A0">7 PHASES · 3 IC GATES</div>
+      <div class="badge" style="background:#EDE7F6;color:#4527A0">7 PHASES</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart LR
-  P1["Phase 1<br/>Origination<br/>1-2 wks"]
-  G0{"Screen<br/>Fit?"}
-  P2["Phase 2<br/>CIM & IOI<br/>2-4 wks"]
-  G1{"IC Gate 1<br/>Approve<br/>IOI?"}
-  P3["Phase 3<br/>Mgmt & LOI<br/>2-6 wks"]
-  G2{"IC Gate 2<br/>Approve<br/>LOI?"}
-  LOI(["LOI Signed<br/>Exclusivity"])
-  P4["Phase 4<br/>Due Diligence<br/>4-12 wks"]
-  P5["Phase 5<br/>Underwriting<br/>4-12 wks"]
-  P6["Phase 6<br/>IC Memo<br/>2-4 wks"]
-  G3{"IC Gate 3<br/>Authorize<br/>SPA?"}
-  P7["Phase 7<br/>Close<br/>4-8 wks"]
-  DONE(["CLOSES<br/>Apr 15 2026"])
+  P1["Phase 1: Origination"]
+  G0{"Screen Fit?"}
+  P2["Phase 2: CIM and IOI"]
+  G1{"IC Gate 1: Approve IOI?"}
+  P3["Phase 3: Mgmt and LOI"]
+  G2{"IC Gate 2: Approve LOI?"}
+  LOI(["LOI Signed"])
+  P4["Phase 4: Due Diligence"]
+  P5["Phase 5: Underwriting"]
+  P6["Phase 6: IC Memo"]
+  G3{"IC Gate 3: Authorize SPA?"}
+  P7["Phase 7: Close"]
+  DONE(["CLOSES Apr 15 2026"])
   PASS1["Pass"]
   PASS2["Decline"]
   PASS3["Withdraw"]
   KILL["Kill"]
-
   P1 --> G0
   G0 -- No --> PASS1
   G0 -- Yes --> P2
@@ -165,7 +128,6 @@ flowchart LR
   G3 -- Reject --> KILL
   G3 -- Approved --> P7
   P7 --> DONE
-
   style P1 fill:#E65100,stroke:#FF9800,color:#FFF
   style P2 fill:#E65100,stroke:#FF9800,color:#FFF
   style P3 fill:#B71C1C,stroke:#EF5350,color:#FFF
@@ -183,39 +145,37 @@ flowchart LR
   style PASS2 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
   style PASS3 fill:#E0E0E0,stroke:#9E9E9E,color:#616161
   style KILL fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PHASE 1: ORIGINATION -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ PHASE 1 ══════ -->
   <div class="phase">
     <div class="phase-head">
       <div class="num" style="background:#E65100">1</div>
-      <h2>Phase 1: Origination & Screening</h2>
+      <h2>Phase 1: Origination and Screening</h2>
       <div class="timing">1-2 Weeks</div>
       <div class="badge" style="background:#FFF3E0;color:#E65100">3 TASKS</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart TB
-  A1["Sell-Side Advisor:<br/>Distribute teaser<br/>to sponsor universe"]
-  A2["Deal Team:<br/>Evaluate teaser against<br/>fund mandate criteria<br/>(sector, size, geography,<br/>return profile)"]
-  A3{"Mandate<br/>Fit?"}
-  A4["Deal Team:<br/>Prepare & execute NDA<br/>with sell-side advisor"]
-  A5["Deal Team:<br/>Draft Initial Screening Memo<br/>• Go/no-go recommendation<br/>• Key risks & open questions<br/>• Preliminary valuation framing"]
-  A6{"Proceed<br/>to CIM?"}
-  PASS["Pass on<br/>opportunity"]
-  NEXT(["→ Phase 2:<br/>CIM Review"])
-
+  A1["Sell-Side Advisor: Distribute teaser to sponsor universe"]
+  A2["Deal Team: Evaluate teaser against fund mandate criteria - sector, size, geography, return profile"]
+  A3{"Mandate Fit?"}
+  A4["Deal Team: Prepare and execute NDA with sell-side advisor"]
+  A5["Deal Team: Draft Initial Screening Memo - Go/no-go recommendation - Key risks and open questions - Preliminary valuation framing"]
+  A6{"Proceed to CIM?"}
+  PASS["Pass on opportunity"]
+  NEXT(["To Phase 2: CIM Review"])
   A1 --> A2
   A2 --> A3
-  A3 -- "No" --> PASS
-  A3 -- "Yes" --> A4
+  A3 -- No --> PASS
+  A3 -- Yes --> A4
   A4 --> A5
   A5 --> A6
-  A6 -- "No" --> PASS
-  A6 -- "Yes" --> NEXT
-
+  A6 -- No --> PASS
+  A6 -- Yes --> NEXT
   style A1 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style A2 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style A4 fill:#E65100,stroke:#FF9800,color:#FFF
@@ -224,41 +184,39 @@ flowchart TB
   style A6 fill:#FFF,stroke:#C62828,color:#C62828
   style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
   style NEXT fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PHASE 2: CIM & IOI -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ PHASE 2 ══════ -->
   <div class="phase">
     <div class="phase-head">
       <div class="num" style="background:#E65100">2</div>
-      <h2>Phase 2: CIM Review & First-Round Bid (IOI)</h2>
+      <h2>Phase 2: CIM Review and First-Round Bid</h2>
       <div class="timing">2-4 Weeks</div>
       <div class="badge" style="background:#FFF3E0;color:#E65100">7 TASKS</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart TB
-  B0(["Receive CIM &<br/>Process Letter<br/>from Sell-Side"])
-  B1["Deal Team: Deep-dive CIM<br/>• Business model & revenue composition<br/>• Financial performance & trends<br/>• Market positioning & competition<br/>• Key risks & open questions"]
-  B2["Deal Team: Build Mini Model<br/>• Preliminary LBO from CIM data<br/>• Entry valuation range<br/>• Indicative S&U structure<br/>• Returns at multiple scenarios"]
-  B3["Deal Team: Solicit indicative<br/>financing terms from lenders<br/>• Leverage capacity<br/>• Pricing expectations<br/>• Structure options"]
-  B4["Deal Team: Draft Initial IC Memo<br/>• 5-15 page pre-IOI document<br/>• Company overview & thesis<br/>• Preliminary returns<br/>• Key risks & open items"]
-  B5{"IC GATE 1:<br/>Approve IOI<br/>Submission?"}
-  B6["Deal Team: Draft & Submit IOI<br/>• Valuation range<br/>• Equity commitment<br/>• DD scope & timeline<br/>• Key structural terms"]
-  IOI(["✓ IOI SUBMITTED<br/>→ Phase 3"])
-  PASS["Decline<br/>to bid"]
-
+  B0(["Receive CIM and Process Letter from Sell-Side"])
+  B1["Deal Team: Deep-dive CIM - Business model, revenue composition - Financial performance and trends - Market positioning, competition - Key risks and open questions"]
+  B2["Deal Team: Build Mini Model - Preliminary LBO from CIM data - Entry valuation range - Indicative S and U structure - Returns at multiple scenarios"]
+  B3["Deal Team: Solicit indicative financing terms from lenders - Leverage capacity - Pricing expectations"]
+  B4["Deal Team: Draft Initial IC Memo - 5-15 page pre-IOI document - Company overview and thesis - Preliminary returns - Key risks and open items"]
+  B5{"IC GATE 1: Approve IOI Submission?"}
+  B6["Deal Team: Draft and Submit IOI - Valuation range - Equity commitment - DD scope and timeline"]
+  IOI(["IOI SUBMITTED"])
+  PASS["Decline to bid"]
   B0 --> B1
   B1 --> B2
   B1 --> B3
   B2 --> B4
   B3 --> B4
   B4 --> B5
-  B5 -- "No-Go" --> PASS
-  B5 -- "Approved" --> B6
+  B5 -- No-Go --> PASS
+  B5 -- Approved --> B6
   B6 --> IOI
-
   style B0 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style B1 fill:#E65100,stroke:#FF9800,color:#FFF
   style B2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
@@ -268,35 +226,34 @@ flowchart TB
   style B5 fill:#FFF,stroke:#C62828,color:#C62828
   style IOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <div class="milestone green"><h4>✓ IOI SUBMITTED — Invited to Second Round / Management Meetings</h4></div>
+  <div class="milestone green"><h4>IOI SUBMITTED — Invited to Second Round / Management Meetings</h4></div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PHASE 3: MANAGEMENT & LOI -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ PHASE 3 ══════ -->
   <div class="phase">
     <div class="phase-head">
       <div class="num" style="background:#B71C1C">3</div>
-      <h2>Phase 3: Management Meetings & LOI</h2>
+      <h2>Phase 3: Management Meetings and LOI</h2>
       <div class="timing">2-6 Weeks</div>
       <div class="badge" style="background:#FFEBEE;color:#B71C1C">8 TASKS</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart TB
-  C1["Deal Team: Attend management<br/>presentations<br/>• Assess depth & credibility<br/>• Evaluate chemistry & alignment<br/>• Founder-to-PE transition dynamics"]
-  C2["Deal Team: Log detailed Q&A<br/>• Operational specifics<br/>• Growth plans & track record<br/>• Risk awareness & mitigation"]
-  C3["Deal Team: Receive VDR access<br/>• Initial review of 234 documents<br/>• 15 sections across all DD areas<br/>• Identify critical early reads"]
-  C4["Deal Team: Prepare DDRL<br/>• Comprehensive request list<br/>• Diligence roadmap & timelines<br/>• Workstream assignments"]
-  C5["Deal Team: Retain advisors<br/>• QoE: Greenbrook Advisory<br/>• Legal: Crawford Sterling LLP<br/>• Tax: Whitmore & Partners<br/>• Insurance: Lakewood Risk<br/>• Env: Clearwater Environmental"]
-  C6["Deal Team: Evolve Mini Model<br/>into Preliminary UW Model<br/>• Incorporate early VDR data<br/>• Refine assumptions<br/>• Update returns"]
-  C7["Deal Team: Draft LOI<br/>• EV: $320M (10.5x EBITDA)<br/>• SRCP equity: $119M (65%)<br/>• Mgmt rollover: ~$25M (17%)<br/>• Exclusivity period terms"]
-  C8{"IC GATE 2:<br/>Approve LOI /<br/>Binding Bid?"}
-  C9["Submit LOI to<br/>Meridian Capital"]
-  LOI(["✓ LOI SIGNED<br/>Exclusivity Granted<br/>October 2025"])
+  C1["Deal Team: Attend management presentations - Assess depth and credibility - Evaluate chemistry and alignment - Founder-to-PE transition dynamics"]
+  C2["Deal Team: Log detailed Q and A - Operational specifics - Growth plans and track record"]
+  C3["Deal Team: Receive VDR access - Initial review of 234 documents - 15 sections across all DD areas"]
+  C4["Deal Team: Prepare DDRL - Comprehensive request list - Diligence roadmap and timelines"]
+  C5["Deal Team: Retain advisors - QoE: Greenbrook Advisory - Legal: Crawford Sterling LLP - Tax: Whitmore and Partners - Insurance: Lakewood Risk - Env: Clearwater Environmental"]
+  C6["Deal Team: Evolve Mini Model into Preliminary UW Model - Incorporate early VDR data - Refine assumptions"]
+  C7["Deal Team: Draft LOI - EV: $320M at 10.5x EBITDA - SRCP equity: $119M at 65 pct - Mgmt rollover: $25M at 17 pct"]
+  C8{"IC GATE 2: Approve LOI?"}
+  C9["Submit LOI to Meridian Capital"]
+  LOI(["LOI SIGNED - Exclusivity Granted Oct 2025"])
   PASS["Withdraw"]
-
   C1 --> C2
   C1 --> C3
   C2 --> C4
@@ -306,10 +263,9 @@ flowchart TB
   C5 --> C7
   C6 --> C7
   C7 --> C8
-  C8 -- "No-Go" --> PASS
-  C8 -- "Approved" --> C9
+  C8 -- No-Go --> PASS
+  C8 -- Approved --> C9
   C9 --> LOI
-
   style C1 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style C2 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style C3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
@@ -321,69 +277,60 @@ flowchart TB
   style C8 fill:#FFF,stroke:#C62828,color:#C62828
   style LOI fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
   style PASS fill:#E0E0E0,stroke:#9E9E9E,color:#616161
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <div class="milestone green"><h4>✓ LOI SIGNED — Exclusivity Granted — Confirmatory DD Commences (October 2025)</h4></div>
+  <div class="milestone green"><h4>LOI SIGNED — Exclusivity Granted — Confirmatory DD Commences October 2025</h4></div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PHASE 4: DUE DILIGENCE -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ PHASE 4 ══════ -->
   <div class="phase">
     <div class="phase-head">
       <div class="num" style="background:#0D47A1">4</div>
       <h2>Phase 4: Confirmatory Due Diligence</h2>
       <div class="timing">4-12 Weeks Post-LOI</div>
-      <div class="badge" style="background:#E3F2FD;color:#0D47A1">18 TASKS · 6 WORKSTREAMS</div>
+      <div class="badge" style="background:#E3F2FD;color:#0D47A1">18 TASKS</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart TB
-  START(["LOI Signed<br/>Exclusivity Active"])
-
-  subgraph FIN["Financial & QoE — Greenbrook Advisory"]
-    D_F1["Analyze 3yr audited financials<br/>+ YTD interim statements<br/>(VDR 3.01-3.08)"]
-    D_F2["Validate EBITDA ($30.5M)<br/>Revenue recognition<br/>NWC requirements"]
-    D_F3["Deliver Quality of<br/>Earnings Report<br/>(November 2025)"]
+  START(["LOI Signed - Exclusivity Active"])
+  subgraph FIN["Financial and QoE — Greenbrook Advisory"]
+    D_F1["Analyze 3yr audited financials plus YTD interim statements"]
+    D_F2["Validate EBITDA of $30.5M - Revenue recognition - NWC requirements"]
+    D_F3["Deliver Quality of Earnings Report - November 2025"]
   end
-
   subgraph LEG["Legal — Crawford Sterling LLP"]
-    D_L1["Review material contracts<br/>MSAs, PM contracts<br/>CoC provisions (VDR 4, 5, 13)"]
-    D_L2["Review litigation, regulatory<br/>IP, trademarks (VDR 7, 9, 12)"]
-    D_L3["Analyze consent requirements<br/>Prepare consent matrix"]
-    D_L4["Deliver Legal DD<br/>Memorandum<br/>(December 2025)"]
+    D_L1["Review material contracts - MSAs, PM contracts - CoC provisions"]
+    D_L2["Review litigation, regulatory - IP, trademarks"]
+    D_L3["Analyze consent requirements - Prepare consent matrix"]
+    D_L4["Deliver Legal DD Memorandum - December 2025"]
   end
-
-  subgraph TAX["Tax — Whitmore & Partners"]
-    D_T1["Analyze returns, provisions<br/>ASC 740, structuring<br/>(VDR 3.22-3.24)"]
+  subgraph TAX["Tax — Whitmore and Partners"]
+    D_T1["Analyze returns, provisions - ASC 740, structuring"]
     D_T2["Deliver Tax DD Report"]
   end
-
   subgraph INS["Insurance — Lakewood Risk"]
-    D_I1["Review policies, EMR (0.92)<br/>TRIR (2.8), WC claims<br/>(VDR Sections 10-11)"]
-    D_I2["Deliver Insurance<br/>Assessment Report"]
+    D_I1["Review policies - EMR: 0.92 - TRIR: 2.8 - WC claims"]
+    D_I2["Deliver Insurance Assessment Report"]
   end
-
   subgraph ENV["Environmental — Clearwater"]
-    D_E1["Phase I ESAs, permits<br/>hazmat, UST records<br/>(VDR 6.11-6.14)"]
-    D_E2["Deliver Environmental<br/>Assessment Report"]
+    D_E1["Phase I ESAs - permits - hazmat inventory"]
+    D_E2["Deliver Environmental Assessment Report"]
   end
-
-  subgraph COM["Commercial & Ops — Deal Team"]
-    D_C1["Deep-dive VDR: customers<br/>vendors, ops, HR, safety<br/>IT (234 documents)"]
-    D_C2["Customer reference calls<br/>Top 10 accounts"]
-    D_C3["Site visits: Dallas HQ<br/>+ 3-4 key branches"]
-    D_C4["Compile competitive analysis<br/>market data, benchmarking"]
+  subgraph COM["Commercial and Ops — Deal Team"]
+    D_C1["Deep-dive VDR: customers, vendors, ops, HR, safety, IT - 234 documents"]
+    D_C2["Customer reference calls - Top 10 accounts"]
+    D_C3["Site visits - Dallas HQ plus 3-4 key branches"]
+    D_C4["Compile competitive analysis - market data - benchmarking"]
   end
-
-  DD_DONE(["All DD Workstreams Complete<br/>→ Phase 5 & 6"])
-
+  DD_DONE(["All DD Workstreams Complete"])
   START --> D_F1
   START --> D_L1
   START --> D_T1
   START --> D_I1
   START --> D_E1
   START --> D_C1
-
   D_F1 --> D_F2 --> D_F3
   D_L1 --> D_L2 --> D_L3 --> D_L4
   D_T1 --> D_T2
@@ -392,14 +339,12 @@ flowchart TB
   D_C1 --> D_C2
   D_C1 --> D_C3
   D_C1 --> D_C4
-
   D_F3 --> DD_DONE
   D_L4 --> DD_DONE
   D_T2 --> DD_DONE
   D_I2 --> DD_DONE
   D_E2 --> DD_DONE
   D_C4 --> DD_DONE
-
   style D_F1 fill:#0D47A1,stroke:#42A5F5,color:#FFF
   style D_F2 fill:#0D47A1,stroke:#42A5F5,color:#FFF
   style D_F3 fill:#0D47A1,stroke:#42A5F5,color:#FFF
@@ -425,50 +370,45 @@ flowchart TB
   style INS fill:none,stroke:#42A5F5,stroke-width:2
   style ENV fill:none,stroke:#42A5F5,stroke-width:2
   style COM fill:none,stroke:#FF9800,stroke-width:2
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PHASE 5: UNDERWRITING & FINANCING -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ PHASE 5 ══════ -->
   <div class="phase">
     <div class="phase-head">
       <div class="num" style="background:#1B5E20">5</div>
-      <h2>Phase 5: Underwriting, Valuation & Financing</h2>
-      <div class="timing">4-12 Weeks (Parallel w/ Phase 4)</div>
+      <h2>Phase 5: Underwriting, Valuation and Financing</h2>
+      <div class="timing">4-12 Weeks parallel with Phase 4</div>
       <div class="badge" style="background:#E8F5E9;color:#1B5E20">12 TASKS</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart TB
-  QOE(["QoE Report<br/>← Phase 4"])
-  DD_DATA(["Commercial DD Data<br/>← Phase 4"])
-  PRELIM(["Prelim UW Model<br/>← Phase 3"])
-
-  subgraph MODEL["LBO Model & Valuation — Deal Team"]
-    E1["Build Full Underwriting<br/>LBO Model<br/>• 3-statement operating model<br/>• Revenue build by segment<br/>• Cost structure & margins<br/>• Working capital cycle"]
-    E2["Sources & Uses<br/>• TLA $100M + TLB $50M<br/>• Mezz $30M + Equity $119M<br/>• Mgmt rollover $25M<br/>• Total: $352M"]
-    E3["Debt Schedule<br/>• SOFR + spreads by tranche<br/>• Amortization & PIK<br/>• Leverage: 5.9x → 1.9x<br/>• Coverage: 2.4x → 5.9x"]
-    E4["Returns Analysis<br/>• Base: 35.2% IRR, 4.2x MOIC<br/>• Downside (8x): 31.6% IRR<br/>• Upside (12x): 44.4% IRR<br/>• 5-year exit assumed"]
-    E5["Sensitivity Analysis<br/>• 6x6 IRR matrix<br/>• 6x6 MOIC matrix<br/>• Entry 9x-11.5x vs Exit 7x-12x"]
-    E6["EBITDA Bridge<br/>• LTM $30.5M → $92.4M<br/>• Volume, mix, efficiency<br/>• Acquisition contribution<br/>• Labor cost headwinds"]
-    E7["Comparable Companies<br/>• 7 public comps<br/>• Median EV/EBITDA: 10.9x<br/>• Median EV/Revenue: 2.1x"]
-    E8["Precedent Transactions<br/>• M&A deal multiples<br/>• PE-backed platform comps"]
-    E9["DCF Cross-Check<br/>• WACC, terminal value<br/>• Implied valuation range"]
+  QOE(["QoE Report from Phase 4"])
+  DD_DATA(["Commercial DD Data from Phase 4"])
+  PRELIM(["Prelim UW Model from Phase 3"])
+  subgraph MODEL["LBO Model and Valuation — Deal Team"]
+    E1["Build Full Underwriting LBO Model - 3-statement operating model - Revenue build by segment - Cost structure and margins"]
+    E2["Sources and Uses - TLA $100M plus TLB $50M - Mezz $30M plus Equity $119M - Mgmt rollover $25M - Total: $352M"]
+    E3["Debt Schedule - SOFR plus spreads by tranche - Amortization and PIK - Leverage: 5.9x to 1.9x"]
+    E4["Returns Analysis - Base: 35.2 pct IRR, 4.2x MOIC - Downside at 8x: 31.6 pct IRR - Upside at 12x: 44.4 pct IRR"]
+    E5["Sensitivity Analysis - 6x6 IRR matrix - 6x6 MOIC matrix"]
+    E6["EBITDA Bridge - LTM $30.5M to $92.4M - Volume, mix, efficiency"]
+    E7["Comparable Companies - 7 public comps - Median EV/EBITDA: 10.9x"]
+    E8["Precedent Transactions - MA deal multiples - PE-backed platform comps"]
+    E9["DCF Cross-Check - WACC, terminal value - Implied valuation range"]
   end
-
   subgraph DEBT["Financing — Lender Group"]
-    E10["Engage lender group<br/>with lender model<br/>• First National (Lead)<br/>• Pacific Coast / Silverstone<br/>• Ridgeline Mezzanine"]
-    E11["Lender credit diligence<br/>& committee process"]
-    E12["Obtain commitment letters<br/>• TLA: $100M, SOFR+300<br/>• TLB: $50M, SOFR+400<br/>• Revolver: $30M<br/>• Mezz: $30M, 12%/2% PIK"]
+    E10["Engage lender group with lender model - First National as Lead - Pacific Coast, Silverstone - Ridgeline Mezzanine"]
+    E11["Lender credit diligence and committee process"]
+    E12["Obtain commitment letters - TLA: $100M, SOFR+300 - TLB: $50M, SOFR+400 - Revolver: $30M - Mezz: $30M, 12pct/2pctPIK"]
   end
-
   subgraph VCP["Value Creation — Deal Team"]
-    E13["Value Creation Plan<br/>• Organic: 6-8% growth<br/>• M&A: 8-12 tuck-ins at 4.5-6.5x<br/>• Margin: +190-270 bps<br/>• Tech: ServiceTitan, NetSuite"]
-    E14["Post-Close Cap Table<br/>• SRCP 65% (Class A)<br/>• Mgmt rollover 17% (Class B)<br/>• MIP pool 5%<br/>• Unallocated 13%"]
+    E13["Value Creation Plan - Organic: 6-8 pct growth - MA: 8-12 tuck-ins at 4.5-6.5x - Margin: +190-270 bps - Tech: ServiceTitan, NetSuite"]
+    E14["Post-Close Cap Table - SRCP 65 pct Class A - Mgmt rollover 17 pct Class B - MIP pool 5 pct"]
   end
-
-  READY(["Model Locked &<br/>Financing Committed<br/>→ Phase 6"])
-
+  READY(["Model Locked and Financing Committed"])
   QOE --> E1
   DD_DATA --> E1
   PRELIM --> E1
@@ -485,7 +425,6 @@ flowchart TB
   DD_DATA --> E13
   E1 --> E13
   E1 --> E14
-
   E5 --> READY
   E6 --> READY
   E7 --> READY
@@ -494,7 +433,6 @@ flowchart TB
   E12 --> READY
   E13 --> READY
   E14 --> READY
-
   style E1 fill:#E65100,stroke:#FF9800,color:#FFF
   style E2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style E3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
@@ -516,77 +454,68 @@ flowchart TB
   style MODEL fill:none,stroke:#4CAF50,stroke-width:2
   style DEBT fill:none,stroke:#EF5350,stroke-width:2
   style VCP fill:none,stroke:#FF9800,stroke-width:2
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <div class="milestone green"><h4>✓ FINANCING COMMITTED & MODEL LOCKED — Ready for Final IC Memo (January 2026)</h4></div>
+  <div class="milestone green"><h4>FINANCING COMMITTED and MODEL LOCKED — Ready for Final IC Memo January 2026</h4></div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PHASE 6: FINAL IC MEMO -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ PHASE 6 ══════ -->
   <div class="phase">
     <div class="phase-head">
       <div class="num" style="background:#E65100">6</div>
       <h2>Phase 6: Final IC Memo Construction</h2>
       <div class="timing">2-4 Weeks</div>
-      <div class="badge" style="background:#FFF3E0;color:#E65100">14 TASKS · IC GATE 3</div>
+      <div class="badge" style="background:#FFF3E0;color:#E65100">14 TASKS</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart TB
-  DD_IN(["DD Reports<br/>← Phase 4"])
-  MODEL_IN(["LBO Model &<br/>Financing<br/>← Phase 5"])
-
+  DD_IN(["DD Reports from Phase 4"])
+  MODEL_IN(["LBO Model and Financing from Phase 5"])
   subgraph DATA_SEC["Data-Driven Sections — Full LLM"]
-    F_S2["§2 Company Overview<br/>• Business description<br/>• Corporate structure<br/>• 45 branches, 22 states<br/>• Service composition<br/>• Management team"]
-    F_S3["§3 Market Overview<br/>• TAM: $8-10B<br/>• Segmentation<br/>• 3,000+ operators<br/>• Competitive positioning<br/>• Growth drivers"]
-    F_S4["§4 Financial Overview<br/>• 10.5% revenue CAGR<br/>• 43.6% gross margins<br/>• 17.9% EBITDA margins<br/>• Operating metrics<br/>• Balance sheet"]
-    F_S8["§8 Transaction Structure<br/>• S&U: $352M total<br/>• Post-close ownership<br/>• Debt terms by tranche<br/>• $30M revolver"]
-    F_S9["§9 Returns Analysis<br/>• 5-year projections<br/>• Leverage profile<br/>• Exit assumptions<br/>• IRR/MOIC tables<br/>• Sensitivity matrices"]
+    F_S2["Sec 2 Company Overview - Business description - Corporate structure - 45 branches, 22 states - Service composition - Management team"]
+    F_S3["Sec 3 Market Overview - TAM: $8-10B - Segmentation - 3000+ operators - Competitive positioning"]
+    F_S4["Sec 4 Financial Overview - 10.5 pct revenue CAGR - 43.6 pct gross margins - 17.9 pct EBITDA margins - Operating metrics"]
+    F_S8["Sec 8 Transaction Structure - S and U: $352M total - Post-close ownership - Debt terms by tranche"]
+    F_S9["Sec 9 Returns Analysis - 5-year projections - Leverage profile - Exit assumptions - IRR/MOIC tables"]
   end
-
   subgraph JUDGE_SEC["Judgment Sections — LLM-Assisted"]
-    F_S5["§5 Investment Thesis<br/>• Platform in fragmented mkt<br/>• Recurring revenue (35% PM)<br/>• Proven M&A playbook<br/>• Defensive end markets<br/>• Tech-enabled advantage"]
-    F_S6["§6 Value Creation Plan<br/>• Organic + M&A roadmap<br/>• Margin initiatives<br/>• Technology investments<br/>• Geographic expansion"]
-    F_S7["§7 DD Summary<br/>• QoE findings<br/>• Legal findings<br/>• Tax, Insurance, Env<br/>• IT assessment<br/>• Commercial conclusions"]
-    F_S10["§10 Risk Factors<br/>• 6 risk categories<br/>• Severity & likelihood<br/>• Specific mitigants<br/>• Labor, leverage, M&A<br/>• Customer, competitive, tech"]
-    F_S11["§11 Governance<br/>• Board: 7 members<br/>• Mgmt agreements<br/>• MIP: 5% pool, 4yr vest<br/>• Reporting & monitoring"]
-    F_S12["§12 IC Recommendation<br/>• Summary recommendation<br/>• Requested approvals<br/>• Transaction milestones<br/>• Timeline to close"]
+    F_S5["Sec 5 Investment Thesis - Platform in fragmented market - Recurring revenue 35 pct PM - Proven MA playbook - Defensive end markets"]
+    F_S6["Sec 6 Value Creation Plan - Organic plus MA roadmap - Margin initiatives - Technology investments"]
+    F_S7["Sec 7 DD Summary - QoE findings - Legal findings - Tax, Insurance, Env, IT"]
+    F_S10["Sec 10 Risk Factors - 6 risk categories - Severity and likelihood - Specific mitigants"]
+    F_S11["Sec 11 Governance - Board: 7 members - Mgmt agreements - MIP: 5 pct pool, 4yr vest"]
+    F_S12["Sec 12 IC Recommendation - Summary recommendation - Requested approvals - Transaction milestones"]
   end
-
-  F_S1["§1 Executive Summary<br/>Synthesizes thesis + numbers<br/>from all other sections"]
-
+  F_S1["Sec 1 Executive Summary - Synthesizes thesis plus numbers from all other sections"]
   subgraph SUPPORT["Supporting Deliverables"]
-    F_X1["Risk Factor Matrix<br/>with severity/likelihood"]
-    F_X2["Governance Framework<br/>& Board composition"]
-    F_X3["KPI Dashboard<br/>IC presentation format"]
-    F_X4["Competitive<br/>Benchmarking Exhibits"]
-    F_X5["Third-Party Reports<br/>Summary Matrix"]
-    F_X6["Appendices A-O<br/>Compiled & indexed"]
+    F_X1["Risk Factor Matrix with severity/likelihood"]
+    F_X2["Governance Framework and Board composition"]
+    F_X3["KPI Dashboard - IC presentation format"]
+    F_X4["Competitive Benchmarking Exhibits"]
+    F_X5["Third-Party Reports Summary Matrix"]
+    F_X6["Appendices A through O - Compiled and indexed"]
   end
-
-  REVIEW["Senior Review<br/>VP → Principal → Partner<br/>Iterative markup & revision"]
-  IC{"IC GATE 3:<br/>Authorize SPA<br/>Execution?"}
-  APPROVED(["✓ IC APPROVED<br/>Feb 2026"])
-  REVISE["Revise &<br/>Resubmit"]
+  REVIEW["Senior Review - VP then Principal then Partner - Iterative markup and revision"]
+  IC{"IC GATE 3: Authorize SPA Execution?"}
+  APPROVED(["IC APPROVED Feb 2026"])
+  REVISE["Revise and Resubmit"]
   KILL["Kill Deal"]
-
   DD_IN --> F_S7
   DD_IN --> F_S10
   MODEL_IN --> F_S4
   MODEL_IN --> F_S8
   MODEL_IN --> F_S9
-
   F_S5 --> F_S1
   F_S4 --> F_S1
   F_S9 --> F_S1
-
   F_X1 --> F_S10
   F_X2 --> F_S11
   F_X3 --> F_S4
   F_X4 --> F_S3
   F_X5 --> F_S7
   F_X6 --> F_S12
-
   F_S1 --> REVIEW
   F_S2 --> REVIEW
   F_S3 --> REVIEW
@@ -598,13 +527,11 @@ flowchart TB
   F_S10 --> REVIEW
   F_S11 --> REVIEW
   F_S12 --> REVIEW
-
   REVIEW --> IC
-  IC -- "Conditional" --> REVISE
+  IC -- Conditional --> REVISE
   REVISE --> REVIEW
-  IC -- "Reject" --> KILL
-  IC -- "APPROVED" --> APPROVED
-
+  IC -- Reject --> KILL
+  IC -- APPROVED --> APPROVED
   style F_S2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style F_S3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style F_S4 fill:#1B5E20,stroke:#4CAF50,color:#FFF
@@ -633,77 +560,67 @@ flowchart TB
   style DATA_SEC fill:none,stroke:#4CAF50,stroke-width:2
   style JUDGE_SEC fill:none,stroke:#FF9800,stroke-width:2
   style SUPPORT fill:none,stroke:#9E9E9E,stroke-width:1
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <div class="milestone green"><h4>✓ IC APPROVED — Authorized to Execute Definitive Documentation (February 2026)</h4></div>
+  <div class="milestone green"><h4>IC APPROVED — Authorized to Execute Definitive Documentation February 2026</h4></div>
 
-  <!-- ══════════════════════════════════════ -->
-  <!-- PHASE 7: CLOSE -->
-  <!-- ══════════════════════════════════════ -->
+  <!-- ══════ PHASE 7 ══════ -->
   <div class="phase">
     <div class="phase-head">
       <div class="num" style="background:#B71C1C">7</div>
-      <h2>Phase 7: Definitive Documentation & Close</h2>
+      <h2>Phase 7: Definitive Documentation and Close</h2>
       <div class="timing">4-8 Weeks</div>
       <div class="badge" style="background:#FFEBEE;color:#B71C1C">11 TASKS</div>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 flowchart TB
-  IC_IN(["IC Approved<br/>← Phase 6"])
-
+  IC_IN(["IC Approved from Phase 6"])
   subgraph LEGAL["Legal Documentation"]
-    G1["Negotiate & execute SPA<br/>• Reps & warranties<br/>• Indemnification<br/>• Baskets & caps"]
-    G2["Finalize disclosure<br/>schedules to SPA<br/>• Material exceptions<br/>• Known liabilities"]
-    G3["Escrow agreement<br/>• Holdback terms<br/>• Release conditions"]
+    G1["Negotiate and execute SPA - Reps and warranties - Indemnification - Baskets and caps"]
+    G2["Finalize disclosure schedules to SPA - Material exceptions - Known liabilities"]
+    G3["Escrow agreement - Holdback terms - Release conditions"]
   end
-
   subgraph FINANCE["Financing Documentation"]
-    G4["Senior Credit Agreement<br/>• $100M TLA + $50M TLB<br/>• Covenants & defaults<br/>• SOFR + 300/400 bps"]
-    G5["Mezzanine Agreement<br/>• $30M, 12% cash / 2% PIK<br/>• Security & guaranty docs"]
-    G6["Revolver ($30M)<br/>Pledge agreements<br/>UCC filings"]
+    G4["Senior Credit Agreement - $100M TLA plus $50M TLB - Covenants and defaults"]
+    G5["Mezzanine Agreement - $30M, 12 pct cash / 2 pct PIK - Security and guaranty docs"]
+    G6["Revolver $30M - Pledge agreements - UCC filings"]
   end
-
   subgraph MGMT["Management Agreements"]
-    G7["Management rollover<br/>agreements — $25M equity<br/>into Class B units"]
-    G8["Post-close employment<br/>agreements (CEO, CFO,<br/>COO, Chairman)<br/>MIP: 5% pool, 4yr vest"]
+    G7["Management rollover agreements - $25M equity into Class B units"]
+    G8["Post-close employment agreements - CEO, CFO, COO, Chairman - MIP: 5 pct pool, 4yr vest"]
   end
-
-  subgraph REG["Regulatory & Consents"]
-    G9["HSR antitrust filing<br/>$320M EV exceeds threshold<br/>Prepare, file, await clearance"]
-    G10["Third-party consents<br/>• 45 branch landlords<br/>• Key customer CoC<br/>• OEM authorizations<br/>• Existing debt ($31M refi)"]
+  subgraph REG["Regulatory and Consents"]
+    G9["HSR antitrust filing - $320M EV exceeds threshold - Prepare, file, await clearance"]
+    G10["Third-party consents - 45 branch landlords - Key customer CoC - OEM authorizations"]
   end
-
   subgraph OPS["Deal Team Operations"]
-    G11["Capital call memo<br/>to LPs — $119M"]
-    G12["Closing checklist<br/>& funds flow<br/>• 50+ conditions<br/>• Wire instructions"]
+    G11["Capital call memo to LPs - $119M equity commitment"]
+    G12["Closing checklist and funds flow - 50+ conditions - Wire instructions across 10+ parties"]
   end
-
-  CLOSE_CHECK{"All closing<br/>conditions<br/>satisfied?"}
-  RESOLVE["Resolve<br/>open items"]
-  CLOSE(["✓ TRANSACTION CLOSES<br/>April 15, 2026<br/>$320M EV · 35% IRR · 4.2x MOIC"])
-
+  CLOSE_CHECK{"All closing conditions satisfied?"}
+  RESOLVE["Resolve open items"]
+  CLOSE(["TRANSACTION CLOSES April 15, 2026"])
   IC_IN --> G1
   IC_IN --> G4
   IC_IN --> G7
   IC_IN --> G9
   IC_IN --> G11
-
   G1 --> G2 --> G3
   G4 --> G5 --> G6
   G7 --> G8
   G9 --> G10
-
   G3 --> G12
   G6 --> G12
   G8 --> G12
   G10 --> CLOSE_CHECK
   G11 --> G12
   G12 --> CLOSE_CHECK
-  CLOSE_CHECK -- "No" --> RESOLVE
+  CLOSE_CHECK -- No --> RESOLVE
   RESOLVE --> CLOSE_CHECK
-  CLOSE_CHECK -- "Yes" --> CLOSE
-
+  CLOSE_CHECK -- Yes --> CLOSE
   style G1 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G2 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style G3 fill:#B71C1C,stroke:#EF5350,color:#FFF
@@ -725,64 +642,61 @@ flowchart TB
   style MGMT fill:none,stroke:#EF5350,stroke-width:2
   style REG fill:none,stroke:#EF5350,stroke-width:2
   style OPS fill:none,stroke:#FF9800,stroke-width:2
-    </pre>
+      </pre>
+    </div>
   </div>
 
-  <!-- FINAL CLOSE -->
   <div class="milestone navy-m">
-    <h4>✓ TRANSACTION CLOSES — April 15, 2026</h4>
-    <p>$320M Enterprise Value · $119M SRCP Equity (65%) · $180M Debt (5.9x) · $25M Management Rollover (17%)</p>
-    <p>Base Case: 35.2% Gross IRR · 4.2x Gross MOIC at 9.0x Exit Multiple (5-Year Hold)</p>
+    <h4>TRANSACTION CLOSES — April 15, 2026</h4>
+    <p>$320M Enterprise Value &middot; $119M SRCP Equity (65%) &middot; $180M Debt (5.9x) &middot; $25M Management Rollover (17%)</p>
+    <p>Base Case: 35.2% Gross IRR &middot; 4.2x Gross MOIC at 9.0x Exit Multiple (5-Year Hold)</p>
   </div>
 
-  <!-- SUMMARY PIE -->
+  <!-- ══════ PIE CHART ══════ -->
   <div class="phase">
     <div class="phase-head">
-      <div class="num" style="background:var(--navy)">Σ</div>
+      <div class="num" style="background:var(--navy)">S</div>
       <h2>LLM Capability Distribution Summary</h2>
     </div>
-    <pre class="mermaid">
+    <div class="mermaid-wrap">
+      <pre class="mermaid">
 pie title Task Classification Across 66 IC Memo Workflow Steps
-    "🟢 Full LLM (14)" : 14
-    "🟡 LLM-Assisted (21)" : 21
-    "🔴 Human-Only (18)" : 18
-    "🔵 Third-Party (13)" : 13
-    </pre>
+    "Full LLM - 14 tasks" : 14
+    "LLM-Assisted - 21 tasks" : 21
+    "Human-Only - 18 tasks" : 18
+    "Third-Party - 13 tasks" : 13
+      </pre>
+    </div>
   </div>
 
-  <div class="footer">
-    PROJECT GATE — LBO IC Memo Build Workflow · LLM Capability Classification · Summit Ridge Capital Partners · Pinnacle Grove Partners · CONFIDENTIAL
-  </div>
+  <div class="footer">PROJECT GATE — LBO IC Memo Build Workflow — LLM Capability Classification — Summit Ridge Capital Partners — CONFIDENTIAL</div>
 
 </div>
 
-<script>
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: 'base',
-    themeVariables: {
-      fontFamily: 'Segoe UI, system-ui, sans-serif',
-      fontSize: '13px',
-      primaryColor: '#E8F5E9',
-      primaryBorderColor: '#4CAF50',
-      lineColor: '#90A4AE',
-      secondaryColor: '#FFF3E0',
-      tertiaryColor: '#FFEBEE',
-      pieSectionTextSize: '14px'
-    },
-    flowchart: {
-      htmlLabels: true,
-      curve: 'basis',
-      padding: 15,
-      nodeSpacing: 30,
-      rankSpacing: 40,
-      useMaxWidth: true
-    },
-    pie: {
-      useMaxWidth: true,
-      textPosition: 0.75
-    }
-  });
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.esm.min.mjs';
+mermaid.initialize({
+  startOnLoad: true,
+  theme: 'base',
+  securityLevel: 'loose',
+  themeVariables: {
+    fontFamily: 'Segoe UI, system-ui, sans-serif',
+    fontSize: '13px',
+    primaryColor: '#E8F5E9',
+    primaryBorderColor: '#4CAF50',
+    lineColor: '#90A4AE',
+    secondaryColor: '#FFF3E0',
+    tertiaryColor: '#FFEBEE'
+  },
+  flowchart: {
+    htmlLabels: true,
+    curve: 'basis',
+    padding: 15,
+    nodeSpacing: 30,
+    rankSpacing: 40,
+    useMaxWidth: true
+  }
+});
 </script>
 </body>
 </html>
