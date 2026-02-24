@@ -111,9 +111,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 .lightbox-btn:hover{background:rgba(255,255,255,.3)}
 .lightbox-close{background:#C62828;border-color:#EF5350}
 .lightbox-close:hover{background:#E53935}
-.lightbox-body{flex:1;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:16px;width:100%}
-.lightbox-content{transform-origin:top center;transition:transform .2s ease;min-width:100%;display:flex;justify-content:center}
-.lightbox-content svg{max-width:none!important;height:auto!important}
+.lightbox-body{flex:1;overflow:auto;padding:16px;width:100%}
+.lightbox-content{transform-origin:top left;transition:transform .2s ease;width:max-content;min-width:100%;margin:0 auto}
+.lightbox-content svg{max-width:none!important;min-width:800px;height:auto!important;width:100%!important}
 .lightbox-hint{color:rgba(255,255,255,.5);font-size:11px;padding:8px 24px;text-align:center;flex-shrink:0}
 
 </style>
@@ -131,26 +131,26 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 <div><span class="stats-total">69<span>Steps across 10 Memo Build Phases</span></span></div>
 <div class="stat-boxes">
 <div class="stat-box"><div class="stat-num" style="background:#1B5E20"><div class="c">25</div><div class="p">36%</div></div><div><div class="stat-label" style="color:#1B5E20">FULL LLM</div><div class="stat-desc">Autonomous from VDR data</div></div></div>
-<div class="stat-box"><div class="stat-num" style="background:#E65100"><div class="c">32</div><div class="p">46%</div></div><div><div class="stat-label" style="color:#E65100">LLM-ASSISTED</div><div class="stat-desc">LLM drafts, human reviews</div></div></div>
-<div class="stat-box"><div class="stat-num" style="background:#B71C1C"><div class="c">12</div><div class="p">18%</div></div><div><div class="stat-label" style="color:#B71C1C">HUMAN-ONLY</div><div class="stat-desc">Professional judgment</div></div></div>
+<div class="stat-box"><div class="stat-num" style="background:#E65100"><div class="c">41</div><div class="p">59%</div></div><div><div class="stat-label" style="color:#E65100">LLM-ASSISTED</div><div class="stat-desc">LLM drafts, human reviews</div></div></div>
+<div class="stat-box"><div class="stat-num" style="background:#B71C1C"><div class="c">3</div><div class="p">5%</div></div><div><div class="stat-label" style="color:#B71C1C">HUMAN-ONLY</div><div class="stat-desc">Professional judgment</div></div></div>
 </div>
 </div>
 <div class="bar">
 <div style="width:36%;background:#4CAF50"></div>
-<div style="width:46%;background:#FF9800"></div>
-<div style="width:18%;background:#EF5350"></div>
+<div style="width:59%;background:#FF9800"></div>
+<div style="width:5%;background:#EF5350"></div>
 </div>
 <div class="bar-labels"><span>Fully Automated</span><span>Human Judgment Required</span></div>
 
 <div class="donut-section">
 <div class="donut-wrap">
-<svg viewBox="0 0 160 160" width="160" height="160"><path d="M 80.0,10.0 A 70,70 0 0 1 133.674292348453,124.93406659643436 L 116.80522903893922,110.81193138041213 A 48,48 0 0 0 80.0,32.0 Z" fill="#4CAF50"/><path d="M 133.28012986862754,125.40074626239291 A 70,70 0 0 1 17.56936709639514,48.33904494088452 L 37.19042315181381,58.28963081660653 A 48,48 0 0 0 116.53494619563031,111.13194029421228 Z" fill="#FF9800"/><path d="M 17.84803471183374,47.79544735881933 A 70,70 0 0 1 79.38914251511392,10.00266538550801 L 79.58112629607811,32.001827692919775 A 48,48 0 0 0 37.381509516685995,57.91687818890468 Z" fill="#EF5350"/></svg>
+<svg viewBox="0 0 160 160" width="160" height="160"><path d="M 80.0,10.0 A 70,70 0 0 1 133.674292348453,124.93406659643436 L 116.80522903893922,110.81193138041213 A 48,48 0 0 0 80.0,32.0 Z" fill="#4CAF50"/><path d="M 133.28012986862754,125.40074626239291 A 70,70 0 1 1 60.52673989910953,12.763163808496557 L 66.64690735938939,33.89474089725478 A 48,48 0 1 0 116.53494619563031,111.13194029421228 Z" fill="#FF9800"/><path d="M 61.1142260190083,12.595789885654057 A 70,70 0 0 1 79.38914251511385,10.00266538550801 L 79.58112629607807,32.001827692919775 A 48,48 0 0 0 67.04975498446284,33.77997020730564 Z" fill="#EF5350"/></svg>
 <div class="donut-center"><div class="num">69</div><div class="lbl">TASKS</div></div>
 </div>
 <div class="donut-legend">
 <div class="donut-legend-item"><div class="donut-legend-dot" style="background:#4CAF50"></div><div class="donut-legend-val">25</div> FULL LLM — Autonomous generation from structured VDR data</div>
-<div class="donut-legend-item"><div class="donut-legend-dot" style="background:#FF9800"></div><div class="donut-legend-val">32</div> LLM-ASSISTED — LLM drafts section, human expert reviews & approves</div>
-<div class="donut-legend-item"><div class="donut-legend-dot" style="background:#EF5350"></div><div class="donut-legend-val">12</div> HUMAN-ONLY — Requires professional judgment, cannot be delegated</div>
+<div class="donut-legend-item"><div class="donut-legend-dot" style="background:#FF9800"></div><div class="donut-legend-val">41</div> LLM-ASSISTED — LLM drafts section, human expert reviews & approves</div>
+<div class="donut-legend-item"><div class="donut-legend-dot" style="background:#EF5350"></div><div class="donut-legend-val">3</div> HUMAN-ONLY — Requires professional judgment, cannot be delegated</div>
 </div>
 </div>
 </div>
@@ -745,7 +745,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">1.1</td>
 <td class="step-task">Extract company & deal profile from CIM</td>
@@ -832,7 +832,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">2.1</td>
 <td class="step-task">Build brand/product matrix</td>
@@ -919,7 +919,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">3.1</td>
 <td class="step-task">Compile historical financials (3-5yr IS, BS, CF, LTM)</td>
@@ -1006,7 +1006,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">4.1</td>
 <td class="step-task">Extract market data (TAM, growth, drivers)</td>
@@ -1043,7 +1043,7 @@ CHECKPOINT 4: Market sized, competitors profiled, threats identified<br>
 <h2>Step 5: Investment Thesis & Upside Case</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">1 day</span>
-<span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS &middot; 0G 2Y 3R</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS &middot; 0G 5Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1059,10 +1059,10 @@ flowchart TB
   S5_4 --> S5_5
   CP5(["CHECKPOINT 5"])
   S5_5 --> CP5
-  style S5_1 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style S5_2 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S5_1 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S5_2 fill:#E65100,stroke:#FF9800,color:#FFF
   style S5_3 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S5_4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S5_4 fill:#E65100,stroke:#FF9800,color:#FFF
   style S5_5 fill:#E65100,stroke:#FF9800,color:#FFF
   style CP5 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
@@ -1072,18 +1072,18 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">5.1</td>
 <td class="step-task">Distill top 3-5 investment highlights from Phases 2-4</td>
 <td class="step-src">#51 Highlights + Phase 2-4 outputs</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
 <td class="step-id">5.2</td>
 <td class="step-task">Define value creation thesis</td>
 <td class="step-src">#36 EBITDA Bridge, #72 Synergy</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
 <tr>
 <td class="step-id">5.3</td>
@@ -1095,7 +1095,7 @@ flowchart TB
 <td class="step-id">5.4</td>
 <td class="step-task">Identify differentiated insights</td>
 <td class="step-src">Phase 2-4 analysis, #28 Consumer</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
 <td class="step-id">5.5</td>
@@ -1150,7 +1150,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">6.1</td>
 <td class="step-task">Compile all prior-phase flags (RAG, concentration, ops)</td>
@@ -1205,7 +1205,7 @@ CHECKPOINT 6: Risk matrix complete, sensitivities run, mitigants defined<br>
 <h2>Step 7: Deal Terms & Structure</h2>
 <span class="team-badge">Legal & Tax</span>
 <span class="timing">1-2 days</span>
-<span class="badge" style="background:#FFEBEE;color:#B71C1C">11 TASKS &middot; 3G 4Y 4R</span>
+<span class="badge" style="background:#FFEBEE;color:#B71C1C">11 TASKS &middot; 3G 8Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1237,12 +1237,12 @@ flowchart TB
   style S7_2 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style S7_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style S7_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
-  style S7_6 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S7_5 fill:#E65100,stroke:#FF9800,color:#FFF
+  style S7_6 fill:#E65100,stroke:#FF9800,color:#FFF
   style S7_7 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_8 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S7_8 fill:#E65100,stroke:#FF9800,color:#FFF
   style S7_9 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S7_10 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S7_10 fill:#E65100,stroke:#FF9800,color:#FFF
   style S7_11 fill:#E65100,stroke:#FF9800,color:#FFF
   style CP7 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
@@ -1252,7 +1252,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">7.1</td>
 <td class="step-task">Compute fully diluted cap table</td>
@@ -1281,13 +1281,13 @@ flowchart TB
 <td class="step-id">7.5</td>
 <td class="step-task">Review Board authorization & deal process</td>
 <td class="step-src">#61 Board, #62 Advisor, #63 Fairness, #64 LOIs</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
 <td class="step-id">7.6</td>
 <td class="step-task">Analyze shareholder agreements</td>
 <td class="step-src">#69 Shareholder, #70 Strategic Partner</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
 <td class="step-id">7.7</td>
@@ -1299,7 +1299,7 @@ flowchart TB
 <td class="step-id">7.8</td>
 <td class="step-task">HSR/antitrust assessment</td>
 <td class="step-src">#74 HSR</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
 <td class="step-id">7.9</td>
@@ -1311,7 +1311,7 @@ flowchart TB
 <td class="step-id">7.10</td>
 <td class="step-task">RWI pre-diligence report review</td>
 <td class="step-src">#75 RWI</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-i">I</span></td></tr>
 <tr>
 <td class="step-id">7.11</td>
@@ -1328,10 +1328,10 @@ CHECKPOINT 7: Cap table verified, 13F analyzed, consents tracked, 280G/382 quant
 <div class="phase-card">
 <div class="phase-head">
 <div class="num" style="background:#6A1B9A">8</div>
-<h2>Step 8: Synergies & Integration</h2>
-<span class="team-badge">Synergies & Integration</span>
+<h2>Step 8: Value Creation Plans</h2>
+<span class="team-badge">Value Creation Plans</span>
 <span class="timing">1-2 days</span>
-<span class="badge" style="background:#F3E5F5;color:#6A1B9A">7 TASKS &middot; 1G 5Y 1R</span>
+<span class="badge" style="background:#F3E5F5;color:#6A1B9A">7 TASKS &middot; 1G 6Y 0R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1347,7 +1347,7 @@ flowchart TB
   S8_4 --> S8_5
   S8_6["8.6: IT systems integration assessment"]
   S8_5 --> S8_6
-  S8_7["8.7: Draft Synergies and Integration section with waterfall"]
+  S8_7["8.7: Draft Value Creation Plans section with waterfall"]
   S8_6 --> S8_7
   CP8(["CHECKPOINT 8"])
   S8_7 --> CP8
@@ -1355,7 +1355,7 @@ flowchart TB
   style S8_2 fill:#E65100,stroke:#FF9800,color:#FFF
   style S8_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
   style S8_4 fill:#E65100,stroke:#FF9800,color:#FFF
-  style S8_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S8_5 fill:#E65100,stroke:#FF9800,color:#FFF
   style S8_6 fill:#E65100,stroke:#FF9800,color:#FFF
   style S8_7 fill:#E65100,stroke:#FF9800,color:#FFF
   style CP8 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
@@ -1366,7 +1366,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">8.1</td>
 <td class="step-task">Categorize & quantify synergies (confidence-weighted)</td>
@@ -1395,7 +1395,7 @@ flowchart TB
 <td class="step-id">8.5</td>
 <td class="step-task">People & organizational integration assessment</td>
 <td class="step-src">#76-82 People/Key Man/Employment/Comp</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
 <tr>
 <td class="step-id">8.6</td>
@@ -1405,14 +1405,14 @@ flowchart TB
 <td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
 <tr>
 <td class="step-id">8.7</td>
-<td class="step-task">Draft Synergies & Integration section with waterfall</td>
+<td class="step-task">Draft Value Creation Plans section with waterfall</td>
 <td class="step-src">All Phase 8 sources</td>
 <td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span></td></tr>
 </tbody></table>
 <div class="checkpoint" style="background:#F3E5F5;border-color:#6A1B9A;color:#6A1B9A">
-CHECKPOINT 8: Synergies quantified, integration planned, IT assessed<br>
-<span style="font-weight:400;font-size:11px">Key Outputs: Synergy table, integration plan, IT assessment</span>
+CHECKPOINT 8: Value creation plans quantified, integration planned, IT assessed<br>
+<span style="font-weight:400;font-size:11px">Key Outputs: Value creation table, integration plan, IT assessment</span>
 </div>
 </div></div>
 <div class="phase-card">
@@ -1462,7 +1462,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">9.1</td>
 <td class="step-task">Comparable companies analysis (5-10 comps)</td>
@@ -1529,7 +1529,7 @@ CHECKPOINT 9: Valuation triangulated, trading analyzed, returns modeled, S&U bal
 <h2>Step 10: Recommendation & Final Assembly</h2>
 <span class="team-badge">Deal Leadership</span>
 <span class="timing">1 day</span>
-<span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS &middot; 1G 1Y 3R</span>
+<span class="badge" style="background:#FFF3E0;color:#E65100">5 TASKS &middot; 1G 2Y 2R</span>
 </div>
 <div class="phase-body">
 <div class="mermaid-wrap"><pre class="mermaid">
@@ -1548,7 +1548,7 @@ flowchart TB
   style S10_1 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style S10_2 fill:#E65100,stroke:#FF9800,color:#FFF
   style S10_3 fill:#1B5E20,stroke:#4CAF50,color:#FFF
-  style S10_4 fill:#B71C1C,stroke:#EF5350,color:#FFF
+  style S10_4 fill:#E65100,stroke:#FF9800,color:#FFF
   style S10_5 fill:#B71C1C,stroke:#EF5350,color:#FFF
   style CP10 fill:#E8F5E9,stroke:#2E7D32,color:#1B5E20
 </pre></div>
@@ -1558,7 +1558,7 @@ flowchart TB
 <th>Step</th><th>Task</th><th>Source Documents</th><th>LLM Class</th>
 <th title="Deal Leadership">DL</th><th title="Financial Analysis">FA</th>
 <th title="Business & Ops">BO</th><th title="Legal & Tax">LT</th>
-<th title="Synergies">SI</th></tr></thead><tbody>
+<th title="Value Creation Plans">VCP</th></tr></thead><tbody>
 <tr>
 <td class="step-id">10.1</td>
 <td class="step-task">Draft recommendation (Proceed / Conditions / Do Not Proceed)</td>
@@ -1581,7 +1581,7 @@ flowchart TB
 <td class="step-id">10.4</td>
 <td class="step-task">Full document review: consistency, traceability, coherence</td>
 <td class="step-src">Full memo draft</td>
-<td><span class="llm-badge" style="background:#FFEBEE;color:#B71C1C">○ HUMAN-ONLY</span></td>
+<td><span class="llm-badge" style="background:#FFF3E0;color:#E65100">◐ LLM-ASSISTED</span></td>
 <td><span class="raci-cell raci-r">R</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td><td><span class="raci-cell raci-c">C</span></td></tr>
 <tr>
 <td class="step-id">10.5</td>
@@ -1601,7 +1601,7 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <thead><tr>
 <th>Step</th><th>Title</th><th>Duration</th><th>Tasks</th>
 <th>Deal<br>Leadership</th><th>Financial<br>Analysis</th><th>Business<br>& Ops</th>
-<th>Legal<br>& Tax</th><th>Synergies &<br>Integration</th>
+<th>Legal<br>& Tax</th><th>Value Creation<br>Integration</th>
 <th>LLM<br>Full</th><th>LLM<br>Assist</th><th>Human<br>Only</th>
 </tr></thead><tbody>
 <tr>
@@ -1651,8 +1651,8 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <td style="font-weight:700">5</td>
 <td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x2</span></td>
 <td><span style="color:#1B5E20;font-weight:700">0</span></td>
-<td><span style="color:#E65100;font-weight:700">2</span></td>
-<td><span style="color:#B71C1C;font-weight:700">3</span></td>
+<td><span style="color:#E65100;font-weight:700">5</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
 </tr>
 <tr>
 <td style="font-weight:700;color:#E65100">6</td>
@@ -1671,18 +1671,18 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <td style="font-weight:700">11</td>
 <td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-i">I</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x11</span></td><td><span class="raci-cell raci-i">I</span></td>
 <td><span style="color:#1B5E20;font-weight:700">3</span></td>
-<td><span style="color:#E65100;font-weight:700">4</span></td>
-<td><span style="color:#B71C1C;font-weight:700">4</span></td>
+<td><span style="color:#E65100;font-weight:700">8</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
 </tr>
 <tr>
 <td style="font-weight:700;color:#6A1B9A">8</td>
-<td style="font-weight:600">Synergies & Integration</td>
+<td style="font-weight:600">Value Creation Plans</td>
 <td>1-2 days</td>
 <td style="font-weight:700">7</td>
 <td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x1</span></td><td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x7</span></td>
 <td><span style="color:#1B5E20;font-weight:700">1</span></td>
-<td><span style="color:#E65100;font-weight:700">5</span></td>
-<td><span style="color:#B71C1C;font-weight:700">1</span></td>
+<td><span style="color:#E65100;font-weight:700">6</span></td>
+<td><span style="color:#B71C1C;font-weight:700">0</span></td>
 </tr>
 <tr>
 <td style="font-weight:700;color:#1565C0">9</td>
@@ -1701,16 +1701,16 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <td style="font-weight:700">5</td>
 <td><span class="raci-cell raci-r">R</span><span style="font-size:10px;color:#757575;margin-left:4px">x5</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x4</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td><td><span class="raci-cell raci-c">C</span><span style="font-size:10px;color:#757575;margin-left:4px">x3</span></td>
 <td><span style="color:#1B5E20;font-weight:700">1</span></td>
-<td><span style="color:#E65100;font-weight:700">1</span></td>
-<td><span style="color:#B71C1C;font-weight:700">3</span></td>
+<td><span style="color:#E65100;font-weight:700">2</span></td>
+<td><span style="color:#B71C1C;font-weight:700">2</span></td>
 </tr>
 <tr style="background:#1A237E;color:white;font-weight:700">
 <td colspan="3" style="color:white">TOTALS</td>
 <td style="color:white">69</td>
 <td colspan="5"></td>
 <td style="color:#A5D6A7">25</td>
-<td style="color:#FFE0B2">32</td>
-<td style="color:#FFCDD2">12</td>
+<td style="color:#FFE0B2">41</td>
+<td style="color:#FFCDD2">3</td>
 </tr>
 </tbody></table></div>
 <div class="section-title">Team Responsibility Summary</div>
@@ -1742,7 +1742,7 @@ CHECKPOINT 10: Numbers consistent, sources traced, no contradictions<br>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">42</span></td>
 <td>Phases 7</td></tr>
 <tr>
-<td style="font-weight:700;color:#6A1B9A">Synergies & Integration</td>
+<td style="font-weight:700;color:#6A1B9A">Value Creation Plans</td>
 <td><span style="font-size:20px;font-weight:800;color:#6A1B9A">7</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#7B1FA2">8</span></td>
 <td><span style="font-size:20px;font-weight:800;color:#BDBDBD">54</span></td>
@@ -1806,10 +1806,19 @@ function lbOpen(wrap) {
   const title = card ? (card.querySelector('h2')?.textContent || 'Flowchart') : 'Flowchart';
   document.getElementById('lightbox-title').textContent = title;
   const clone = svg.cloneNode(true);
+  // Get original dimensions for proper display
+  const vb = svg.getAttribute('viewBox');
+  const origW = svg.getAttribute('width') || svg.style.width;
+  const origH = svg.getAttribute('height') || svg.style.height;
+  clone.removeAttribute('width');
+  clone.removeAttribute('height');
+  clone.removeAttribute('style');
   clone.style.width = '100%';
+  clone.style.minWidth = '900px';
   clone.style.height = 'auto';
   clone.style.maxWidth = 'none';
-  clone.removeAttribute('width');
+  clone.style.display = 'block';
+  if (vb) clone.setAttribute('viewBox', vb);
   const content = document.getElementById('lightbox-content');
   content.innerHTML = '';
   content.appendChild(clone);
