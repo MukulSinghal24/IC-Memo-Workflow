@@ -111,9 +111,9 @@ body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#F1F5F
 .lightbox-btn:hover{background:rgba(255,255,255,.3)}
 .lightbox-close{background:#C62828;border-color:#EF5350}
 .lightbox-close:hover{background:#E53935}
-.lightbox-body{flex:1;overflow:auto;padding:16px 24px;width:100%;display:flex;justify-content:center}
-.lightbox-content{transform-origin:center top;transition:transform .2s ease;width:95%;max-width:1400px;margin:0 auto}
-.lightbox-content svg{height:auto!important;width:100%!important}
+.lightbox-body{flex:1;overflow:auto;padding:16px 24px;width:100%;display:flex;justify-content:center;align-items:flex-start}
+.lightbox-content{transform-origin:center top;transition:transform .2s ease;width:95%;max-width:1400px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.lightbox-content svg{height:auto!important}
 .lightbox-hint{color:rgba(255,255,255,.5);font-size:11px;padding:8px 24px;text-align:center;flex-shrink:0}
 
 
@@ -2116,9 +2116,26 @@ function lbOpen(wrap) {
   if (!vb && rect.width > 0) {
     clone.setAttribute('viewBox', '0 0 ' + Math.round(rect.width) + ' ' + Math.round(rect.height));
   }
-  clone.style.width = '100%';
-  clone.style.height = 'auto';
-  clone.style.maxWidth = 'none';
+  // Detect aspect ratio from viewBox or computed dimensions
+  var svgW = rect.width || 800;
+  var svgH = rect.height || 600;
+  if (vb) {
+    var parts = vb.split(/[\s,]+/);
+    if (parts.length === 4) { svgW = parseFloat(parts[2]); svgH = parseFloat(parts[3]); }
+  }
+  var ratio = svgH / svgW;
+  // For tall TB charts (ratio > 1.2), limit width so chart stays readable
+  if (ratio > 1.2) {
+    var maxW = Math.min(600, window.innerWidth * 0.5);
+    clone.style.width = maxW + 'px';
+    clone.style.maxWidth = maxW + 'px';
+    clone.style.height = 'auto';
+    clone.style.margin = '0 auto';
+  } else {
+    clone.style.width = '100%';
+    clone.style.height = 'auto';
+    clone.style.maxWidth = 'none';
+  }
   clone.style.display = 'block';
   clone.style.background = 'white';
   clone.style.borderRadius = '12px';
@@ -2130,6 +2147,10 @@ function lbOpen(wrap) {
   lbApply();
   document.getElementById('lightbox').classList.add('active');
   document.body.style.overflow = 'hidden';
+  // For tall charts, scroll to top of content
+  if (ratio > 1.2) {
+    document.getElementById('lightbox-body').scrollTop = 0;
+  }
 }
 
 function lbClose() {
